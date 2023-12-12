@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <mate charest="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="/template.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body style="margin-left: 3%; margin-right: 3%">
+ 
+    <main>
+    <table>
+        <tr>
+          <td style="width: 100px; height: 100px; border-radius: 50%">
+		  <img src={{personalinfo.imageurl}} alt="Girl" width="100%" height="100%" style="border-radius: 50%"/>
+		  </td>
+            <td style="padding-left:3%;font-size: 15px;line-height: 1.5; width: 75%">
+                <span style="font-size: 18px;font-weight: bold;">{{name}}</span><br>
+                <span>{{jobrole}}</span><br>
+                <span>{{age}} </span>|<span> {{gender}} </span>|<span> {{maritalstatus}}</span><br>
+                <i class="fa fa-phone"></i>&nbsp;&nbsp;<span>{{contactinfo.mobileno}}</span>
+            </td>
+        </tr>
+    </table>
+    <table class="margin-top:6%;width:100%;table-layout:fixed;word-break:break-word;">
+        <tr>
+            <td><b class="paraHeader"><i class="fa fa-info-circle"></i>&nbsp;&nbsp; Personal Info </b></td>
+            <td><b class="paraHeader"><i class="fa fa-address-book"></i>&nbsp;&nbsp; Contact Info </b></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="line"></div>
+            </td>
+        </tr>
+        <tr class="space_tr">
+            <td style="width:55%;">
+                <table style="font-size: 15px;width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr class="space_tr">
+                        <td class="filedhead" style="width:40%;">Father Name</td>
+                        <td style="width:1%;">:</td>
+                        <td style="width:59%; word-break: break-word;">{{personalinfo.fathername}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td class="filedhead">Spouse Name</td>
+                        <td>:</td>
+                        <td>{{personalinfo.spousename}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td class="filedhead">Date of Birth</td>
+                        <td>:</td>
+                        <td>{{personalinfo.dateofbirth}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td class="filedhead">Any Known Medical History</td>
+                        <td>:</td>
+                        <td>{{personalinfo.medicalhistory}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td class="filedhead">Differently Abled</td>
+                        <td>:</td>
+                        <td>{{personalinfo.differentlyabled}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td class="filedhead">Language Known</td>
+                        <td>:</td>
+                        <td>{{personalinfo.languagesknown}}</td>
+                    </tr>
+                </table>
+
+            </td>
+            <td style="width:45%;">
+
+                <table style="font-size: 15px;table-layout:fixed;word-break:break-word;">
+                    <tr class="space_tr">
+                        <td style="vertical-align: text-top;"><i class="fa fa-map-marker"></i></td>
+                        <td>
+                            <span>{{contactinfo.streetname}}</span><br>
+                            <span>{{contactinfo.areaname}}</span><br>
+                            <span>{{contactinfo.cityname}}-{{contactinfo.pincode}}</span><br>
+                            <span>{{contactinfo.districtname}}</span><br>
+                            <span>{{contactinfo.statename}}</span>
+                        </td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="vertical-align: text-top;"><i class="fa fa-envelope-o"></td>
+                        <td>{{contactinfo.emailid}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="vertical-align: text-top;"><i class="fa fa-phone"></td>
+                        <td>{{contactinfo.mobileno}}</td>
+                    </tr>
+					{{#if contactinfo.altmobileno}}
+                    <tr class="space_tr">
+                        <td style="vertical-align: text-top;"><i class="fa fa-phone"></td>
+                        <td>{{contactinfo.altmobileno}}</td>
+                    </tr>
+					{{/if}}
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+    {{#if iseducation}}
+    <table class="tables">
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-book"></i>&nbsp;&nbsp; Education</b>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+            <td>
+        </tr>
+
+        <tr>
+
+            <td style="vertical-align: text-top;">
+                {{#if education.schooling}}
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr>
+                        <td>
+                            <b class="education"><i class="fa fa-university"></i>&nbsp;&nbsp; Schooling</b>
+                        </td>
+                    </tr>
+                    {{#each education.schooling}}
+                    <tr class="educationtop">
+                        <td class="schooldata" style="min-width:30%;width:30%;max-width:30%;padding-top:1%;">
+                            <span style="font-size:13px;">{{this.qualificationname}}</span>
+                        </td>
+                        <td style="min-width:55%;width:55%;max-width:55%;padding-top:1%;word-break: break-word;">
+                            <span style="align-self:left;float:left;font-size:13px;">{{this.institution}}
+                                -{{this.location}}</span>
+                        </td>
+                        <td style="min-width:10%;width:10%;max-width:10%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">{{this.yearofpassing}}
+                                </span>
+                        </td>
+						<td style="min-width:5%;width:5%;max-width:5%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">
+                                {{this.percentage}} %</span>
+                        </td>
+                    </tr>
+
+                    {{/each}}
+                </table>
+                {{/if}}
+
+                {{#if education.afterschooling}}
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr>
+                        <td>
+                            <b class="education"><i class="fa fa-university"></i>&nbsp;&nbsp; After Schooling</b>
+                        </td>
+                    </tr>
+                    {{#each education.afterschooling}}
+
+
+                    <tr class="educationtop">
+                        <td class="schooldata" style="min-width:30%;width:30%;max-width:30%;padding-top:1%;">
+                            <span style="font-size:13px;">{{this.qualificationname}}-{{this.specializationname}}</span>
+                        </td>
+                        <td style="min-width:55%;width:55%;max-width:55%;padding-top:1%;word-break: break-word;">
+                            <span style="align-self:left;float:left;font-size:13px;">{{this.institution}}
+                                -{{this.location}}</span>
+                        </td>
+                        <td style="min-width:10%;width:10%;max-width:10%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">{{this.yearofpassing}}
+                                </span>
+                        </td>
+						<td style="min-width:5%;width:5%;max-width:5%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">
+                                {{this.percentage}} %</span>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+                {{/if}}
+            </td>
+        </tr>
+
+    </table>
+	{{else}}
+	<table class="tables">
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-book"></i>&nbsp;&nbsp; Education</b>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+            <td>
+        </tr>
+
+        <tr>
+
+            <td>
+                
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    
+                    <tr class="space_tr" style="text-align: center">
+                        
+                        <td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+                    </tr>
+                    
+                </table>
+                
+
+               
+            </td>
+        </tr>
+
+    </table>
+    {{/if}}
+    {{#if experience}}
+    <table class="tables">
+        <tr>
+            <td style="width:50%;">
+                <b class="paraHeader"><i class="fa fa-briefcase"></i>&nbsp;&nbsp; Experience</b>
+                {{#if totalexperience}}
+                <span style="text-align: right;align-self: right;float: right;">Total Experience
+                    :{{totalexperience}}</span>
+
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{#if experience}}
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    {{#each experience}}
+                    <tr class="space_tr">
+                        <td style="vertical-align: text-top;width:60%;word-break:break-word;">
+                            <span style="font-size: 14px;">{{this.designationname}}</span>&nbsp;
+                            <span> in {{this.organizationname}} - {{this.locationname}}</span>
+                        </td>
+                        <td><span style="width:40%;float:right;text-align: right;">{{this.fromyear}} to
+                                {{this.toyear}}</span></td>
+                    </tr>
+                    {{/each}}
+                </table>
+                {{/if}}
+            </td>
+        </tr>
+    </table>
+	{{else if fresherstatus}}
+    <table class="tables">
+        <tr>
+            <td style="width:50%;">
+                <b class="paraHeader"><i class="fa fa-briefcase"></i>&nbsp;&nbsp; Experience</b>
+                <span class="badge" style="text-align: right;align-self: right;float: right;">Fresher</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+    </table>
+	
+	{{else}}
+	<table class="tables">
+        <tr>
+            <td style="width:50%;">
+                <b class="paraHeader"><i class="fa fa-briefcase"></i>&nbsp;&nbsp; Experience</b>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    
+                    <tr class="space_tr" style="text-align: center">
+                        
+                        <td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+                    </tr>
+                    
+                </table>
+               
+            </td>
+        </tr>
+    </table>
+    {{/if}}
+    
+    
+    {{#if skilllist}}
+    <table class="tables" style="font-size: 15px;">
+	
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-cogs"></i>&nbsp;&nbsp; Skills</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;table-layout:fixed;word-break:break-word;">
+                    {{#each skilllist}}
+                    <tr class="space_tr">
+                        <td style="width:30%;word-break: break-word;">
+                            <span style="padding-top:1%;font-weight: 600;">{{this.jobrolename}}</span>
+                        </td>
+                        <td style="width:1%;">:</td>
+                        <td style="width:59%;word-break: break-word;">
+                            <span>{{this.skillname}}</span>
+                        </td>
+                    </tr>
+
+                    {{/each}}
+                </table>
+            </td>
+
+        </tr>
+
+
+    </table>
+	{{else}}
+	 <table class="tables" style="font-size: 15px;">
+	
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-cogs"></i>&nbsp;&nbsp; Skills</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;table-layout:fixed;word-break:break-word;">
+                   
+                    <tr class="space_tr" style="text-align: center">
+                        
+                        <td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+                    </tr>
+                   
+                </table>
+            </td>
+
+        </tr>
+
+
+    </table>
+    {{/if}}
+    {{#if references}}
+    <table class="tables">
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-user"></i>&nbsp;&nbsp; Reference</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: text-top;">
+                {{#if references}}
+                <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    {{#each references }}
+                    <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                        <tr class="space_tr">
+                            <td style="font-size: 14px;width:50%;">
+                                <b class="education">{{this.referencename}}</b>
+                            </td>
+                            <td style="width:50%;">
+                                <span style="align-self:left;float:left;"
+                                    class="badge">{{this.relationshipname}}</span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;width:100%;margin-left: 20px;">
+                            <span style="margin-left: 20px;">{{this.organization}}</span>
+                        </td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;width:100%;">
+                            <span style="margin-left: 20px;">
+                                <i class="fa fa-envelope-o"></i>&nbsp;{{this.emailid}}</span></td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;width:100%;">
+                            <span style="margin-left: 20px;">
+                                <i class="fa fa-phone"></i>&nbsp;{{this.mobileno}}
+                            </span></td>
+                    </tr>
+                    {{/each}}
+                </table>
+                {{/if}}
+            </td>
+        </tr>
+    </table>
+	{{else}}
+	 <table class="tables" style="font-size: 15px;">
+	
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-user"></i>&nbsp;&nbsp; Reference</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;table-layout:fixed;word-break:break-word;">
+                   
+                    <tr class="space_tr" style="text-align: center">
+                        
+                        <td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+                    </tr>
+                   
+                </table>
+            </td>
+
+        </tr>
+
+
+    </table>
+    {{/if}}
+    {{#if ispreference}}
+    <table class="tables">
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-cog"></i>&nbsp;&nbsp; Preferences</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="font-size: 15px;width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;width:30%;">Job Function</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;width:59%;word-break:break-word;">{{ preferences.jobfunctionlist}}
+                        </td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;">Job Role</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.jobrolelist}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;">Job Location</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.locationlist}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;">Job Type</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.jobtype}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;">Time for Joining</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">-</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;">Expected Salary</td>
+                        <td style="width:1%;">:</td>
+                        <td style="font-size: 14px;"><i class="fa fa-inr"></i>&nbsp;{{preferences.minsalary}} to <i
+                                class="fa fa-inr"></i>&nbsp; {{preferences.maxsalary}} per month</td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+	{{else}}
+	 <table class="tables" style="font-size: 15px;">
+	
+        <tr>
+            <td>
+                <b class="paraHeader"><i class="fa fa-cog"></i>&nbsp;&nbsp; Preferences</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr class="divider">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 100%;table-layout:fixed;word-break:break-word;">
+                   
+                    <tr class="space_tr" style="text-align: center">
+                        
+                        <td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+                    </tr>
+                   
+                </table>
+            </td>
+
+        </tr>
+
+
+    </table>
+    {{/if}}
+  </main>
+   
+
+</body>
+
+<style>
+
+    .tables {
+        width: 100%;
+        margin-top: 3%;
+    }
+
+    .tblheader {
+        font-size: 18px;
+
+    }
+
+    .paraHeader {
+        font-size: 18px;
+        color: #002060;
+    }
+
+    .education {
+        font-size: 14px;
+        color: #002060;
+    }
+
+    .filedhead {
+        font-weight: 600;
+    }
+
+    th {
+        float: left;
+    }
+
+    td {
+        font-size: 14px;
+
+    }
+
+    .divider {
+        border: 1%;
+        background-color: rgb(143, 141, 141);
+    }
+
+    .schooldata {
+        padding-left: 3%;
+    }
+
+    .persentage {
+        float: right;
+    }
+
+    .educationtop {
+        margin-top: 3%;
+    }
+
+    .skills {
+        margin-top: 5%;
+    }
+
+    .space_tr {
+        line-height: 2;
+        vertical-align: top !important;
+    }
+
+    .badge {
+        align-items: right;
+        padding: 1% 2% 1% 2%;
+        border-radius: 7px;
+        /* background-color: rgb(166, 33, 199); */
+        background-color: rgb(143 141 141);
+        color: white
+    }
+
+    .line {
+        width: 100%;
+        border-bottom: 1px solid gray;
+    }
+
+</style>
+
+</html>

@@ -1,0 +1,694 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width-device-width,initial-scale=1.0" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+	
+</head>
+
+<body>
+  <div style="margin-left: 10px; margin-right:10px;">
+    <!-- <page size="A4"> -->
+    <div class="orange-page">
+      <div class="logo-border" style="width: 75px;height: 75px;border-radius: 50%">
+        <div style=" background-color: rgb(243, 243,243); height: 75px;width: 75px;border-radius: 50%">
+          <img class="logo" src={{personalinfo.imageurl}} alt="profile" width="100%" height="100%" style="border-radius: 50%">
+        </div>
+      </div>
+
+      <!-- <div class="left-text" > -->
+      <div class="name">{{name}} </div> </br>
+	  <div class="borderleft"></div><br />
+      <span style="font-size: 14px;color: black;">{{jobrole}}</span><br /><br />
+      
+      <span class="main-heading">CONTACT</span></br><br />
+	  <div class="borderleft"></div><br />
+	  
+	  <table style="font-size: 12px; margin-bottom: 30px">
+		<tr>
+			<td style="padding-bottom: 10px"><i class="fa-solid fa-phone"></i></td>
+			<td style="padding-bottom: 10px"><span style="padding-left: 10px;">{{contactinfo.mobileno}}</span>{{#if contactinfo.altmobileno}}<span> / {{contactinfo.altmobileno}}</span>{{/if}}</td>
+		</tr>
+		<tr>
+			<td style="padding-bottom: 10px"><i class="fa fa-envelope"></i></td>
+			<td style="padding-bottom: 10px"><span style="padding-left: 10px">{{contactinfo.emailid}}</span></td>
+		</tr>
+		<tr>
+			<td style="vertical-align: top"><i class="fa-solid fa-house"></i></td>
+			<td style="padding-bottom: 10px;word-wrap: break-word; padding-left: 10px"><span style="padding-left: 0px; margin-left: 0px;word-wrap: break-word">{{contactinfo.streetname}}</span><br/>
+	  <span>{{contactinfo.areaname}}</span><br/>
+	  <span>{{contactinfo.cityname}}</span><br/>
+	  <span>{{contactinfo.districtname}}</span><br/>
+	  <span>{{contactinfo.statename}}</span></td>
+		</tr>
+	  </table>
+	  
+	
+     
+		<table>
+			<tr>
+				<td><span class="tabledata1">Aadhar No.</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3">{{personalinfo.aadharno}}<span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td><span class="tabledata1">Father Name</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3">{{personalinfo.fathername}}<span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td><span class="tabledata1">Spouse Name</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3">{{personalinfo.spousename}}<span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td><span class="tabledata1">Date of Birth</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3">{{personalinfo.dateofbirth}}<span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td style="vertical-align: top"><span class="tabledata1">Medical</span></td>
+				<td style="vertical-align: top"><span class="tabledata2">:</span></td>
+				<td><span class="tabledata4">{{personalinfo.medicalhistory}}<span></td>
+			</tr>
+		<table>
+		<table>
+			<tr>
+				<td><span class="tableemptydata2">&nbsp;</span></td>
+				<td><span class="tableemptydata2">&nbsp;</span></td>
+				<td><span class="tableemptydata2">&nbsp;</span></td>
+			</tr>
+			
+			<tr class="tablerow">
+				<td><span class="tabledata1">Date</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3"><span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td><span class="tabledata1">Place</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3"><span></td>
+			</tr>
+			<tr>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+				<td><span class="tableemptydata1">&nbsp;</span></td>
+			</tr>
+			<tr class="tablerow">
+				<td><span class="tabledata1">Signature</span></td>
+				<td><span class="tabledata2">:</span></td>
+				<td><span class="tabledata3"><span></td>
+			</tr>
+		</table>
+		<div style="background-color: #ed6727; width: 25%; color: white; height: 25px; font-size: 16px; vertical-align: middle; text-align: center; margin-right: 27px; position: fixed; bottom: 1cm; padding-top: 7px">www.jobanya.com </div>
+    </div>
+
+    <div class="bestjobs_logo1" style="padding-top: 10px"><img class="bestjobs_logo" src="https://bj-email-template.s3.ap-south-1.amazonaws.com/Jobanya_logo.jpg" alt="bestjobs_logo"></div>
+		<div style="margin-left: 40%">
+			{{#if experience}}
+			<span class="main-heading">WORK EXPERIENCE</span><br /><br />
+			<div class="border"></div><br />
+			
+			{{#each experience}}
+			<div style="line-height: 20px;">
+			  <span class="second-head">{{this.designationname}}</span><br />
+			  <span class="third-text">{{this.organizationname}} | {{this.fromyear}} to {{this.toyear}} </span><br />
+			</div>
+			<span class="third-text">{{this.locationname}}</span><br/><br/>
+			 {{/each}}
+			<br />
+			 
+			{{else if fresherstatus}}
+			<span class="main-heading">WORK EXPERIENCE</span><span class="main-heading" style="float: right">FRESHER</span><br /><br />
+			<div class="border"></div><br />
+			
+			{{else}}
+			<span class="main-heading">WORK EXPERIENCE</span><br /><br />
+			<div class="border"></div><br />
+			<table class="tables">
+				<tr>
+					<td>
+					  
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						<table style="width:100%;table-layout:fixed;word-break:break-word;">
+							
+							<tr class="space_tr" style="text-align: center">
+								
+								<td><span style="font-size:20px; font-weight:bold">Not Yet Updated, Complete 100% to Download</span></td>
+							</tr>
+							
+						</table>
+					   
+					</td>
+				</tr>
+			</table>
+			{{/if}}
+			{{#if iseducation}}
+			<div>
+			  <span class="main-heading">EDUCATION</span><br /><br />
+			  <div class="border"></div><br />
+			  
+			  {{#if education.schooling}}
+			  <table style="layout: fixed; width: 90%">
+                    {{#each education.schooling}}
+                    <tr class="educationtop">
+                        <td width: "60%" style="max-width:60%;min-width:60%; padding-top:1%;">
+                            <span style="font-size:13px;">{{this.qualificationname}}</span>
+							
+                        </td>
+						<td style="min-width:10%;max-width:10%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">{{this.yearofpassing}}
+                                </span>
+                        </td>
+                    </tr>
+					<tr>
+						<td style="min-width:55%;width:55%;max-width:55%;padding-top:0.25%;word-break: break-word;">
+                            <span style="align-self:left;float:left;font-size:10px;">{{this.institution}}</span>
+                        </td>
+					</tr>
+					<tr>
+						<td style="min-width:55%;width:55%;max-width:55%;padding-top:0.25%;word-break: break-word; padding-bottom: 10px;">
+                            <span style="align-self:left;float:left;font-size:10px;">{{this.location}}</span>
+                        </td>
+					</tr>
+                    {{/each}}
+                </table>
+                {{/if}}
+			  {{#if education.afterschooling}}
+			  <table style="layout: fixed; width: 90%">
+                    {{#each education.afterschooling}}
+                    <tr class="educationtop">
+                        <td style="min-width:60%;max-width:60%;padding-top:1%;">
+                            <span style="font-size:13px;">{{this.qualificationname}} - {{this.specializationname}}</span>
+                        </td>
+						<td style="min-width:10%;max-width:10%;padding-top:1%;">
+                            <span style="float: right;text-align: right;font-size:13px;">{{this.yearofpassing}}
+                                </span>
+                        </td>
+                    </tr>
+					<tr>
+						<td style="min-width:55%;width:55%;max-width:55%;padding-top:0.25%;word-break: break-word;">
+                            <span style="align-self:left;float:left;font-size:10px;">{{this.institution}}</span>
+                        </td>
+					</tr>
+					<tr>
+						<td style="min-width:55%;width:55%;max-width:55%;padding-top:0.25%;word-break: break-word; padding-bottom: 10px;">
+                            <span style="align-self:left;float:left;font-size:10px;">{{this.location}}</span>
+                        </td>
+					</tr>
+                    {{/each}}
+                </table>
+                {{/if}}
+			  
+			</div><br />
+			{{else}}
+			<span class="main-heading">EDUCATION</span><br /><br />
+			<div class="border"></div><br />
+			<table class="tables">
+				<tr>
+					<td>
+					  
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						<table style="width:100%;table-layout:fixed;word-break:break-word;">
+							
+							<tr class="space_tr" style="text-align: center">
+								
+								<td><span style="font-size:20px; font-weight:bold">Not Yet Updated, Complete 100% to Download</span></td>
+							</tr>
+							
+						</table>
+					   
+					</td>
+				</tr>
+			</table>
+			{{/if}}
+			
+			{{#if skilllist}}
+			<div>
+			  <span class="main-heading">SKILLS</span><br /><br />
+			  <div class="border"></div><br />
+			  
+			  
+			  <table>
+                    {{#each skilllist}}
+                    <tr class="educationtop">
+                        <td style="min-width:30%;width:30%;max-width:30%;padding-top:1%;">
+                            <span style="font-size:13px;">{{this.jobrolename}}</span>
+                        </td>
+					</tr>
+					<tr class="educationtop">
+						<td style="min-width:10%;width:10%;max-width:10%;padding-top:1%;">
+                            <span style="float: left;text-align: left;font-size:10px;">{{this.skillname}}
+                                </span>
+                        </td>
+                    </tr>
+					
+                    {{/each}}
+                </table>
+                
+			
+			  
+			</div><br />
+			{{else}}
+			<span class="main-heading">SKILLS</span><br /><br />
+			<div class="border"></div><br />
+			<table class="tables">
+				<tr>
+					<td>
+					  
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						<table style="width:100%;table-layout:fixed;word-break:break-word;">
+							
+							<tr class="space_tr" style="text-align: center">
+								
+								<td><span style="font-size:20px; font-weight:bold">Not Yet Updated, Complete 100% to Download</span></td>
+							</tr>
+							
+						</table>
+					   
+					</td>
+				</tr>
+			</table>
+			{{/if}}
+			
+			
+			{{#if preferences}}
+			<div>
+			  <span class="main-heading">PREFERENCES</span><br /><br />
+			  <div class="border"></div><br />
+			  
+			  
+			   <table style="font-size: 15px;width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;width:25%;vertical-align: top">Job Category</td>
+                        <td style="width:1%;vertical-align: top">:</td>
+                        <td style="font-size: 14px;width:59%;word-break:break-word;">{{ preferences.jobfunctionlist}}
+                        </td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;vertical-align: top">Job Title</td>
+                        <td style="width:1%;vertical-align: top">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.jobrolelist}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;vertical-align: top">Job Location</td>
+                        <td style="width:1%;vertical-align: top">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.locationlist}}</td>
+                    </tr>
+                    <tr class="space_tr">
+                        <td style="font-size: 14px;vertical-align: top">Job Type</td>
+                        <td style="width:1%;vertical-align: top">:</td>
+                        <td style="font-size: 14px;word-break:break-word;">{{preferences.jobtype}}</td>
+                    </tr>
+                    
+                </table>
+
+                
+			
+			  
+			</div><br />
+			{{else}}
+			<span class="main-heading">PREFERENCES</span><br /><br />
+			<div class="border"></div><br />
+			<table class="tables">
+				<tr>
+					<td>
+					  
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						<table style="width:100%;table-layout:fixed;word-break:break-word;">
+							
+							<tr class="space_tr" style="text-align: center">
+								
+								<td><span style="font-size:20px; font-weight:bold">Not Yet Updated, Complete 100% to Download</span></td>
+							</tr>
+							
+						</table>
+					   
+					</td>
+				</tr>
+			</table>
+			{{/if}}
+			
+			
+			<div>
+			  <span class="main-heading">LANGUAGES</span><br /><br />
+			  <div class="border"></div><br />
+			  
+			  
+			   <table style="font-size: 15px;width:100%;table-layout:fixed;word-break:break-word;">
+                    <tr class="space_tr">
+                       
+                        <td style="font-size: 14px;width:59%;word-break:break-word;">{{ personalinfo.languagesknown}}
+                        </td>
+                    </tr>
+                   
+                    
+                </table>
+
+                
+			
+			  
+			</div><br /><br />
+			
+				{{#if references}}
+			<div>
+			  <span class="main-heading">REFERENCES</span><br /><br />
+			  <div class="border"></div><br />
+			  
+			  
+			    <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                    {{#each references }}
+                    <table style="width:100%;table-layout:fixed;word-break:break-word;">
+                        <tr class="space_tr">
+                            <td style="font-size: 14px;width:50%;">
+                                <b class="education">{{this.referencename}}</b>
+                            </td>
+                            <td style="width:50%;font-size: 14px;">
+                                <span style="align-self:left;float:left;"
+                                    class="badge">{{this.relationshipname}}</span>
+                            </td>
+                        </tr>
+						 <tr class="space_tr" style="padding-bottom: 15px">
+							<td style="font-size: 14px;width:100%;padding-bottom: 15px;">
+                            <span>
+                                <i class="fa fa-phone"></i>&nbsp;{{this.mobileno}}
+                            </span></td>
+						</tr>
+                    </table>
+
+                    
+                   
+                    {{/each}}
+                </table>
+              
+			  
+			</div><br />
+			{{else}}
+			<span class="main-heading">REFERENCES</span><br /><br />
+			<div class="border"></div><br />
+			<table class="tables">
+				<tr>
+					<td>
+					  
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						<table style="width:100%;table-layout:fixed;word-break:break-word;">
+							
+							<tr class="space_tr" style="text-align: center">
+								
+								<td><span style="font-size:20px; font-weight:bold">Not Yet Updated</span></td>
+							</tr>
+							
+						</table>
+					   
+					</td>
+				</tr>
+			</table>
+			{{/if}}
+			
+		  </div>
+		  <br /><br />
+
+
+		  <br /><br />
+
+		 
+   
+  </div>
+</body>
+<style>
+  html {
+  -webkit-print-color-adjust: exact;
+  }
+  body {
+    background: white;
+    font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+    font-size: 11.6px;
+
+  }
+  .educationtop {
+        margin-top: 3%;
+    }
+	.schooldata {
+        padding-left: 3%;
+    }
+  .tablerow {
+	padding-bottom: 50px;
+  }
+  
+  .tabledata1 {
+  position: relative;
+	font-size: 12px;
+	min-width: 13%;
+	max-width: 13%;
+	margin-right: 15px;
+	valign: top;
+	white-space: nowrap;
+  }
+  
+  .tableemptydata1 {
+	border-spacing: 10px;
+	font-size: 10px;
+	
+  }
+  
+  .tableemptydata2 {
+	border-spacing: 60px;
+	font-size: 9em;
+	
+  }
+  
+  .tabledata2 {
+  position: relative;
+	font-size: 12px;
+	margin-right: 0px;
+	min-width: 1%;
+	max-width: 1%;
+	
+	white-space: nowrap;
+  }
+   
+  .tabledata3 {
+  position: relative;
+	font-size: 12px;
+	max-width: 25%;
+	min-width: 25%;
+	white-space: nowrap;
+	
+	
+  }
+  
+  .tabledata4 {
+	font-size: 12px;
+	max-width: 25%;
+	min-width: 25%;
+position: relative;
+valign: top;
+	
+  }
+
+  .logo-border {
+    border: 1px solid white;
+    border-right-color: transparent;
+    border-right-width: 48px;
+    border-bottom-color: transparent;
+    border-bottom-width: 35px;
+    border-left-color: transparent;
+    border-left-width: 39px;
+    border-top-color: transparent;
+    border-top-width: 39px;
+    position: relative;
+	margin-bottom: 0px;
+	margin-left: 55px;
+
+  }
+
+  .logo {
+    border: 1px solid white;
+    border-radius: 11px;
+    position: absolute;
+    right: 17px;
+    top: -45px;
+  }
+
+  .name {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+   
+
+
+  }
+
+  .main-heading {
+    color: black;
+    letter-spacing: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 0px;
+  }
+
+  .second-head {
+    color: black;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-weight: bolder;
+    padding-left: 0px;
+  }
+
+  .second-head-left {
+    color: black;
+    letter-spacing: 1.5px;
+    font-size: 15px;
+    font-weight: bolder;
+    font-family: 'Tahoma';
+   
+    /* padding-bottom: 10px; */
+
+  }
+
+  .left-text {
+    color: white;
+    line-height: 15px;
+    /* padding-top: 40px; */
+    font-size: 10.6px;
+    padding-left: 30px;
+  }
+
+  .third-text {
+    color: black;
+    
+    letter-spacing: 1px;
+    padding-left: 0px;
+  }
+
+  .forth-text {
+    font-size: 11px;
+    color: rgb(252, 147, 27);
+    line-height: 17px;
+    font-family: Tahoma;
+    padding-left: 30px;
+  }
+
+  .bestjobs_logo {
+    float: right;
+    width: 137px;
+    height: 44.5px;
+  }
+
+  .bestjobs_logo1 {
+	
+    background-color: white;
+    width: -200px;
+    height: 80px;
+	padding-top: 2em;
+	margin-right: 5em;
+  }
+
+  .logo {
+    margin-top: 40px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid white;
+    border-radius: 10px;
+  }
+
+  .orange-page {
+    border: 0px solid white;
+    background-color: rgb(243, 243,243);
+    max-width: 30% !important;
+	min-width: 30% !important;
+	position: absolute;
+    float: left;
+    /*height: 29cm;*/
+	min-height: 27cm;
+	max-height: 59.14cm;
+	 padding-left: 27px;
+	 margin-right: 50px;
+	 zindex: 99;
+  }
+
+  .border {
+    border: 1px solid rgb(141, 142, 146);
+    border-bottom: 1px solid rgb(2, 12, 58);
+    border-bottom-width: 3px;
+    margin-left: 0;
+    width: 40%;
+    /* padding-left: -40px; */
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+
+  .border1 {
+    border: 1px solid rgb(141, 142, 146);
+    border-bottom: 1px solid rgb(2, 12, 58);
+    border-bottom-width: 3px;
+    margin-left: 330px;
+    width: 390px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+
+  .borderleft {
+    border: 1px solid black;
+    border-bottom: 1px solid black;
+    border-bottom-width: 3px;
+    width: 90%;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+  .space_tr {
+
+        vertical-align: top !important;
+    }
+</style>
+
+</html>
