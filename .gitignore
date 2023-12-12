@@ -1,5 +1,6 @@
 # OSX
 #
+
 .DS_Store
 
 # Xcode
@@ -39,7 +40,9 @@ log/
 admin_portal_log/
 npm-debug.log
 yarn-error.log
-
+config/
+email_template_images/
+employee_profile/
 # BUCK
 buck-out/
 \.buckd/
