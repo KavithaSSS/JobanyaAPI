@@ -241,8 +241,6 @@ exports.UploadInvoice = async function (keypath, invoiceid, callback) {
         // //console.log("entry");
         // The name of the bucket that you have created
 
-        // const ID = 'AKIAIEVUKMCDILAPAARQ';
-        // const SECRET = '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';
         const options = {
             uri: keypath,
             encoding: null
@@ -301,7 +299,7 @@ exports.SendInvoiceToEmail = function (emailid, invoiceparams, invoiceid, AuthCo
                     emailid
                 ],
                 // "cc_mail_ids": [
-                //     "malashri@shivasoftwares.com"
+                //     " "
                 // ],
                 "subject": "Invoice from Vinmeen (Invoice#:" + invoicenumber + ")",
                 "body": "Dear Customer,         <br><br><br><br>Thanks for your business.<br><br><br>" +

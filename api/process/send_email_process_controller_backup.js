@@ -46,7 +46,7 @@ exports.SendOTP = function (logparams, registeredName, adminmailid, req, callbac
                     Destination: { /* required */
                         ToAddresses: [
                             String(req.query.registered_email)
-                            //'malashri@shivasoftwares.com'
+                            //' '
                             /* more items */
                         ]
                     },
@@ -199,7 +199,7 @@ exports.RegistrationMail = function (logparams, registered_email, adminmailid,em
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -299,7 +299,7 @@ exports.EmployerApprovedMail = function (registered_email,adminmailid,employerco
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -399,7 +399,7 @@ exports.EmployerRejectedMail = function (registered_email, adminmailid,employerc
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -505,7 +505,7 @@ exports.AppliedMail = function (registered_email,employercode,logparams, adminma
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -611,7 +611,7 @@ exports.InvitedMail = function (employeedetails,employercode, registered_email, 
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -843,7 +843,7 @@ exports.VerificationMail_NewEmail = function (logparams, registered_email,adminm
                             Destination: { /* required */
                                 ToAddresses: [
                                     String(registered_email)
-                                    //'malashri@shivasoftwares.com'
+                                    //' '
                                     /* more items */
                                 ]
                             },
@@ -1068,7 +1068,7 @@ exports.JobPostApproval = function (logparams, employercode, jobdetails, adminma
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1171,7 +1171,7 @@ exports.JobPostRejected = function (logparams, employercode, jobdetails, adminma
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1268,7 +1268,7 @@ exports.SubscriptionSuccess = function (logparams,  employermailid, adminmailid,
                         Destination: { /* required */
                             ToAddresses: [
                                 String(employermailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1369,7 +1369,7 @@ exports.SubscriptionFailure = function (logparams, employermailid, adminmailid, 
                         Destination: { /* required */
                             ToAddresses: [
                                 String(employermailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1469,7 +1469,7 @@ exports.SubscriptionExpired = function (logparams, subscriptiondetails, adminmai
                         Destination: { /* required */
                             ToAddresses: [
                                 String(employermailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1575,7 +1575,7 @@ exports.AbuseEmployee = function (tomailid,employercode,logparams, adminmailid, 
                         Destination: { /* required */
                             ToAddresses: [
                                 String(tomailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1672,7 +1672,7 @@ exports.AbuseEmployer = function (tomailid,employercode,logparams, adminmailid, 
                         Destination: { /* required */
                             ToAddresses: [
                                 String(tomailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1770,7 +1770,7 @@ exports.AbuseEmployerReply = function (employercode,logparams, adminmailid,  emp
                         Destination: { /* required */
                             ToAddresses: [
                                 String(employerdetails[0].registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -1866,7 +1866,7 @@ exports.ContactUsEmployee = function (logparams, employeemailid, adminmailid,emp
                 Destination: { /* required */
                     ToAddresses: [
                         String(employeemailid)
-                        //'malashri@shivasoftwares.com'
+                        //' '
                         /* more items */
                     ]
                 },
@@ -1962,7 +1962,7 @@ exports.ContactUsEmployer = function (logparams, employercode, adminmailid, call
                         Destination: { /* required */
                             ToAddresses: [
                                 String(employerdetails[0].registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -2061,7 +2061,7 @@ exports.SubscriptionContactusMail = function (employercode, registered_email, su
                         Destination: { /* required */
                             ToAddresses: [
                                 String(adminmailid)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -2157,7 +2157,7 @@ exports.DeactivateEmployee = function (logparams, employeemailid, adminmailid,em
                 Destination: { /* required */
                     ToAddresses: [
                         String(employeemailid)
-                        //'malashri@shivasoftwares.com'
+                        //' '
                         /* more items */
                     ]
                 },
@@ -2255,7 +2255,7 @@ exports.DeactivateEmployer = function (employercode,registered_email,adminmailid
                         Destination: { /* required */
                             ToAddresses: [
                                 String(registered_email)
-                                //'malashri@shivasoftwares.com'
+                                //' '
                                 /* more items */
                             ]
                         },
@@ -2405,7 +2405,7 @@ exports.EmployeeEmailVerificationWithOTP = function (logparams, registeredName, 
                     Destination: { /* required */
                         ToAddresses: [
                             String(req.query.registered_email)
-                            //'malashri@shivasoftwares.com'
+                            //' '
                             /* more items */
                         ]
                     },

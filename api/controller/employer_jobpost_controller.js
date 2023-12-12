@@ -217,7 +217,7 @@ exports.InsertJobpost = function (req, res) {
                                                                 if(req.body.statuscode==4){
                                                                     objUtilities.GetAdminMailId( objconstants.admincode ,function(mailid){
                                                               
-                                                                        //adminmailid = 'malashri@shivasoftwares.com'
+                                                                        //adminmailid = ' '
                                                                         var empparams = { "employercode": insertitem.employercode, "jobcode": Number(validcode), employeecode: 0, languagecode: objconstants.defaultlanguagecode, statuscode: [0] };
                                                                         objJobView.getJobViewProcess(logparams, empparams, function (jobviewresult) {
                                                                             objMail.JobPostSubmission(logparams, insertitem.employercode, jobviewresult[0], mailid, function (validmail) {
@@ -336,7 +336,7 @@ exports.UpdateJobpost = function (req, res) {
                                                     if(req.body.statuscode==4){
                                                         objUtilities.GetAdminMailId( objconstants.admincode ,function(mailid){
                                                   
-                                                            //adminmailid = 'malashri@shivasoftwares.com'
+                                                            //adminmailid = ' '
                                                             var empparams = { "employercode": updateitem.employercode, "jobcode": Number(req.query.jobcode), employeecode: 0, languagecode: objconstants.defaultlanguagecode, statuscode: [0] };
                                                             objJobView.getJobViewProcess(logparams, empparams, function (jobviewresult) {
                                                                 objMail.JobPostSubmission(logparams, updateitem.employercode, jobviewresult[0], mailid, function (validmail) {
@@ -1022,7 +1022,7 @@ exports.UpdateJobpostAfterApproval = function (req, res) {
                                             //         //Send mail and notification 
                                             //         objUtilities.GetAdminMailId( objconstants.admincode ,function(mailid){
                                                                                                                 
-                                            //             //adminmailid = 'malashri@shivasoftwares.com'
+                                            //             //adminmailid = ' '
                                             //             var empparams = { "employercode": req.body.employercode, "jobcode": Number(req.query.jobcode), employeecode: 0, languagecode: objconstants.defaultlanguagecode, statuscode: [0] };
                                             //             objJobView.getJobViewProcess(logparams, empparams, function (jobviewresult) {
                                             //                 objMail.JobPostSubmission(logparams, req.body.employercode, jobviewresult[0], mailid, function (validmail) {

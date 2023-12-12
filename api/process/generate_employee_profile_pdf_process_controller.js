@@ -23,15 +23,13 @@ exports.generateEmployeeProfilePDF = function (logparams, employeecode, req, cal
         logger.info("Log in Checking generate pdf: UserId: " + logparams.usercode + ", Originator: " + logparams.orginator + ", DeviceIP: " + logparams.ipaddress + ", Logdate: " + logparams.logdate + ", Type: " + logparams.type);
         var AWS = require('aws-sdk');
         const dbo = MongoDB.getDB();
-        const BUCKET_NAME = 'bj-employee-upload';
+        const BUCKET_NAME = '';
         //console.log("Process controller")
         dbo.collection(MongoDB.ControlsCollectionName).find().toArray(function (err, result) {
             if (err) throw err;
             // //console.log("entry");
             // The name of the bucket that you have created
-            
-            // const ID = 'AKIAIEVUKMCDILAPAARQ';
-            // const SECRET = '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';
+           
 
             const s3 = new AWS.S3({
                 accessKeyId: result[0].accessKeyId,

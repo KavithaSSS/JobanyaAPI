@@ -21,7 +21,7 @@ exports.SendMail = function (req, callback) {
         var params = {
             Destination: { /* required */
                 ToAddresses: [
-                    'malashri@shivasoftwares.com'
+                    ' '
                     /* more items */
                 ]
             },
@@ -79,7 +79,7 @@ exports.SendMail = function (req, callback) {
                     Data: 'Test email'
                 }
             },
-            Source: 'malashri@shivasoftwares.com' /* required */
+            Source: ' ' /* required */
         };
         // var sendPromise = new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
         const sendEmail = ses.sendEmail(params).promise();

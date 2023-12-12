@@ -139,7 +139,7 @@ exports.update_jobpost_remarks = function (req, res) {
                                                     objMail.JobPostRejected(logparams, employercode, jobviewresult[0], mailid, function (validmail) {
                                                     });
                                                 });
-                                        //adminmailid = 'malashri@shivasoftwares.com'
+                                        //adminmailid = ' '
                                             
                                         });
                                         });
@@ -192,7 +192,7 @@ exports.update_jobpost_remarks = function (req, res) {
                                                                 console.log(objConstants.approvedcode,'notificationChanges')
                                                                 objSendNotification.SendNewJobNotification(logparams, profilelistresult,req.body.employercode,  jobviewresult[0],makerid, req,function(result){
                                                                 });
-                                                                //adminmailid = 'malashri@shivasoftwares.com'
+                                                                //adminmailid = ' '
                                                                 
                                                             objMail.JobPostApproval(logparams, req.body.employercode, jobviewresult[0], mailid, function (validmail) {
                                                                 

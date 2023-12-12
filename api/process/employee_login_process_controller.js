@@ -19,8 +19,7 @@ exports.registration = async function (params, logparams, isfromlead, callback) 
         const BUCKET_NAME = objConstants.s3_employeebucketname;
         const prefixkey = objConstants.profilekeyPrefix;
         var leadkey = objConstants.leadkeyPrefix;
-            // const ID = 'AKIAIEVUKMCDILAPAARQ';
-            // const SECRET = '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';
+          
            
             const path = require('path');
             var logcollectionname = dbo.collection(MongoDB.LogCollectionName);

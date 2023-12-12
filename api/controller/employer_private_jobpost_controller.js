@@ -888,7 +888,7 @@ exports.UpdateJobpostAfterApproval = function (req, res) {
                                     //         //Send mail and notification 
                                     //         objUtilities.GetAdminMailId( objconstants.admincode ,function(mailid){
 
-                                    //             //adminmailid = 'malashri@shivasoftwares.com'
+                                    //             //adminmailid = ' '
                                     //             var empparams = { "usercode": req.body.usercode, "jobcode": Number(req.query.jobcode), employeecode: 0, languagecode: objconstants.defaultlanguagecode, statuscode: [0] };
                                     //             objJobView.getJobViewProcess(logparams, empparams, function (jobviewresult) {
                                     //                 objMail.JobPostSubmission(logparams, req.body.usercode, jobviewresult[0], mailid, function (validmail) {
