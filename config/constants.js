@@ -10,7 +10,8 @@ const userrolecount = 'UserRole';
 const languagecount = 'Language';
 const statecount = 'State';
 const distcount = 'District';
-const citycount = 'City';
+const citycount = 'City';  
+
 const qualificationcount = 'Qualification';
 const specializationcount = 'Specialization';
 const industrycount = 'Industry';
