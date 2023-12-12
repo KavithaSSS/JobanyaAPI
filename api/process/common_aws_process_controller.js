@@ -4,6 +4,7 @@ const MongoDB = require('../../config/database');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs');
 const objConstants = require('../../config/constants');
+const axios = require('axios');
 
 exports.getBucketDetails = function (logparams, callback) {
     try {
@@ -14,4 +15,35 @@ exports.getBucketDetails = function (logparams, callback) {
         });
     }
     catch (e) { logger.error("Error in Get Max Code - Splash " + e); }
+  }
+
+  exports.callLamdaUrl = function (awslamdaReq, callback) {
+    try {
+
+      const lamdaUrl = "https://gu98zm4vyg.execute-api.us-east-2.amazonaws.com/S3Upload/getPreSignedURL";
+
+      var data = JSON.stringify({
+               "bucketName":awslamdaReq.bucketName,
+               "fileName":awslamdaReq.fileName
+             });
+
+var config = {
+  method: 'post',
+  url: 'https://dw3p0uyy7i.execute-api.ap-south-1.amazonaws.com/default/getImageUploadURL',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  return callback(response.data);
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+    }
+    catch (e) { logger.error("Error in Get Lamda code " + e); }
   }

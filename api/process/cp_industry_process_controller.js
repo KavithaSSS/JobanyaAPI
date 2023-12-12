@@ -279,7 +279,7 @@ exports.getIndustryList = function (logparams, params, langcount, callback) {
             //,{$group:{_id:"$tbl_cp_industry", count:{$sum:"$totalcount"}}}
         ]).toArray(function (err, result) {
             finalresult = result;
-            // //console.log(finalresult);
+            // console.log(finalresult);
             return callback(finalresult);
         });
         

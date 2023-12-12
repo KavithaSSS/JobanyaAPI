@@ -7,8 +7,15 @@ const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 var objSendNotification = require('../process/send_notification_process_controller');
 const objMail = require('../process/send_email_process_controller');
-exports.ContactusSave = function (req, res) {
+exports.ContactusSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date();
     var milliseconds = date.getTime(); 
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
@@ -128,8 +135,15 @@ exports.ContactusSave = function (req, res) {
 
 
 
-exports.getsubsContactList = function (req, res) {
+exports.getsubsContactList =async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse == true) {
         var objLogdetails;
@@ -190,8 +204,15 @@ exports.getsubsContactList = function (req, res) {
 }
 
 
-exports.ContactUsUpdate = function (req, res) {
+exports.ContactUsUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse == true) {
         var objLogdetails;

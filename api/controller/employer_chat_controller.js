@@ -8,8 +8,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_chat_details = function (req, res) {
+exports.insert_chat_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -77,8 +84,15 @@ exports.insert_chat_details = function (req, res) {
         logger.error("Error in chat Insert: " + e);
     }
 }
-exports.chat_list = function (req, res) {
+exports.chat_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

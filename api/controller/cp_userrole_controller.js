@@ -6,8 +6,15 @@ const objUtilities = require('./utilities');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_userrole_details = function (req, res) {
+exports.insert_userrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -101,8 +108,15 @@ exports.insert_userrole_details = function (req, res) {
     }
     catch (e) { logger.error("Error in User Role Save: " + e); }
 }
-exports.update_userrole_details = function (req, res) {
+exports.update_userrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -335,8 +349,15 @@ exports.update_userrole_details = function (req, res) {
     catch (e) { logger.error("Error in User Role Update: " + e); }
 
 }
-exports.delete_userrole_details = function (req, res) {
+exports.delete_userrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -465,8 +486,15 @@ exports.delete_userrole_details = function (req, res) {
     }
     catch (e) { logger.error("Error in User Role Delete: " + e); }
 }
-exports.userrole_list_by_code = function (req, res) {
+exports.userrole_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -535,8 +563,15 @@ exports.userrole_list_by_code = function (req, res) {
     }
     catch (e) { logger.error("Error in User Role List by Code: " + e); }
 }
-exports.userrole_formload = function (req, res) {
+exports.userrole_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -591,8 +626,15 @@ exports.userrole_formload = function (req, res) {
     }
     catch (e) { logger.error("Error in User Role Load: " + e); }
 }
-exports.userrole_list = function (req, res) {
+exports.userrole_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

@@ -19,7 +19,8 @@ exports.registration = async function (params, logparams, isfromlead, callback) 
         const BUCKET_NAME = objConstants.s3_employeebucketname;
         const prefixkey = objConstants.profilekeyPrefix;
         var leadkey = objConstants.leadkeyPrefix;
-          
+            // const ID = ' ';
+            // const SECRET = ' ';
            
             const path = require('path');
             var logcollectionname = dbo.collection(MongoDB.LogCollectionName);
@@ -304,7 +305,7 @@ exports.checkEmployeeLogin = function (logparams, req, callback) {
                 }
                 else {
                     objUtilities.decryptpassword(logparams, empdetails[0].password, function (passwordres) {
-                         // //console.log(passwordres);
+                         console.log(passwordres);
                         // var params={ "username": { $regex: "^" + req.query.username + "$", $options: 'i' } };
                         if ((empdetails[0].username.toLowerCase() == req.query.username.toLowerCase() || empdetails[0].mobileno == req.query.username) && passwordres == req.query.password) {
                             ////console.log(doc);
@@ -497,55 +498,6 @@ exports.checkEmployeeUserNameExists = function (logparams, req, isleadtype, call
             });
 
         });
-    }
-    catch (e) { logger.error("Error in checking Employee User name : " + e); }
-}
-
-exports.checkPortalEmployeeUserNameExists = function (logparams, req, isleadtype, callback) {
-    try {
-        var finalresult;
-        logger.info("Log in Checking Employee User name  : UserId: " + logparams.usercode + ", Originator: " + logparams.orginator + ", DeviceIP: " + logparams.ipaddress + ", Logdate: " + logparams.logdate + ", Type: " + logparams.type);
-        const dbo = MongoDB.getDB();
-        //var regex = new RegExp("^" + String(req.body.username).toLowerCase(), "i");
-        //  //console.log(req.body.username );
-        dbo.collection(MongoDB.LeadCollectionName).deleteOne({ "mobileno": req.body.mobileno }, function (err, res) {
-            if (err) throw err;
-            // finalresult = res.deletedCount;
-            // return callback(finalresult);
-          
-        dbo.collection(MongoDB.EmployeeCollectionName).find({ username: { $regex: "^" + String(req.body.username).toLowerCase() + "$", $options: 'i' } }, { $exists: true }).toArray(function (err, doc) //find if a value exists
-        {
-            dbo.collection(MongoDB.EmployeeCollectionName).find({ mobileno: req.body.mobileno }, { $exists: true }).toArray(function (err, mobdoc) //find if a value exists
-            {
-                if(isleadtype == 0){
-                    dbo.collection(MongoDB.LeadCollectionName).find({ username: { $regex: "^" + String(req.body.username).toLowerCase() + "$", $options: 'i' } }, { $exists: true }).toArray(function (err, leaddoc) //find if a value exists
-                    {
-                        dbo.collection(MongoDB.LeadCollectionName).find({ mobileno: req.body.mobileno }, { $exists: true }).toArray(function (err, leadmobdoc) //find if a value exists
-                        {
-                            // //console.log(err);
-                            ////console.log(mobdoc.length);
-                            finalresult = {
-                                "usernamecount": doc.length+leaddoc.length,
-                                "mobilenocount": mobdoc.length+leadmobdoc.length
-                            }
-                            // //console.log(finalresult);
-                            return callback(finalresult);
-                        });
-                    });
-                }
-                else{
-                    finalresult = {
-                        "usernamecount": doc.length,
-                        "mobilenocount": mobdoc.length
-                    }
-                    // //console.log(finalresult);
-                    return callback(finalresult);
-                }
-                
-            });
-
-        });
-    });
     }
     catch (e) { logger.error("Error in checking Employee User name : " + e); }
 }
@@ -1024,4 +976,53 @@ exports.deleteLeadRecordDetails = function (logparams, employeecode, callback) {
           });
     }
     catch (e) { logger.error("Error in single record details - city" + e); }
+}
+
+exports.checkPortalEmployeeUserNameExists = function (logparams, req, isleadtype, callback) {
+    try {
+        var finalresult;
+        logger.info("Log in Checking Employee User name  : UserId: " + logparams.usercode + ", Originator: " + logparams.orginator + ", DeviceIP: " + logparams.ipaddress + ", Logdate: " + logparams.logdate + ", Type: " + logparams.type);
+        const dbo = MongoDB.getDB();
+        //var regex = new RegExp("^" + String(req.body.username).toLowerCase(), "i");
+        //  //console.log(req.body.username );
+        dbo.collection(MongoDB.LeadCollectionName).deleteOne({ "mobileno": req.body.mobileno }, function (err, res) {
+            if (err) throw err;
+            // finalresult = res.deletedCount;
+            // return callback(finalresult);
+          
+        dbo.collection(MongoDB.EmployeeCollectionName).find({ username: { $regex: "^" + String(req.body.username).toLowerCase() + "$", $options: 'i' } }, { $exists: true }).toArray(function (err, doc) //find if a value exists
+        {
+            dbo.collection(MongoDB.EmployeeCollectionName).find({ mobileno: req.body.mobileno }, { $exists: true }).toArray(function (err, mobdoc) //find if a value exists
+            {
+                if(isleadtype == 0){
+                    dbo.collection(MongoDB.LeadCollectionName).find({ username: { $regex: "^" + String(req.body.username).toLowerCase() + "$", $options: 'i' } }, { $exists: true }).toArray(function (err, leaddoc) //find if a value exists
+                    {
+                        dbo.collection(MongoDB.LeadCollectionName).find({ mobileno: req.body.mobileno }, { $exists: true }).toArray(function (err, leadmobdoc) //find if a value exists
+                        {
+                            // //console.log(err);
+                            ////console.log(mobdoc.length);
+                            finalresult = {
+                                "usernamecount": doc.length+leaddoc.length,
+                                "mobilenocount": mobdoc.length+leadmobdoc.length
+                            }
+                            // //console.log(finalresult);
+                            return callback(finalresult);
+                        });
+                    });
+                }
+                else{
+                    finalresult = {
+                        "usernamecount": doc.length,
+                        "mobilenocount": mobdoc.length
+                    }
+                    // //console.log(finalresult);
+                    return callback(finalresult);
+                }
+                
+            });
+
+        });
+    });
+    }
+    catch (e) { logger.error("Error in checking Employee User name : " + e); }
 }

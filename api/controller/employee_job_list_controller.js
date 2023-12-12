@@ -14,8 +14,17 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getJobList = function (req, res) {
+exports.getJobList = async function (req, res) {
   try {
+    if(Number(req.query.employeecode) != -1){
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
+  }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true || req.query.employeecode == -1) {
         var objLogdetails;
@@ -398,8 +407,15 @@ exports.getJobList = function (req, res) {
   catch (e) { logger.error("Error in Job List: " + e); }
 }
 
-exports.getSortListLoad = function (req, res) {
+exports.getSortListLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

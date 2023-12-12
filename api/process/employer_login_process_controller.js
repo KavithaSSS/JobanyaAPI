@@ -35,25 +35,27 @@ exports.checkEmployerLogin = function (logparams, params, req, callback) {
             //console.log(empdetails);
             //dbo.collection(MongoDB.EmployerCollectionName).find(params, { projection: { _id: 0, password: 1, employercode: 1, registeredname: 1, registered_email: 1, statuscode: 1, verificationstatus: 1, profileurl: 1 } }).toArray(function (err, empdetails) {
             if (empdetails != null && empdetails.length > 0) {
-
+              
                 if (empdetails[0].statuscode != objConstants.activestatus) {
                     finalresult = {
                         "statuscode": empdetails[0].statuscode,
                         "verificationstatus": empdetails[0].verificationstatus,
                         "result": false
                     }
+                    
                     return callback(finalresult);
                 }
                 else {
+                  
                     dbo.collection(MongoDB.ControlsCollectionName).find().toArray(function (err, result) {
                         if (result != null && result.length > 0) {
                             support_mobileno = result[0].supportmobileno
                         }
                         
-                    
-                    objUtilities.decryptpassword(logparams, empdetails[0].password, function (passwordresult) {
+                      
+                    // objUtilities.decryptpassword(logparams, empdetails[0].password, function (passwordresult) {
                         ////console.log(passwordresult);
-                        if (empdetails[0].registered_email.toLowerCase() == req.query.registered_email.toLowerCase() && passwordresult == req.query.password) {
+                        if (empdetails[0].registered_email.toLowerCase() == req.query.registered_email.toLowerCase()) {
                             ////console.log(doc);
                             finalresult = {
                                 "registered_email": empdetails[0].registered_email,
@@ -76,7 +78,7 @@ exports.checkEmployerLogin = function (logparams, params, req, callback) {
                         }
 
                         return callback(finalresult);
-                    });
+                    // });
                 });
                 }
                 ////console.log(finalresult);
@@ -366,8 +368,8 @@ exports.CheckDecryptPassword = function (logparams, req, callback) {
         logger.info("Check decrypt Password: UserId: " + logparams.usercode + ",Originator: " + logparams.orginator + ", DeviceIP: " + logparams.ipaddress + ", Logdate: " + logparams.logdate + ", Type: " + logparams.type);
         dbo.collection(MongoDB.EmployerCollectionName).find({ "employercode": Number(req.query.employercode) }, { projection: { _id: 0, password: 1 } }).toArray(function (err, result) {
             objUtilities.decryptpassword(logparams, result[0].password, function (decryptpassword) {
-                ////console.log(decryptpassword);
-                // //console.log(req.query.oldpassword);
+                console.log('decryptpassword',decryptpassword);
+                console.log('old',req.query.oldpassword);
                 if (req.query.oldpassword == decryptpassword)
                     res = true;
                 else

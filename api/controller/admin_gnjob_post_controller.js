@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_gnjobpost_details = function (req, res) {
+exports.insert_gnjobpost_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -103,8 +110,15 @@ exports.insert_gnjobpost_details = function (req, res) {
         { logger.error("Error in gnjobpost insert: " + e); }
     }
 }
-exports.gnjobpost_formload = function (req, res) {
+exports.gnjobpost_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -162,8 +176,15 @@ exports.gnjobpost_formload = function (req, res) {
     }
     catch (e) { logger.error("Error in gnjobpost Load: " + e); }
 }
-exports.gnjob_list_by_code = function (req, res) {
+exports.gnjob_list_by_code =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -234,8 +255,15 @@ exports.gnjob_list_by_code = function (req, res) {
         logger.error("Error in gnjob List by Code: " + e);
     }
 }
-exports.gnjobpost_list = function (req, res) {
+exports.gnjobpost_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -330,8 +358,15 @@ exports.gnjobpost_list = function (req, res) {
         logger.error("Error in gnjob List : " + e);
     }
 }
-exports.uploads_files = function (req, res) {
+exports.uploads_files = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -400,8 +435,15 @@ exports.uploads_files = function (req, res) {
         logger.error("Error in gnjob upload files : " + e);
     }
 }
-exports.delete_gnjobpost_details = function (req, res) {
+exports.delete_gnjobpost_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -479,8 +521,15 @@ exports.delete_gnjobpost_details = function (req, res) {
         logger.error("Error in gnjobpost delete: " + e);
     }
 }
-exports.update_gnjobpost_details = function (req, res) {
+exports.update_gnjobpost_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -636,8 +685,15 @@ exports.update_gnjobpost_details = function (req, res) {
         logger.error("Error in gnjobpost update: " + e);
     }
 }
-exports.UpdateStatuscode = function (req, res) {
+exports.UpdateStatuscode = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;

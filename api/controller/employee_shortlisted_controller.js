@@ -15,8 +15,15 @@ const objSendNotification = require('../process/send_notification_process_contro
 const objJobView = require('../process/employee_job_view_process_controller')
 const logger = new Logger('logs')
 
-exports.getShortlistedJobList = function (req, res) {
+exports.getShortlistedJobList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       ////console.log(validemp);
@@ -178,8 +185,15 @@ exports.getShortlistedJobList = function (req, res) {
   }
   catch (e) { logger.error("Error in Applied Job List: " + e); }
 }
-exports.ApplyJob = function (req, res) {
+exports.ApplyJob = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

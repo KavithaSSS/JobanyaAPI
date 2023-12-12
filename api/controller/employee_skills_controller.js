@@ -10,8 +10,15 @@ const logger = new Logger('logs')
 const objGeneratePDF = require('../process/generate_employee_profile_pdf_process_controller')
 const objProfileView = require('../process/employee_profile_view_process_controller')
 
-exports.getSkillLoad = function (req, res) {
+exports.getSkillLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -89,8 +96,15 @@ exports.getSkillLoad = function (req, res) {
   catch (e) { logger.error("Error in Skill Load: " + e); }
 }
 
-exports.SkillsProfileDelete = function (req, res) {
+exports.SkillsProfileDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -189,8 +203,15 @@ exports.SkillsProfileDelete = function (req, res) {
   }
   catch (e) { logger.error("Error in Delete skills: " + e); }
 }
-exports.SkillsProfileList = function (req, res) {
+exports.SkillsProfileList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -279,8 +300,15 @@ exports.SkillsProfileList = function (req, res) {
   catch (e) { logger.error("Error in Skill list: " + e); }
 }
 
-exports.SkillSave = function (req, res) {
+exports.SkillSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -474,8 +502,15 @@ exports.SkillSave = function (req, res) {
   catch (e) { logger.error("Error in Skill Save: " + e); }
 }
 
-exports.getSkillEditLoad = function (req, res) {
+exports.getSkillEditLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

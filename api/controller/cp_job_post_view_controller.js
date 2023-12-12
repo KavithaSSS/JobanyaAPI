@@ -14,8 +14,15 @@ var objEmployerProfile = require('../process/employer_profile_view_process_contr
 const objRecommended = require('../process/employer_recommended_process_controller');
 const objProfileList = require('../process/employer_profile_list_process_controller');
 const objSendNotification = require('../process/send_notification_process_controller');
-exports.job_post_view_list = function (req, res) {
+exports.job_post_view_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -92,8 +99,15 @@ exports.job_post_view_list = function (req, res) {
         logger.error("Error in Jobp post view- Jobpost " + e);
     }
 }
-exports.update_jobpost_remarks = function (req, res) {
+exports.update_jobpost_remarks = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -272,8 +286,15 @@ exports.update_jobpost_remarks = function (req, res) {
         logger.error("Error in Update Remarks- Jobpost " + e);
     }
 }
-exports.getJobView = function (req, res) {
+exports.getJobView = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: Number(req.query.usercode) }, function (validemp) {
             if (validemp == true) {
                 var objLogdetails;

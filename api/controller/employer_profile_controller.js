@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getContactinfoLoad = function (req, res) {
+exports.getContactinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -101,8 +108,15 @@ exports.getContactinfoLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Contact Info Load: " + e); }
 }
 
-exports.contactinfoupdate = function (req, res) {
+exports.contactinfoupdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -180,8 +194,15 @@ exports.contactinfoupdate = function (req, res) {
   catch (e) { logger.error("Error in Employer Contact Info Save / Update: " + e); }
 }
 
-exports.getCompanyinfoLoad = function (req, res) {
+exports.getCompanyinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -254,8 +275,15 @@ exports.getCompanyinfoLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Company Info Load: " + e); }
 }
 
-exports.companyinfoupdate = function (req, res) {
+exports.companyinfoupdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -353,8 +381,15 @@ exports.companyinfoupdate = function (req, res) {
   catch (e) { logger.error("Error in Employer Contact Info Save / Update: " + e); }
 }
 
-exports.getgovtidentificationLoad = function (req, res) {
+exports.getgovtidentificationLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -417,8 +452,15 @@ exports.getgovtidentificationLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Company Info Load: " + e); }
 }
 
-exports.getProfileinfoLoad = function (req, res) {
+exports.getProfileinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -494,8 +536,15 @@ exports.getProfileinfoLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Profile Info Load: " + e); }
 }
 
-exports.profileinfoupdate = function (req, res) {
+exports.profileinfoupdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

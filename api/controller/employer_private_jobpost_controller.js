@@ -11,8 +11,15 @@ const objSendNotification = require('../process/send_notification_process_contro
 const objJobView = require('../process/employee_private_job_view_process_controller')
 const objProfileList = require('../process/employer_profile_list_process_controller');
 const logger = new Logger('logs')
-exports.JobPostLoad = function (req, res) {
+exports.JobPostLoad = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
             // objUtilities.checkvaliduser(req.query.usercode, function (validemp) {
             if (validemp) {
@@ -84,8 +91,15 @@ exports.JobPostLoad = function (req, res) {
         logger.error("Error in Job post Load: " + e);
     }
 }
-exports.InsertJobpost = function (req, res) {
+exports.InsertJobpost = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         // objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
             if (validemp) {
@@ -187,8 +201,15 @@ exports.InsertJobpost = function (req, res) {
         logger.error("Error in Job post Insertion: " + e);
     }
 }
-exports.UpdateJobpost = function (req, res) {
+exports.UpdateJobpost = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
             // objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
             if (validemp) {
@@ -334,8 +355,15 @@ exports.UpdateJobpost = function (req, res) {
         logger.error("Error in Job post Insertion: " + e);
     }
 }
-exports.JobPost_list_by_code = function (req, res) {
+exports.JobPost_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
             // objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
             if (validemp) {
@@ -408,8 +436,15 @@ exports.JobPost_list_by_code = function (req, res) {
         logger.error("Error in jobpost List by Code: " + e);
     }
 }
-exports.DeleteJobpost = function (req, res) {
+exports.DeleteJobpost = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         // objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
             if (validemp) {
@@ -481,8 +516,15 @@ exports.DeleteJobpost = function (req, res) {
         logger.error("Error in Deletion jobpost: " + e);
     }
 }
-exports.UpdateStatuscode = function (req, res) {
+exports.UpdateStatuscode = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
             if (validemp == true) {
                 var logType = objconstants.portalAdminLogType;
@@ -625,8 +667,15 @@ exports.UpdateStatuscode = function (req, res) {
         logger.error("Error in Update Statuscode jobpost: " + e);
     }
 }
-exports.JobPostList = function (req, res) {
+exports.JobPostList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
             if (validemp == true) {
                 var logType = objconstants.portalAdminLogType;
@@ -685,8 +734,15 @@ exports.JobPostList = function (req, res) {
         logger.error("Error in jobpost List : " + e);
     }
 }
-exports.FilterList = function (req, res) {
+exports.FilterList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         // //console.log("entry")
         // //console.log("usercode",req.query.usercode);
         objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
@@ -758,8 +814,15 @@ exports.FilterList = function (req, res) {
         logger.error("Error in Filter List : " + e);
     }
 }
-exports.UpdateValiditydate = function (req, res) {
+exports.UpdateValiditydate = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
             if (validemp == true) {
                 var logType = objconstants.portalAdminLogType;
@@ -843,8 +906,15 @@ exports.UpdateValiditydate = function (req, res) {
 }
 
 
-exports.UpdateJobpostAfterApproval = function (req, res) {
+exports.UpdateJobpostAfterApproval = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.usercode, function (validemp) {
             if (validemp == true) {
                 var logType = objconstants.portalAdminLogType;

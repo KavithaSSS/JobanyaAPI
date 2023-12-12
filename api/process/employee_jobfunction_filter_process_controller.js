@@ -25,7 +25,7 @@ exports.getJobFunctionFilterBind= function (logparams, params, callback) {
             {$match:jobfuncparams},
             {$sort: {'jobfunction.jobfunctionname': 1}},
                   { $project: {
-                   _id: 0, jobfunctioncode:1, jobfunctionname:'$jobfunction.jobfunctionname',languagecode:'$jobfunction.languagecode', imageurl: 1
+                   _id: 0, jobfunctioncode:1, jobfunctionname:'$jobfunction.jobfunctionname',languagecode:'$jobfunction.languagecode'
                    } }
                 ]).toArray(function(err, jobfunctionresult) {
             finalresult =jobfunctionresult;

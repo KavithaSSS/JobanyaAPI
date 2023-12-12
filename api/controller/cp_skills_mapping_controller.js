@@ -9,8 +9,15 @@ var date = new Date(); // some mock date
 var milliseconds = date.getTime();
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.skill_mapping_formload = function (req, res) {
-    try {
+exports.skill_mapping_formload = async function (req, res) {
+    try { 
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -69,8 +76,15 @@ exports.skill_mapping_formload = function (req, res) {
         logger.error("Error in Skill Load: " + e);
     }
 }
-exports.insert_skill_mapping_details = function (req, res) {
+exports.insert_skill_mapping_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -159,8 +173,15 @@ exports.insert_skill_mapping_details = function (req, res) {
         logger.error("Error in Skill Save: " + e);
     }
 }
-exports.update_skill_mapping_details = function (req, res) {
+exports.update_skill_mapping_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -285,8 +306,15 @@ exports.update_skill_mapping_details = function (req, res) {
         logger.error("Error in Skill Save: " + e);
     }
 }
-exports.delete_skill_mapping_details = function (req, res) {
+exports.delete_skill_mapping_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -407,8 +435,15 @@ exports.delete_skill_mapping_details = function (req, res) {
         logger.error("Error in Skill Save: " + e);
     }
 }
-exports.skill_mapping_list = function (req, res) {
+exports.skill_mapping_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -480,8 +515,15 @@ exports.skill_mapping_list = function (req, res) {
         logger.error("Error in Skill List: " + e);
     }
 }
-exports.GetSkillMappingdetails = function (req, res) {
+exports.GetSkillMappingdetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

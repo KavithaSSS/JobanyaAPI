@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 const objSplash = require('../process/common_splash_process_controller')
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.splash_formload = function (req, res) {
+exports.splash_formload =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -64,8 +71,15 @@ exports.splash_formload = function (req, res) {
         logger.error("Error in Splash Load: " + e);
     }
 }
-exports.insert_splash_details = function (req, res) {
+exports.insert_splash_details =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -164,8 +178,15 @@ exports.insert_splash_details = function (req, res) {
         logger.error("Error in Splash Save: " + e);
     }
 }
-exports.update_splash_details = function (req, res) {
+exports.update_splash_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -296,8 +317,15 @@ exports.update_splash_details = function (req, res) {
         logger.error("Error in Splash Update: " + e);
     }
 }
-exports.update_splash_imageurl_details = function (req, res) {
+exports.update_splash_imageurl_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -408,8 +436,15 @@ exports.update_splash_imageurl_details = function (req, res) {
         logger.error("Error in Splash Image URL: " + e);
     }
 }
-exports.delete_splash_details = function (req, res) {
+exports.delete_splash_details =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -523,8 +558,15 @@ exports.delete_splash_details = function (req, res) {
         logger.error("Error in Splash Delete: " + e);
     }
 }
-exports.splash_list_by_code = function (req, res) {
+exports.splash_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -595,8 +637,15 @@ exports.splash_list_by_code = function (req, res) {
         logger.error("Error in Splash List by Code: " + e);
     }
 }
-exports.getWebSplashList = function (req, res) {
+exports.getWebSplashList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -698,8 +747,15 @@ exports.getWebSplashList = function (req, res) {
         logger.error("Error in Web Splash List: " + e);
     }
 }
-exports.getSplashList = function (req, res) {
+exports.getSplashList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
 
         var objLogdetails;
         var langparams = { statuscode: objConstants.activestatus, 'splash.languagecode': Number(req.query.languagecode) };
@@ -746,8 +802,15 @@ exports.getSplashList = function (req, res) {
     catch (e) { logger.error("Error in Employee Splash List: " + e); }
 }
 
-exports.welcome_screen_update = function (req, res) {
+exports.welcome_screen_update = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -841,8 +904,15 @@ exports.welcome_screen_update = function (req, res) {
     }
 }
 
-exports.welcome_screen_load = function (req, res) {
+exports.welcome_screen_load = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -901,8 +971,15 @@ exports.welcome_screen_load = function (req, res) {
     }
 }
 
-exports.welcome_screen_app = function (req, res) {
+exports.welcome_screen_app = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var objLogdetails;
         const dbo = MongoDB.getDB();
         const logvalues = { ipaddress: req.query.ipaddress, usercode: req.query.usercode, orginator: 'Splash form load', logdate: new Date(), type: 'Employee' }

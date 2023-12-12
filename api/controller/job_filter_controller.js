@@ -19,8 +19,15 @@ const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
 
-exports.getJobFilterBind = function (req, res) {
+exports.getJobFilterBind = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
       objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
         if (validemp == true) {
           var objLogdetails;

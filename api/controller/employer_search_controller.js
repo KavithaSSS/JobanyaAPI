@@ -8,8 +8,15 @@ const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
-exports.getEmpSearchLoad = function (req, res) {
+exports.getEmpSearchLoad = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
               var objLogdetails;
@@ -91,8 +98,15 @@ exports.getEmpSearchLoad = function (req, res) {
     catch (e) { logger.error("Error in Job Search Bind: " + e); }
 }
 
-exports.EmployersearchDelete = function (req, res) {
+exports.EmployersearchDelete = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
               var objLogdetails;

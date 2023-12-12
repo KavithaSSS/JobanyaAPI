@@ -9,8 +9,15 @@ const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
 
-exports.GovtJobsList = function (req, res) {
+exports.GovtJobsList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true || Number(req.query.employeecode) == -1) {
         var objLogdetails;
@@ -68,8 +75,15 @@ exports.GovtJobsList = function (req, res) {
   }
 }
 
-exports.GovtJobsListbyCount = function (req, res) {
+exports.GovtJobsListbyCount = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -130,8 +144,16 @@ exports.GovtJobsListbyCount = function (req, res) {
   }
 }
 
-exports.GovtJobsDetails = function (req, res) {
+exports.GovtJobsDetails = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
+  
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true || Number(req.query.employeecode) == -1) {
         var objLogdetails;

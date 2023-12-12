@@ -10,13 +10,21 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getFlashJobList = function (req, res) {
+exports.getFlashJobList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
         var logUserCode = "";
         var logType = "";
+        
         if (req.query.usercode != null) {
           logUserCode = req.query.usercode;
           logType = varconstant.portalLogType;

@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.jobfunction_formload = function (req, res) {
+exports.jobfunction_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -64,8 +71,15 @@ exports.jobfunction_formload = function (req, res) {
         logger.error("Error in Job Function Load: " + e);
     }
 }
-exports.insert_jobfunction_details = function (req, res) {
+exports.insert_jobfunction_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -163,8 +177,15 @@ exports.insert_jobfunction_details = function (req, res) {
         logger.error("Error in Job Function Save: " + e);
     }
 }
-exports.update_jobfunction_details = function (req, res) {
+exports.update_jobfunction_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -404,8 +425,15 @@ exports.update_jobfunction_details = function (req, res) {
         logger.error("Error in Job Function Update: " + e);
     }
 }
-exports.update_jobfunction_imageurl_details = function (req, res) {
+exports.update_jobfunction_imageurl_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -515,8 +543,15 @@ exports.update_jobfunction_imageurl_details = function (req, res) {
         logger.error("Error in Job Function Update Image URL: " + e);
     }
 }
-exports.delete_jobfunction_details = function (req, res) {
+exports.delete_jobfunction_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -653,8 +688,15 @@ exports.delete_jobfunction_details = function (req, res) {
         logger.error("Error in Job Function Delete: " + e);
     }
 }
-exports.jobfunction_list_by_code = function (req, res) {
+exports.jobfunction_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -725,8 +767,15 @@ exports.jobfunction_list_by_code = function (req, res) {
         logger.error("Error in Job Function List by Code: " + e);
     }
 }
-exports.jobfunction_list = function (req, res) {
+exports.jobfunction_list =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

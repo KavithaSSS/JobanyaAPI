@@ -6,8 +6,15 @@ const objconstants = require('../../config/constants');
 const objProfileList= require('../process/employer_profile_list_process_controller');
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.AppliedList = function (req, res) {
+exports.AppliedList = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
         ////console.log(req.query.employercode);
         objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
             if (validemp == true) {

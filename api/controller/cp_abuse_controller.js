@@ -11,8 +11,15 @@ const objProfile = require('../process/employee_profile_view_process_controller'
 var objJobView = require('../process/employee_job_view_process_controller');
 var objEmployerProfile = require('../process/employer_profile_view_process_controller');
 const objMail = require('../process/send_email_process_controller');
-exports.abuse_reporting = function (req, res) {
+exports.abuse_reporting = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -94,8 +101,15 @@ exports.abuse_reporting = function (req, res) {
         logger.error("Error in Abuse reporting list- Abuse " + e);
     }
 }
-exports.Update_statuscode = function (req, res) {
+exports.Update_statuscode = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -366,8 +380,15 @@ exports.Update_statuscode = function (req, res) {
         logger.error("Error in Update Remarks - Abuse " + e);
     }
 }
-exports.abuse_view = function (req, res) {
+exports.abuse_view = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;

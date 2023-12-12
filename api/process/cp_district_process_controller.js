@@ -368,7 +368,7 @@ exports.getDistrictList = function (logparams, params, langcount, callback) {
             { $project: { logourl: '$imageurl', statename: "$state.state.statename", statecode: 1, districtcode: 1, statuscode: 1, isshowwebsite: 1, statusname: '$status.statusname', languagecode: '$district.languagecode', districtname: '$district.districtname', language_count_status: "$langstatus", selected_language_count: "$selectedcount", "talukcount": { "$size": "$taluk" }, _id: 0 } }
         ]).toArray(function (err, result) {
             finalresult = result;
-            // //console.log(finalresult);
+            console.log('result',finalresult);
             return callback(finalresult);
         });
     }

@@ -7,10 +7,17 @@ const objNotification = require('../process/employee_notification_process_contro
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 
-exports.NotificationStatus = function (req, res) {
+exports.NotificationStatus = async function (req, res) {
   try {
     var logUserCode = "";
     var logType = "";
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     if (req.query.usercode != null) {
       logUserCode = req.query.usercode;
       logType = objconstants.portalLogType;
@@ -60,10 +67,17 @@ exports.NotificationStatus = function (req, res) {
     { logger.error("Error in Employee Notification status: " + e); }
   }
 }
-exports.NotificationSave = function (req, res) {
+exports.NotificationSave = async function (req, res) {
   try {
     var logUserCode = "";
     var logType = "";
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     if (req.query.usercode != null) {
       logUserCode = req.query.usercode;
       logType = objconstants.portalLogType;

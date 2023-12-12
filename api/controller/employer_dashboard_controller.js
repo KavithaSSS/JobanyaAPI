@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 
 
-exports.employer_dashboard_load = function (req, res) {
+exports.employer_dashboard_load = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

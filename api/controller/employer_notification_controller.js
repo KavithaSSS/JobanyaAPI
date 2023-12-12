@@ -7,8 +7,15 @@ const objNotification = require('../process/employer_notification_process_contro
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 
-exports.NotificationStatus = function (req, res) {
+exports.NotificationStatus = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -62,8 +69,15 @@ exports.NotificationStatus = function (req, res) {
         { logger.error("Error in Employer Notification Load: " + e); }
     }
 }
-exports.NotificationSave = function (req, res) {
+exports.NotificationSave = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";

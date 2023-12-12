@@ -10,8 +10,15 @@ const { Console } = require('winston/lib/winston/transports');
 const express = require('express');
 const app = express();
 const logger = new Logger('logs')
-exports.generateEmployeeProfilePDF = function (req, res) {
+exports.generateEmployeeProfilePDF = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         var logUserCode = "";
         if (req.query.employeecode != null) {
@@ -47,8 +54,15 @@ exports.generateEmployeeProfilePDF = function (req, res) {
     }
 }
 //Create zoho book item
-exports.createzohobookitem = function (req, res) {
+exports.createzohobookitem = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         
         const params = { price: parseInt(req.body.price), package: req.body.package};
         objZohoBook.insertJobPackageAsItem(params, req.body.zohocode, function (zohoresponse) {

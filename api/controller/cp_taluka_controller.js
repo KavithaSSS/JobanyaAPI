@@ -4,8 +4,15 @@ const objUtilities = require('./utilities');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.taluk_formload = function (req, res) {
+exports.taluk_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -63,9 +70,15 @@ exports.taluk_formload = function (req, res) {
         logger.error("Error in taluk Load: " + e);
     }
 }
-exports.insert_taluk_details = function (req, res) {
+exports.insert_taluk_details = async function (req, res) {
     try {
-       
+        const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -164,8 +177,15 @@ exports.insert_taluk_details = function (req, res) {
         logger.error("Error in taluk Save: " + e);
     }
 }
-exports.update_taluk_details = function (req, res) {
+exports.update_taluk_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -555,8 +575,15 @@ exports.update_taluk_details = function (req, res) {
         logger.error("Error in taluk Update: " + e);
     }
 }
-exports.delete_taluk_details = function (req, res) {
+exports.delete_taluk_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -665,8 +692,15 @@ exports.delete_taluk_details = function (req, res) {
         logger.error("Error in taluk Delete: " + e);
     }
 }
-exports.taluk_list_by_code = function (req, res) {
+exports.taluk_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -738,8 +772,15 @@ exports.taluk_list_by_code = function (req, res) {
         logger.error("Error in taluk List by Code: " + e);
     }
 }
-exports.taluk_list = function (req, res) {
+exports.taluk_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

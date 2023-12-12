@@ -123,3 +123,27 @@ exports.FirebasePushNotification = function (notificationObj) {
             //console.log("Error sending message:", error);
         });
 }
+
+exports.getLamdaUrl = async function (req, res) {
+    try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
+        objAWSDetails.callLamdaUrl({ bucketName: req.body.bucketName, fileName:req.body.fileName }, function (urlresponse) {
+            if(urlresponse){ 
+                return res.status(200).json({urlresponse});
+                return callback(urlresponse);
+            } 
+            else {
+                res.status(200).json({});
+            }
+        });
+    }
+    catch (e) {
+        logger.error("Error in ShortList - report " + e);
+    }
+}

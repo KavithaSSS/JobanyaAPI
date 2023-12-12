@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 var objSendNotification = require('../process/send_notification_process_controller');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.pushnotification_formload = function (req, res) {
+exports.pushnotification_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -68,8 +75,15 @@ exports.pushnotification_formload = function (req, res) {
         logger.error("Error in Push Notification Load: " + e);
     }
 }
-exports.insert_pushnotification_details = function (req, res) {
+exports.insert_pushnotification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -149,8 +163,15 @@ exports.insert_pushnotification_details = function (req, res) {
     }
 }
 
-exports.update_pushnotification_details = function (req, res) {
+exports.update_pushnotification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -265,8 +286,15 @@ exports.update_pushnotification_details = function (req, res) {
     }
 }
 
-exports.delete_pushnotification_details = function (req, res) {
+exports.delete_pushnotification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -355,8 +383,15 @@ exports.delete_pushnotification_details = function (req, res) {
     }
 }
 
-exports.notification_list_by_code = function (req, res) {
+exports.notification_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -427,8 +462,15 @@ exports.notification_list_by_code = function (req, res) {
         logger.error("Error in notification List by Code: " + e);
     }
 }
-exports.notification_list = function (req, res) {
+exports.notification_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -514,8 +556,15 @@ exports.notification_list = function (req, res) {
     }
 }
 
-exports.send_notification = function (req, res) {
+exports.send_notification = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -602,8 +651,15 @@ exports.send_notification = function (req, res) {
     }
 }
 
-exports.pushnotification_employee_count = function (req, res) {
+exports.pushnotification_employee_count = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

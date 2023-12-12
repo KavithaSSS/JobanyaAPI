@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 //const {objConstants.notvalidcode,objConstants.createcode,objConstants.listcode, objConstants.existcode,objConstants.updatecode,objConstants.deletecode, objConstants.recordnotfoundcode, objConstants.successresponsecode,objConstants.usernotfoundcode } = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.skill_formload = function (req, res) {
+exports.skill_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -65,8 +72,15 @@ exports.skill_formload = function (req, res) {
         logger.error("Error in Skill Load: " + e);
     }
 }
-exports.insert_skill_details = function (req, res) {
+exports.insert_skill_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -163,8 +177,15 @@ exports.insert_skill_details = function (req, res) {
         logger.error("Error in Skill Save: " + e);
     }
 }
-exports.update_skill_details = function (req, res) {
+exports.update_skill_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date() // some mock date
         var milliseconds = date.getTime()
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -380,8 +401,15 @@ exports.update_skill_details = function (req, res) {
         logger.error("Error in Skill Update: " + e);
     }
 }
-exports.delete_skill_details = function (req, res) {
+exports.delete_skill_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -488,8 +516,15 @@ exports.delete_skill_details = function (req, res) {
         logger.error("Error in Skill Delete: " + e);
     }
 }
-exports.skill_list_by_code = function (req, res) {
+exports.skill_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -562,8 +597,15 @@ exports.skill_list_by_code = function (req, res) {
         logger.error("Error in Skill List by Code: " + e);
     }
 }
-exports.skill_list = function (req, res) {
+exports.skill_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

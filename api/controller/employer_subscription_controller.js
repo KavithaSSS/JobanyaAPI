@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 const objMail = require('../process/send_email_process_controller');
 
-exports.Employerpaymentwebhook = function (req, callback) {
+exports.Employerpaymentwebhook =async function (req, callback) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
    
     var params = req.body;
     if (params.payload.order.entity.status != undefined && params.payload.order.entity.status != null && params.payload.order.entity.status == "paid")
@@ -231,8 +238,15 @@ exports.Employerpaymentwebhook = function (req, callback) {
 }
 
 
-exports.getSubscriptionLoad = function (req, res) {
+exports.getSubscriptionLoad =async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -311,8 +325,15 @@ exports.getSubscriptionLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Subscription Package Load: " + e); }
 }
 
-exports.getSubscriptionSave = function (req, res) {
+exports.getSubscriptionSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -497,8 +518,15 @@ exports.getSubscriptionSave = function (req, res) {
   catch (e) { logger.error("Error in Subscribe Save: " + e); }
 }
 
-exports.EmployerPaymentUpdate = function (req, res) {
+exports.EmployerPaymentUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var varorderId = req.query.orderid;
    // logger.info ("Entry in Payment Update")
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
@@ -774,8 +802,15 @@ exports.EmployerPaymentUpdate = function (req, res) {
 }
 
 
-exports.getSubscriptionStatusUpdate = function (req, res) {
+exports.getSubscriptionStatusUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -951,9 +986,15 @@ exports.getSubscriptionStatusUpdate = function (req, res) {
   catch (e) { logger.error("Error in Subscribe Save: " + e); }
 }
 
-exports.createzohobookInvoice = function (req, res) {
+exports.createzohobookInvoice = async function (req, res) {
   try {
-  
+    const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse == true) {
         var objLogdetails;
@@ -1057,8 +1098,15 @@ exports.createzohobookInvoice = function (req, res) {
   catch (e) { logger.error("Error in Subscribe Save: " + e); }
 }
 
-exports.getSubscriptionList = function (req, res) {
+exports.getSubscriptionList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.Checkvalidfilteraccessuser(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

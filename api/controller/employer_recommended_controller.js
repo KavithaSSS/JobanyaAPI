@@ -10,8 +10,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const objSearchUpdate = require('../process/employer_search_process_controller');
 const logger = new Logger('logs')
-exports.getRecommendedProfileList = function (req, res) {
+exports.getRecommendedProfileList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -230,8 +237,15 @@ exports.getRecommendedProfileList = function (req, res) {
 }
 
 
-exports.getEmpSortListLoad = function (req, res) {
+exports.getEmpSortListLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -296,8 +310,15 @@ exports.getEmpSortListLoad = function (req, res) {
   }
   catch (e) { logger.error("Error in Employer Sort List Load: " + e); }
 }
-exports.getAdminEmpSortListLoad = function (req, res) {
+exports.getAdminEmpSortListLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -367,8 +388,15 @@ exports.getAdminEmpSortListLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Sort List Load: " + e); }
 }
 
-exports.getRecommendedProfileList_jobcode = function (req, res) {
+exports.getRecommendedProfileList_jobcode = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date(); // some mock date
     var milliseconds = date.getTime();
     //console.log("Entry1")

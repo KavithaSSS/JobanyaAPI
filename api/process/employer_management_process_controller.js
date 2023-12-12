@@ -478,7 +478,6 @@ exports.EmployerListFilter = function (logparams, listparams, callback) {
         // //console.log(listparams);
         var subscription = {}, subcreateddate = {}, empcreateddate = {}, finalresult, companytypecode = {}, inactivedays = {}, activedays = {}, employertypecode = {}, locationcode = {}, jobfunctioncode = {}, industrycode = {}, statecode = {}, knowabouttypecode = {}, usercode = {}, packagecode = {}, registereddate = {};
         var sortbyparams;
-        var totallangcountparams = {};
         var sortbycode = listparams.sortbycode;
         if (sortbycode == 15)
             sortbyparams = { 'lastlogindate': -1, 'createddate': -1 };
@@ -568,29 +567,16 @@ exports.EmployerListFilter = function (logparams, listparams, callback) {
         if (listparams.registeredfrom > 0 && listparams.registeredto > 0) {
             registereddate = { $and: [{ createddate: { $gte: listparams.registeredfrom } }, { createddate: { $lte: listparams.registeredto } }] };
         }
-        dbo.collection(String(MongoDB.LanguageCollectionName)).aggregate([
-            { $match: { "statuscode": 1, isappsupport: 1 } },
-            {
-              $project: { _id: 0, languagecode: 1 }
-            }
-          ],{ allowDiskUse: true }).toArray(function (err, langresult) {
-            var langarray = [];
-            for (var i = 0; i < langresult.length; i++)
-            {
-              langarray.push(langresult[i].languagecode);
-            }
-            totallangcountparams = {"preferredlanguagecode": {$in :langarray}}
         var matchparams = {
             $and: [profilestatus, languagecodecondition, inactivedays,
                 employertypecode, searchvalue, industrycode, companytypecode,
                 statuscode,
                 activedays, locationcode, jobfunctioncode, statecode,
-                knowabouttypecode, usercode, empcreateddate, registervia,registereddate, totallangcountparams
+                knowabouttypecode, usercode, empcreateddate, registervia,registereddate
             ]
         };
         //  console.log(matchparams)
         if (matchparams != "") {
-           
             dbo.collection(MongoDB.EmployerCollectionName).aggregate([
                 { $match: matchparams },                
                 {
@@ -600,25 +586,6 @@ exports.EmployerListFilter = function (logparams, listparams, callback) {
                 }
             ]).toArray(function (err, employerlist) {
                 if (employerlist != null && employerlist.length > 0) {
-                    dbo.collection(String(MongoDB.EmployerCollectionName)).aggregate([
-                            { $match: matchparams},
-                            {
-                              "$lookup":
-                              {
-                                "from": String(MongoDB.LanguageCollectionName),
-                                "localField": "preferredlanguagecode",
-                                "foreignField": "languagecode",
-                                "as": "languageinfo"
-                              }
-                            },
-                            { $unwind: { path: '$languageinfo', preserveNullAndEmptyArrays: true } },
-                            { $unwind: { path: '$languageinfo.language', preserveNullAndEmptyArrays: true } },
-                            { $match: { $or: [{ "languageinfo.language.code": { $exists: false } }, { "languageinfo.language.code": "" }, { "languageinfo.language.code": 2 }] } },
-                            { $group: { _id: { languagecode: '$preferredlanguagecode', languagename: '$languageinfo.language.name' }, "count": {"$sum": 1} } },
-                            {
-                              $project: { _id: 0, languagecode: '$_id.languagecode',languagename: '$_id.languagename', "count": '$count' }
-                            }
-                          ],{ allowDiskUse: true }).toArray(function (err, employerlangarray) {
                     var activecount, inactivecount, blockcount, pendingcount , rejectedcount , regviaapp, regviaportal , totalcount =0;
                     activecount = employerlist.filter(t => t.statuscode == objConstants.activestatus);
                     inactivecount = employerlist.filter(t => t.statuscode == objConstants.inactivestatus);
@@ -638,17 +605,13 @@ exports.EmployerListFilter = function (logparams, listparams, callback) {
                     finalresult.push(totalcount);                        
                     finalresult.push(regviaapp.length);
                     finalresult.push(regviaportal.length);
-                    finalresult.push(employerlangarray);
                     return callback(finalresult);
-                  });
-                }
+                  }
             });
-        
         }
         else {
             return callback(finalresult);
         }
-    });
     }
     catch (e) {
 

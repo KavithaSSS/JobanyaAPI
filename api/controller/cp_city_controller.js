@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.city_formload = function (req, res) {
+exports.city_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -67,8 +74,15 @@ exports.city_formload = function (req, res) {
         logger.error("Error in City Load: " + e);
     }
 }
-exports.insert_city_details = function (req, res) {
+exports.insert_city_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -166,8 +180,15 @@ exports.insert_city_details = function (req, res) {
         logger.error("Error in City Save: " + e);
     }
 }
-exports.update_city_details = function (req, res) {
+exports.update_city_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -557,8 +578,15 @@ exports.update_city_details = function (req, res) {
         logger.error("Error in City Update: " + e);
     }
 }
-exports.delete_city_details = function (req, res) {
+exports.delete_city_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -667,8 +695,15 @@ exports.delete_city_details = function (req, res) {
         logger.error("Error in City Delete: " + e);
     }
 }
-exports.city_list_by_code = function (req, res) {
+exports.city_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -740,8 +775,15 @@ exports.city_list_by_code = function (req, res) {
         logger.error("Error in City List by Code: " + e);
     }
 }
-exports.city_list = function (req, res) {
+exports.city_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

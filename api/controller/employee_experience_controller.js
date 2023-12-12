@@ -8,8 +8,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const objProfileView = require('../process/employee_profile_view_process_controller')
 const logger = new Logger('logs')
-exports.ExperienceList = function (req, res) {
+exports.ExperienceList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -125,8 +132,15 @@ exports.ExperienceList = function (req, res) {
 
 //Experience
 
-exports.ExperienceUpdateStatus = function (req, res) {
+exports.ExperienceUpdateStatus = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -210,8 +224,15 @@ exports.ExperienceUpdateStatus = function (req, res) {
 }
 
 
-exports.ExperienceSave = function (req, res) {
+exports.ExperienceSave = async function (req, res) {
   try {
+     const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -340,8 +361,15 @@ exports.ExperienceSave = function (req, res) {
   catch (e) { logger.error("Error in Experience Save: " + e); }
 }
 
-exports.ExperienceUpdate = function (req, res) {
+exports.ExperienceUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -463,8 +491,15 @@ exports.ExperienceUpdate = function (req, res) {
   catch (e) { logger.error("Error in Experience Update: " + e); }
 }
 
-exports.ExperienceDelete = function (req, res) {
+exports.ExperienceDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -570,8 +605,15 @@ exports.ExperienceDelete = function (req, res) {
   catch (e) { logger.error("Error in Experience Delete: " + e); }
 }
 
-exports.getExperienceEditLoad = function (req, res) {
+exports.getExperienceEditLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -645,8 +687,15 @@ exports.getExperienceEditLoad = function (req, res) {
   }
   catch (e) { logger.error("Error in Experience Load: " + e); }
 }
-exports.getExperienceFormload = function (req, res) {
+exports.getExperienceFormload = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -719,8 +768,15 @@ exports.getExperienceFormload = function (req, res) {
   catch (e) { logger.error("Error in Experience Load: " + e); }
 }
 
-exports.UpdateTotalExperience = function (req, res) {
+exports.UpdateTotalExperience = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var prefparams = { employeecode: Number(req.query.employeecode), languagecode: 2 };
     objProfile.updateTotalExperience(req.query.employeecode,Number(req.query.isleadtype), function (empprofile) {
       if (empprofile != null) {
@@ -742,134 +798,3 @@ exports.UpdateTotalExperience = function (req, res) {
   }
   catch (e) { logger.error("Error in Experience List: " + e); }
 }
-
-
-// exports.ExperienceSave_Portal = function (req, res) {
-//   try {
-//     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
-//       if (validemp == true) {
-//         var objLogdetails;
-//         //var langparams = req.query.languagecode;
-//         ////console.log(langparams);
-//         var logUserCode = "";
-//         var logType = "";
-//         if (req.query.usercode != null) {
-//           logUserCode = req.query.usercode;
-//           logType = varconstant.portalLogType;
-//         }
-//         else {
-//           logUserCode = req.query.employeecode;
-//           logType = varconstant.employeeLogType;
-//         }
-//         var params = { "ipaddress": req.query.deviceip, "usercode": logUserCode, "orginator": 'Experience Info Save Bulk', "type": logType };
-//         objUtilities.getLogDetails(params, function (logresponse) {
-//           objLogdetails = logresponse;
-//         });
-//         var logparams = objLogdetails;
-//         ////console.log(Number(req.body.frommonth), '01', Number(req.body.fromyear));
-//         var fromdate = Number(req.body.frommonth) + '/01/' + Number(req.body.fromyear);
-//         var todate = Number(req.body.tomonth) + '/01/' + Number(req.body.toyear);
-//         //var fromdate = new Date(fromdatestr);
-//         //var todate = new Date(todatestr);
-//         var dateparams = { "fromdate": fromdate, "todate": todate };
-//         var empparams = { "employeecode": Number(req.query.employeecode), "languagecode": Number(req.query.languagecode) };
-//         ////console.log("Date compare");
-//         ////console.log(empparams);
-//         ////console.log(dateparams);
-//         if (req.query.isleadtype == null) {
-//           req.query.isleadtype = 0
-//         }
-//         objProfile.ExperienceDuplicateCheck(logparams, dateparams, empparams, Number(req.query.isleadtype),function (dateresult) {
-//           if (dateresult == false) {
-//             objProfile.getExperienceDetails(logparams, empparams,Number(req.query.isleadtype), function (empprofile) {
-//               ////console.log(empsinglepref);
-//               var empexplist = [];
-//               ////console.log("initiate");
-//               // //console.log(empprofile[0].referenceinfo);
-//               if (empprofile != null && empprofile[0].experienceinfo != null) {
-//                 ////console.log("Entry");
-//                 empexplist = empprofile[0].experienceinfo;
-//               }
-//               objProfile.getExperienceMaxcode(logparams, req.query.employeecode, Number(req.query.isleadtype),function (maxrefcode) {
-//                 req.body.experiencecode = maxrefcode;
-//                 //req.body.frommonth = Number(req.body.frommonth);
-//                 //req.body.tomonth = Number(req.body.tomonth);
-//                 //req.body.experiencecode = maxrefcode;
-//                 //req.body.experiencecode = maxrefcode;
-//                 ////console.log("hello");
-//                 ////console.log(maxrefcode);
-//                 ////console.log(req.body);
-//                 ////console.log(empreferencelist);
-//                 empexplist.push(req.body);
-
-//                 objProfile.experiencesave(empexplist, req.query.employeecode, logparams, Number(req.query.isleadtype),function (profileresult) {
-
-//                   if (profileresult != null && profileresult > 0) {
-//                     if (Number(req.query.isleadtype) == 0)
-//                       {
-//                         var empparams = {"employeecode": Number(req.query.employeecode)};
-//                         objProfileView.getEmployeeProfileView(logparams, empparams, varconstant.defaultlanguagecode, req, function(empdetails){
-//                         });
-//                       }
-//                     const msgparam = { "messagecode": varconstant.createcode };
-//                     objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-//                       ////console.log("Hello");  
-//                       ////console.log(prefresult);
-//                       ////console.log("Hi");
-//                       return res.status(200).json({
-//                         employee_json_result: {
-//                           varstatuscode: varconstant.createcode,
-//                           responsestring: msgresult[0].messagetext,
-//                           responsekey: msgresult[0].messagekey,
-//                           response: varconstant.successresponsecode,
-//                         }
-//                       });
-//                     });
-//                     objProfile.updateTotalExperience(req.query.employeecode, req.query.isleadtype,function (profileresult) {
-
-//                     });
-//                   }
-
-
-
-//                 });
-//               });
-
-//             });
-//           }
-//           else {
-//             const msgparam = { "messagecode": varconstant.existcode };
-//             objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-//               return res.status(200).json({
-//                 employee_json_result: {
-//                   varstatuscode: varconstant.existcode,
-//                   response: varconstant.successresponsecode,
-//                   responsestring: msgresult[0].messagetext,
-//                   responsekey: msgresult[0].messagekey
-//                 }
-
-//               });
-//             });
-//           }
-//         });
-
-//       }
-//       else {
-//         const msgparam = { "messagecode": varconstant.usernotfoundcode };
-//         objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-//           return res.status(200).json({
-//             employee_json_result: {
-//               varstatuscode: varconstant.usernotfoundcode,
-//               response: varconstant.successresponsecode,
-//               responsestring: msgresult[0].messagetext,
-//               responsekey: msgresult[0].messagekey
-//             }
-
-//           });
-//         });
-//       }
-//     });
-
-//   }
-//   catch (e) { logger.error("Error in Experience Save: " + e); }
-// }

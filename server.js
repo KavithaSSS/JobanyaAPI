@@ -1,6 +1,7 @@
 console.info('\nThe server initializing... ');
 
 const express = require('express');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser')
 const morgan = require('morgan');
 const cors = require('cors');
@@ -17,6 +18,9 @@ process.on('SIGINT', () => { console.log('exiting…'); process.exit(); });
 process.on('exit', () => { console.log('exiting…'); process.exit(); });
 
 app.use(cors());
+console.info('\nbefore env... ');
+//dotenv.config({ debug: true });
+console.info('\nafter env... ');
 app.use(express.json());
 
 // parse application/x-www-form-urlencoded
@@ -27,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(timeout('60s'));
 app.use(morgan('dev'));
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8082;
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

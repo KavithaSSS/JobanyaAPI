@@ -212,7 +212,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
             };
 
             if (matchparams != "") {
-                GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, listcode, function (jobresult) {
+                GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, function (jobresult) {
                     return callback(jobresult);
                 });
             }
@@ -263,7 +263,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
                         };
                         ////console.log(matchparams);
                         if (matchparams != "") {
-                            GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, listcode, function (jobresult) {
+                            GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, function (jobresult) {
                                 ////console.log(jobresult);
                                 return callback(jobresult);
                             });
@@ -313,7 +313,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
                         ]
                     };
                     if (matchparams != "") {
-                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit,  listcode, function (jobresult) {
+                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, function (jobresult) {
                             return callback(jobresult);
                         });
                     }
@@ -363,7 +363,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
                     };
                     // //console.log(matchparams);
                     if (matchparams != "") {
-                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit,listcode, function (jobresult) {
+                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, function (jobresult) {
                             ////console.log(jobresult);
                             return callback(jobresult);
                         });
@@ -412,7 +412,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
                     };
                     ////console.log(matchparams);
                     if (matchparams != "") {
-                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit,listcode, function (jobresult) {
+                        GetAllProfilesList(matchparams, params, agefrom, sortbyparams, listparams.skip, listparams.limit, function (jobresult) {
                             ////console.log(jobresult);
                             return callback(jobresult);
                         });
@@ -562,7 +562,7 @@ exports.getAllProfiles = function (logparams, params, listparams, listcode, sort
     }
     catch (e) { logger.error("Error in Getting Profile List: " + e); }
 }
-function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skipvalue, limitvalue, listcode, callback) {
+function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skipvalue, limitvalue, callback) {
     try {
         const dbo = MongoDB.getDB();
         var finalresult;
@@ -571,25 +571,19 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
         /* var date = new Date(); // some mock date
         var milliseconds = date.getTime(); */
         ////console.log("JoblistEntry",matchparams);
-        var employeecondition = {};
         if (params.employeecode == null || params.employeecode == undefined)
         {
             params.employeecode = [];
         }
         var DefaultConditions = {};
-        if (listcode == 1)
-        {
-            employeecondition = { "employeecode": {$nin : params.employeecode}}
-        }
         DefaultConditions = {
             $and: [
                 { "personalinfo.dateofbirth": { $exists: true } }, { "personalinfo.dateofbirth": { $gt: 0 } },
                 { "preferences.minsalary": { $exists: true } }, { "preferences.minsalary": { $gt: 0 } },
-                employeecondition
+                { "employeecode": {$nin : params.employeecode}}
             ]
         }
-        // console.log("JoblistEntry",matchparams);
-         console.log("JoblistEntry", JSON.stringify(matchparams, null, " "))
+        //  console.log(JSON.stringify(matchparams, null, " "))
          //console.log(JSON.stringify(DefaultConditions))
         var skipCondition = {};
         var limitCondition = {};
@@ -637,7 +631,7 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                     ////console.log("emp", matchedresult[i].employeecode);
                     tempempcode.push(matchedresult[i].employeecode);
                 }
-                 console.log("emp", tempempcode);
+                // console.log("emp", tempempcode);
                 var empmatchparams = { "employeecode": { $in: tempempcode } };
                 //   console.log('Kavithaaaaaaaaaaaaaaaaaa');
                 //  console.log(Number(params.languagecode));
@@ -645,22 +639,107 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                 if (empmatchparams != "") {
                     //console.log(empmatchparams);
                     dbo.collection(MongoDB.EmployeeProfileViewCollectionName).aggregate([
-                        { $match: empmatchparams },
                         { $unwind: "$contactinfo" },
                         { $unwind: "$personalinfo" },
                         { $unwind: { path: '$skilllist', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$skilllisttamil', preserveNullAndEmptyArrays: true } },
-                        //{ $unwind: { path: '$skilllisthindi', preserveNullAndEmptyArrays: true } },
+                        { $unwind: { path: '$skilllisthindi', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$skilllist.skillcode', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$skilllist.skillname', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$skilllisttamil.skillname', preserveNullAndEmptyArrays: true } },
-                        //{ $unwind: { path: '$skilllisthindi.skillname', preserveNullAndEmptyArrays: true } },
+                        { $unwind: { path: '$skilllisthindi.skillname', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$preferences', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$preferences.locationlist', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$preferencestamil', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$preferencestamil.locationlist', preserveNullAndEmptyArrays: true } },
-                        // { $unwind: { path: '$preferenceshindi', preserveNullAndEmptyArrays: true } },
-                        // { $unwind: { path: '$preferenceshindi.locationlist', preserveNullAndEmptyArrays: true } },
+                        { $unwind: { path: '$preferenceshindi', preserveNullAndEmptyArrays: true } },
+                        { $unwind: { path: '$preferenceshindi.locationlist', preserveNullAndEmptyArrays: true } },
+                        { $match: empmatchparams },
+                        // {
+                        //     "$lookup":
+                        //     {
+                        //         "from": String(MongoDB.EmployeeAppliedCollectionName),
+                        //         "localField": "employeecode",
+                        //         "foreignField": "employeecode",
+                        //         "as": "appliedinfo"
+                        //     }
+                        // },
+                        // {
+                        //     "$addFields": {
+                        //         "appliedinfo": {
+                        //             "$filter": {
+                        //                 "input": "$appliedinfo",
+                        //                 "as": "applyinfo",
+                        //                 "cond": {
+                        //                     "$eq": ["$$applyinfo.jobcode", Number(params.jobcode)]
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // },
+                        // {
+                        //     "$lookup":
+                        //     {
+                        //         "from": String(MongoDB.EmployeeInvitedCollectionName),
+                        //         "localField": "employeecode",
+                        //         "foreignField": "employeecode",
+                        //         "as": "invitedinfo"
+                        //     }
+                        // },
+                        // {
+                        //     "$addFields": {
+                        //         "invitedinfo": {
+                        //             "$filter": {
+                        //                 "input": "$invitedinfo",
+                        //                 "as": "inviteinfo",
+                        //                 "cond": {
+                        //                     "$eq": ["$$inviteinfo.jobcode", Number(params.jobcode)]
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // },
+                        // {
+                        //     "$lookup":
+                        //     {
+                        //         "from": String(MongoDB.EmployerWishListCollectionName),
+                        //         "localField": "employeecode",
+                        //         "foreignField": "employeecode",
+                        //         "as": "wishedinfo"
+                        //     }
+                        // },
+                        // {
+                        //     "$addFields": {
+                        //         "wishedinfo": {
+                        //             "$filter": {
+                        //                 "input": "$wishedinfo",
+                        //                 "as": "wishinfo",
+                        //                 "cond": {
+                        //                     "$eq": ["$$wishinfo.jobcode", Number(params.jobcode)]
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // },
+                        // {
+                        //     "$lookup":
+                        //     {
+                        //       "from": String(MongoDB.EmpJobPercentageCollectionName),
+                        //       "let": { "employeecode": "$employeecode", "jobcode": Number(params.jobcode) },
+                        //       "pipeline": [
+                        //         {
+                        //           $match: {
+                        //             "$expr": {
+                        //               "$and": [{ $eq: ["$employeecode", "$$employeecode"] },
+                        //               { $eq: ["$jobcode", "$$jobcode"] }, { $eq: ["$jobcode", Number(params.jobcode)] }
+                        //               ]
+                        //             }
+                        //           }
+                        //         }
+                        //       ],
+                        //       "as": "percentagelistinfo"
+                        //     }
+                        // },
                         { $unwind: { path: '$appliedinfo', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$wishedinfo', preserveNullAndEmptyArrays: true } },
                         { $unwind: { path: '$invitedinfo', preserveNullAndEmptyArrays: true } },
@@ -671,7 +750,7 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                                 "_id": {
                                     "contactinfo": '$contactinfo',
                                     "contactinfotamil": '$contactinfotamil',
-                                    //"contactinfohindi": '$contactinfohindi',
+                                    "contactinfohindi": '$contactinfohindi',
                                     "mobileno": '$contactinfo.mobileno',
                                     "lastlogindate": "$personalinfo.lastlogindate",
                                     "employeecode": '$employeecode', 
@@ -681,7 +760,7 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
 									"gendercode": '$personalinfo.gender',
                                     "gendername": '$personalinfo.gendername', 
                                     "gendernametamil": '$personalinfotamil.gendername', 
-                                    //"gendernamehindi": '$personalinfohindi.gendername', 
+                                    "gendernamehindi": '$personalinfohindi.gendername', 
 									"totalexperience": '$totalexperience', 
 									"expyear": '$expyear', 
 									"expmonth": '$expmonth', 
@@ -703,19 +782,25 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                                 "jobfunctioncode": { $addToSet: "$skilllist.jobfunctioncode" }, 
                                  "jobfunctionname": { $addToSet: "$skilllist.jobfunctionname" }, 
 								 "jobfunctionnametamil": { $addToSet: "$skilllisttamil.jobfunctionname" }, 
-                                 //"jobfunctionnamehindi": { $addToSet: "$skilllisthindi.jobfunctionname" }, 
+                                 "jobfunctionnamehindi": { $addToSet: "$skilllisthindi.jobfunctionname" }, 
                                 "jobrolecode": { $addToSet: "$skilllist.jobrolecode" }, 
                                 "jobrolename": { $addToSet: "$skilllist.jobrolename"  },
 								"jobrolenametamil": { $addToSet: "$skilllisttamil.jobrolename"  },
-                                //"jobrolenamehindi": { $addToSet: "$skilllisthindi.jobrolename"  },
+                                "jobrolenamehindi": { $addToSet: "$skilllisthindi.jobrolename"  },
                                 "locationcode": { $addToSet: "$preferences.locationlist.locationcode" }, 
                                 "locationname": { $addToSet: "$preferences.locationlist.locationname"  },
 								"locationnametamil": { $addToSet: "$preferencestamil.locationlist.locationname"  },
-                                //"locationnamehindi": { $addToSet: "$preferenceshindi.locationlist.locationname"  },
+                                "locationnamehindi": { $addToSet: "$preferenceshindi.locationlist.locationname"  },
                                 "skillcode": { $addToSet: "$skilllist.skillcode" }, 
                                 "skillname": { $addToSet: "$skilllist.skillname" },
 								"skillnametamil": { $addToSet: "$skilllisttamil.skillname" },
-                                //"skillnamehindi": { $addToSet: "$skilllisthindi.skillname" },
+                                "skillnamehindi": { $addToSet: "$skilllisthindi.skillname" },
+                                //  "jobfunctioncode": { $addToSet: "$skilllist.jobfunctioncode" }, "jobfunctionname": { $addToSet: "$skilllist.jobfunctionname" },
+                                // "jobrolecode": { $addToSet: "$skilllist.jobrolecode" }, "jobrolename": { $addToSet: "$skilllist.jobrolename" },
+                                // "locationcode": { $addToSet: "$preferences.locationlist.locationcode" }, "locationname": { $addToSet: "$preferences.locationlist.locationname" },
+                                // "skillcode": { $addToSet: "$skilllist.skillcode" }, "skillname": { $addToSet: "$skilllist.skillname" },
+                                // "currentjobrolename": { $addToSet: "$skills.currentjobfunction" },
+
                                 "currentjobrolename": {
                                     "$addToSet": {
                                        
@@ -726,6 +811,8 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                                         ]
                                     }
                                 },
+
+
                             }
                         },
                         { $match: listagefrom },
@@ -793,7 +880,7 @@ function GetAllProfilesList(matchparams, params, listagefrom, sortbyparams, skip
                              return callback(finalresult);
                         }
                         else {
-                          //console.log("matchedresult.length", result.length);
+                        //    console.log("matchedresult.length", result.length);
                             for (var i = 0; i <= result.length - 1; i++) {
                                 ////console.log("emp", matchedresult[i].employeecode);
                                 tempemployeecode.push(result[i].employeecode);

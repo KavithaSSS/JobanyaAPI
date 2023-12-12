@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 // const {notvalidcode,createcode,listcode, existcode,updatecode,deletecode, recordnotfoundcode, successresponsecode,usernotfoundcode } = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.jobpackage_formload = function (req, res) {
+exports.jobpackage_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -74,8 +81,15 @@ function bigIntSerializer(num){
       value: num.toString()
     };
   }
-exports.insert_jobpackage_details = function (req, res) {
+exports.insert_jobpackage_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -200,8 +214,15 @@ exports.insert_jobpackage_details = function (req, res) {
         { logger.error("Error in Jobpackage insert: " + e); }
     }
 }  
-exports.update_jobpackage_details = function (req, res) {
+exports.update_jobpackage_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -396,8 +417,15 @@ exports.update_jobpackage_details = function (req, res) {
         { logger.error("Error in Jobpackage Update: " + e); }
     }
 }
-exports.delete_jobpackage_details = function (req, res) {
+exports.delete_jobpackage_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -485,8 +513,15 @@ exports.delete_jobpackage_details = function (req, res) {
         { logger.error("Error in Delete Jobpackage: " + e); }
     }
 }
-exports.jobpackage_list_by_code = function (req, res) {
+exports.jobpackage_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -557,8 +592,15 @@ exports.jobpackage_list_by_code = function (req, res) {
         { logger.error("Error in Jobpackage list by code: " + e); }
     }
 }
-exports.jobpackage_list = function (req, res) {
+exports.jobpackage_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -661,8 +703,15 @@ exports.jobpackage_list = function (req, res) {
     }
 }
 
-exports.insert_jobpackage_zohoitem_details = function (req, res) {
+exports.insert_jobpackage_zohoitem_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

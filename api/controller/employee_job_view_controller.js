@@ -11,7 +11,7 @@ const objRecommendedJobList = require('../process/employee_recommended_process_c
 const objJobList = require('../process/employee_job_list_process_controller');
 const objRecommended = require('../process/employer_recommended_process_controller');
 const objProfileList = require('../process/employer_profile_list_process_controller');
-exports.getJobView = function (req, res) {
+exports.getJobView = async function (req, res) {
   try {
     var objLogdetails;
 
@@ -19,6 +19,15 @@ exports.getJobView = function (req, res) {
     var logUserCode = "";
     var logType = "";
     var apptypecodedata = 0;
+
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
+
     if (req.query.usercode != null) {
       apptypecodedata = 3;
       logUserCode = req.query.usercode;
@@ -201,11 +210,18 @@ exports.getJobView = function (req, res) {
   catch (e) { logger.error("Error in Job View: " + e); }
 }
 
-exports.FlashJobDescriptionView = function (req, res) {
+exports.FlashJobDescriptionView = async function (req, res) {
   try {
     var objLogdetails;
     var logUserCode = "";
     var logType = "";
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     logUserCode = req.query.employeecode;
     logType = varconstant.employeeLogType;
     var params = { "ipaddress": req.query.deviceip, "usercode": logUserCode, "orginator": 'Job View', "type": logType };
@@ -278,11 +294,19 @@ exports.FlashJobDescriptionView = function (req, res) {
   catch (e) { logger.error("Error in Job View: " + e); }
 }
 
-exports.FlashJobDialCount = function (req, res) {
+exports.FlashJobDialCount = async function (req, res) {
   try {
     var objLogdetails;
     var logUserCode = "";
     var logType = "";
+    
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     logUserCode = req.query.employeecode;
     logType = varconstant.employeeLogType;
     var params = { "ipaddress": req.query.deviceip, "usercode": logUserCode, "orginator": 'Flash Job Dial Count', "type": logType };
@@ -338,13 +362,20 @@ exports.FlashJobDialCount = function (req, res) {
 
 
 
-exports.getJobCount = function (req, res) {
+exports.getJobCount = async function (req, res) {
   try {
     var objLogdetails;
 
     ////console.log(langparams);
     var logUserCode = "";
     var logType = "";
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var apptypecodedata = 0;
     if (req.query.usercode != null) {
       apptypecodedata = 3;

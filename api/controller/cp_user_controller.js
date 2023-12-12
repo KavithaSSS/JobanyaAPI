@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 // const {notvalidcode,loginsuccesscode, passwordincorrectcode, createcode,listcode, existcode,updatecode,deletecode, recordnotfoundcode, successresponsecode,usernotfoundcode } = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_user_details = function (req, res) {
+exports.insert_user_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -107,8 +114,15 @@ exports.insert_user_details = function (req, res) {
         logger.error("Error in User Save: " + e);
     }
 }
-exports.update_user_details = function (req, res) {
+exports.update_user_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -239,8 +253,15 @@ exports.update_user_details = function (req, res) {
         logger.error("Error in User Update: " + e);
     }
 }
-exports.delete_user_details = function (req, res) {
+exports.delete_user_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -330,8 +351,15 @@ exports.delete_user_details = function (req, res) {
         logger.error("Error in User Delete: " + e);
     }
 }
-exports.user_list_by_code = function (req, res) {
+exports.user_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -402,8 +430,9 @@ exports.user_list_by_code = function (req, res) {
         logger.error("Error in User List by Code: " + e);
     }
 }
-exports.user_login_details = function (req, res) {
+exports.user_login_details = async function (req, res) {
     try {
+      
         var objLogdetails;
         const logvalues = { ipaddress: req.query.ipaddress, usercode: req.query.username, orginator: 'user Login', logdate: new Date(), type: 'Employee' }
         objUtilities.getLogDetails(logvalues, function (logresponse) {
@@ -419,17 +448,26 @@ exports.user_login_details = function (req, res) {
                         const dbo = MongoDB.getDB();
                         objUtilities.getcurrentmilliseconds(function (currenttime) {
                             ////console.log(currenttime);
-                            dbo.collection(MongoDB.UserCollectionName).updateOne({ "usercode": response[0].usercode }, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
-                            
+                            dbo.collection(MongoDB.UserCollectionName).updateOne({ "usercode": response[0].usercode }, { $set: { "lastlogindate": currenttime } }, async function (err, logres) {
+                                //  var prefstatus = false;
+                                // if (prefresult != null) {
+                                //     prefstatus = true;
+                                // }
+                                var accessToken =  await objUtilities.generateAccessToken({user: req.query.username});
+                                var refreshToken =  await objUtilities.generateRefreshToken({user: req.query.username}); 
+                              
                                 const msgparam = { "messagecode": objConstants.loginsuccesscode };
                                 objUtilities.getMessageDetails(msgparam, function (msgtext) {
+                                    
                                     return res.status(200).json({
                                         login_json_result: {
                                             response: objConstants.successresponsecode,
                                             varstatuscode: objConstants.loginsuccesscode,
                                             responsestring: msgtext,
                                             getuserlist: response,
-                                            currenttime: currenttime
+                                            currenttime: currenttime,
+                                            accessToken:accessToken,
+                                            refreshToken:refreshToken
                                         }
                                     });
         
@@ -483,8 +521,15 @@ exports.user_login_details = function (req, res) {
         logger.error("Error in User Login: " + e);
     }
 }
-exports.user_formload = function (req, res) {
+exports.user_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -541,8 +586,15 @@ exports.user_formload = function (req, res) {
         logger.error("Error in User Load: " + e);
     }
 }
-exports.user_list = function (req, res) {
+exports.user_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

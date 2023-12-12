@@ -18,22 +18,7 @@ exports.getExperienceFilterBind= function (logparams, params, callback) {
         //state Collection
         ////console.log(languagecode);
         //var jobfuncparams =  {"statuscode": objConstants.activestatus, 'jobfunction.languagecode': Number(params.languagecode) };
-        // dbo.collection(MongoDB.ExperienceCollectionName).find({"statuscode": objConstants.activestatus, "value": {$gte: 0}},
-        //  { projection: { _id: 0, experiencecode:1, experiencename: 1, value:1 } }, 
-        //  {
-        //     $sort: {
-        //         experiencecode: -1
-        //     }
-        //   }).toArray(function(err, experienceresult) {
-        dbo.collection(MongoDB.ExperienceCollectionName).aggregate([
-            {$match: {"statuscode": objConstants.activestatus, "value": {$gte: 0}}},
-             { $project: { _id: 0, experiencecode:1, experiencename: 1, value:1 } }, 
-             {
-                    $sort: {
-                        value: -1
-                    }
-                  }
-        ]).toArray(function(err, experienceresult) {
+        dbo.collection(MongoDB.ExperienceCollectionName).find({"statuscode": objConstants.activestatus}, { projection: { _id: 0, experiencecode:1, experiencename: 1, value:1 } }).toArray(function(err, experienceresult) {
 
 
             finalresult =experienceresult;

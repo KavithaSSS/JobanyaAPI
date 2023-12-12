@@ -7,8 +7,15 @@ const objProfileList = require('../process/employer_profile_list_process_control
 const objRecommended = require('../process/employer_recommended_process_controller')
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.getOverallProfileListCount = function (req, res) {
+exports.getOverallProfileListCount = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var async = require('async');
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
@@ -112,8 +119,15 @@ exports.getOverallProfileListCount = function (req, res) {
   }
   catch (e) { logger.error("Error in Overall Job List Count: " + e); }
 }
-exports.InvitedList = function (req, res) {
+exports.InvitedList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     ////console.log(req.query.employercode);
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {

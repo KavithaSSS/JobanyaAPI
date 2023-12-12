@@ -12,8 +12,15 @@ const objMail = require('../process/send_email_process_controller');
 const objProfile = require('../process/employee_profile_view_process_controller')
 const objJobView = require('../process/employee_job_view_process_controller')
 
-exports.AbuseSave = function (req, res) {
+exports.AbuseSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var objLogdetails;
     var logUserCode = "";
     var logType = "";

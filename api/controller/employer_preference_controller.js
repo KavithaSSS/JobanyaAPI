@@ -6,8 +6,15 @@ const varconstant = require('../../config/constants');
 const objPreference = require('../process/employer_preference_process_controller')
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.PreferenceLoad = function (req, res) {
+exports.PreferenceLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var logType = "";
@@ -91,8 +98,15 @@ exports.PreferenceLoad = function (req, res) {
   }
   catch (e) { logger.error("Error in Preference Load: " + e); }
 }
-exports.PreferenceSave = function (req, res) {
+exports.PreferenceSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var logType = "";

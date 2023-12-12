@@ -7,8 +7,15 @@ const objconstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 // const {notvalidcode,createcode,listcode, existcode,updatecode,deletecode, recordnotfoundcode, successresponsecode,usernotfoundcode } = require('../../config/constants');
-exports.qualification_formload = function (req, res) {
+exports.qualification_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -65,8 +72,15 @@ exports.qualification_formload = function (req, res) {
         { logger.error("Error in qualification formload: " + e); }
     }
 }
-exports.insert_qualification_details = function (req, res) {
+exports.insert_qualification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -153,8 +167,15 @@ exports.insert_qualification_details = function (req, res) {
         { logger.error("Error in Qualification insert: " + e); }
     }
 }
-exports.update_qualification_details = function (req, res) {
+exports.update_qualification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -394,8 +415,15 @@ exports.update_qualification_details = function (req, res) {
         { logger.error("Error in Qualification Update: " + e); }
     }
 }
-exports.delete_qualification_details = function (req, res) {
+exports.delete_qualification_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -501,8 +529,15 @@ exports.delete_qualification_details = function (req, res) {
         { logger.error("Error in Qualification delete: " + e); }
     }
 }
-exports.qualification_list_by_code = function (req, res) {
+exports.qualification_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -573,8 +608,15 @@ exports.qualification_list_by_code = function (req, res) {
         { logger.error("Error in Qualification Edit load: " + e); }
     }
 }
-exports.qualification_list = function (req, res) {
+exports.qualification_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

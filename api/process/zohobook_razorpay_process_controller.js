@@ -115,7 +115,7 @@ exports.insertCustomerAndContact = function (CutomerParams, AuthCode, callback) 
     try {
         exports.getZohobookRazorPayAuthToken(AuthCode, function (tokenresponse) {
             if (tokenresponse != null && tokenresponse.access_token != null) {
-                console.log(tokenresponse, "tokenresponse")
+                //console.log(tokenresponse, "tokenresponse")
                 var authorization = 'Zoho-oauthtoken ' + tokenresponse.access_token;
                 var inserturl = "https://books.zoho.com/api/v3/contacts?organization_id=" + zohobook_orgainsation;
 
@@ -241,6 +241,8 @@ exports.UploadInvoice = async function (keypath, invoiceid, callback) {
         // //console.log("entry");
         // The name of the bucket that you have created
 
+        // const ID = ' ';
+        // const SECRET = ' ';
         const options = {
             uri: keypath,
             encoding: null

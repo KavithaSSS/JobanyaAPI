@@ -9,8 +9,15 @@ var date = new Date(); // some mock date
 var milliseconds = date.getTime();
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.NotificationTotalCount = function (req, res) {
+exports.NotificationTotalCount = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         if (req.query.apptypecode == 1)
             logType = objConstants.employeeLogType;
@@ -191,8 +198,15 @@ exports.NotificationTotalCount = function (req, res) {
         logger.error("Error in Notification count: " + e);
     }
 }
-exports.NotificationStatusUpdate = function (req, res) {
+exports.NotificationStatusUpdate = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.apptypecode == 1)
@@ -418,8 +432,15 @@ exports.NotificationStatusUpdate = function (req, res) {
         logger.error("Error in Notification Statuscode update : " + e);
     }
 }
-exports.UpdateDismissStatus = function (req, res) {
+exports.UpdateDismissStatus = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.apptypecode == 1)
@@ -674,8 +695,15 @@ exports.UpdateDismissStatus = function (req, res) {
         logger.error("Error in Dismiss Notification : " + e);
     }
 }
-exports.NotificationList = function (req, res) {
+exports.NotificationList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.usercode != null) {
@@ -843,8 +871,15 @@ exports.NotificationList = function (req, res) {
         logger.error("Error in  Notification List : " + e);
     }
 }
-exports.DeviceTokenEntry = function (req, res) {
+exports.DeviceTokenEntry = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (Number(req.query.apptypecode)==1) {
@@ -995,8 +1030,15 @@ exports.DeviceTokenEntry = function (req, res) {
         logger.error("Error in  Token Entry : " + e);
     }
 }
-exports.DeviceTokenDisable = function (req, res) {
+exports.DeviceTokenDisable = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.usercode != null) {
@@ -1106,8 +1148,15 @@ exports.DeviceTokenDisable = function (req, res) {
         logger.error("Error in  Logout device : " + e);
     }
 }
-exports.UpdateViewedStatus = function (req, res) {
+exports.UpdateViewedStatus = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.apptypecode == 1)
@@ -1240,8 +1289,15 @@ exports.UpdateViewedStatus = function (req, res) {
 }
 
 
-exports.NotificationRemarksUpdate = function (req, res) {
+exports.NotificationRemarksUpdate = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var logType = "";
         ////console.log(req.query.usercode);
         if (req.query.apptypecode == 1)

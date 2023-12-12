@@ -7,8 +7,15 @@ const objProfile = require('../process/employer_profile_view_process_controller'
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 
-exports.EmployerProfileView = function (req, res) {
+exports.EmployerProfileView = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var objLogdetails;
     var langparams = req.query.languagecode;
     var logUserCode = "";
@@ -80,8 +87,15 @@ exports.EmployerProfileView = function (req, res) {
   catch (e) { logger.error("Error in Profile View: " + e); }
 }
 
-exports.getEmployerProfileImage = function (req, res) {
+exports.getEmployerProfileImage = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

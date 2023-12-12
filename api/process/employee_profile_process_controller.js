@@ -1747,7 +1747,7 @@ exports.GetEmpListFilter = function (logparams, req, callback) {
         
         var jobfunctioncode = {}, jobrolecode = {}, skillcode = {}, locationcode = {}, schoolqualcode = {}, afterschoolqualcode = {}, afterschoolspeccode = {};
         var maritalcode = {}, gendercode = {}, jobtypecode = {}, searchbyname = {}, searchbymobileno = {}, differentlyabledcode = {}, inactivedays = {}, activedays = {}, usercode = {};
-        var profilepercentage = {}, personalinfo = {}, contactinfo = {}, preference = {}, education = {},totallangcountparams ={},
+        var profilepercentage = {}, personalinfo = {}, contactinfo = {}, preference = {}, education = {},
             referenceinfo = {}, experience = {}, skills = {}, photo = {}, profileparams = {}, registereddate = {};
         var date = new Date();
         var listparams = req.body;
@@ -1959,22 +1959,10 @@ exports.GetEmpListFilter = function (logparams, req, callback) {
         if (listparams.languagecode && (listparams.languagecode) != 0)
             languagecodecondition = { 'preferredlanguagecode': listparams.languagecode };
         var dbCollectionName = Number(req.query.isleadtype) == 0 ? MongoDB.EmployeeCollectionName : MongoDB.LeadCollectionName;
-        dbo.collection(String(MongoDB.LanguageCollectionName)).aggregate([
-            { $match: { "statuscode": 1, isappsupport: 1 } },
-            {
-              $project: { _id: 0, languagecode: 1 }
-            }
-          ],{ allowDiskUse: true }).toArray(function (err, langresult) {
-            var langarray = [];
-            for (var i = 0; i < langresult.length; i++)
-            {
-              langarray.push(langresult[i].languagecode);
-            }
-            totallangcountparams = {"preferredlanguagecode": {$in :langarray}}
         var matchparams = {
             $and: [profilestatus, languagecodecondition, locationcode, jobfunctioncode, jobrolecode, skillcode, schoolqualcode, jobtypecode, gendercode, differentlyabledcode,
                 maritalcode, condition, searchbymobileno, searchbyname, inactivedays,
-                activedays, exp, usercode,registereddate, totallangcountparams,
+                activedays, exp, usercode,registereddate,
                 { $and: [afterschoolqualcode, afterschoolspeccode] }]
         };
         if (matchparams != "") {
@@ -2050,25 +2038,6 @@ exports.GetEmpListFilter = function (logparams, req, callback) {
                     { $sort: sortbyparams },
                 ],{ allowDiskUse: true }).toArray(function (err, emplist) {
                     if (emplist != null && emplist.length > 0) {
-                        dbo.collection(String(dbCollectionName)).aggregate([
-                            { $match: matchparams},
-                            {
-                              "$lookup":
-                              {
-                                "from": String(MongoDB.LanguageCollectionName),
-                                "localField": "preferredlanguagecode",
-                                "foreignField": "languagecode",
-                                "as": "languageinfo"
-                              }
-                            },
-                            { $unwind: { path: '$languageinfo', preserveNullAndEmptyArrays: true } },
-                            { $unwind: { path: '$languageinfo.language', preserveNullAndEmptyArrays: true } },
-                            { $match: { $or: [{ "languageinfo.language.code": { $exists: false } }, { "languageinfo.language.code": "" }, { "languageinfo.language.code": 2 }] } },
-                            { $group: { _id: { languagecode: '$preferredlanguagecode', languagename: '$languageinfo.language.name' }, "count": {"$sum": 1} } },
-                            {
-                              $project: { _id: 0, languagecode: '$_id.languagecode',languagename: '$_id.languagename', "count": '$count' }
-                            }
-                          ],{ allowDiskUse: true }).toArray(function (err, employeelangarray) {
                         var activecount, inactivecount, blockcount, pendingcount , rejectedcount , regviaapp, regviaportal , totalcount =0;
                         activecount = emplist.filter(t => t.statuscode == objConstants.activestatus);
                         inactivecount = emplist.filter(t => t.statuscode == objConstants.inactivestatus);
@@ -2088,9 +2057,7 @@ exports.GetEmpListFilter = function (logparams, req, callback) {
                         finalresult.push(totalcount);                        
                         finalresult.push(regviaapp.length);
                         finalresult.push(regviaportal.length);
-                        finalresult.push(employeelangarray);
                         return callback(finalresult);
-                          });
                       }
                 });
             });
@@ -2099,7 +2066,6 @@ exports.GetEmpListFilter = function (logparams, req, callback) {
         else {
             return callback(finalresult);
         }
-    });
 
     }
     catch (e) {

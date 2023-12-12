@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_state_details = function (req, res) {
+exports.insert_state_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -106,8 +113,15 @@ exports.insert_state_details = function (req, res) {
         logger.error("Error in State Save: " + e);
     }
 }
-exports.update_state_details = function (req, res) {
+exports.update_state_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -341,8 +355,15 @@ exports.update_state_details = function (req, res) {
         logger.error("Error in State Update: " + e);
     }
 }
-exports.delete_state_details = function (req, res) {
+exports.delete_state_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -476,8 +497,15 @@ exports.delete_state_details = function (req, res) {
         logger.error("Error in State Delete: " + e);
     }
 }
-exports.state_list_by_code = function (req, res) {
+exports.state_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -548,8 +576,15 @@ exports.state_list_by_code = function (req, res) {
         logger.error("Error in State List by Code: " + e);
     }
 }
-exports.state_formload = function (req, res) {
+exports.state_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -605,8 +640,15 @@ exports.state_formload = function (req, res) {
         logger.error("Error in State Load: " + e);
     }
 }
-exports.state_list = function (req, res) {
+exports.state_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

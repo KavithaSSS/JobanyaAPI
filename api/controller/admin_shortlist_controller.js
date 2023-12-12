@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 var objEmployeeProfile = require('../process/employee_profile_process_controller');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.ShortListReport = function (req, res) {
+exports.ShortListReport = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -86,8 +93,15 @@ exports.ShortListReport = function (req, res) {
     }
 }
 
-exports.AppliedReport = function (req, res) {
+exports.AppliedReport = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -199,8 +213,15 @@ exports.AppliedReport = function (req, res) {
     }
 }
 
-exports.InvitedReport = function (req, res) {
+exports.InvitedReport = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -267,8 +288,15 @@ exports.InvitedReport = function (req, res) {
 }
 
 
-exports.ExcelAppliedReport = function (req, res) {
+exports.ExcelAppliedReport =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -334,8 +362,15 @@ exports.ExcelAppliedReport = function (req, res) {
     }
 }
 
-exports.ExcelInvitedReport = function (req, res) {
+exports.ExcelInvitedReport = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;

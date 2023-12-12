@@ -8,8 +8,15 @@ const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 //const {objConstants.notvalidcode,objConstants.objConstants.createcode,objConstants.listcode, objConstants.existcode,objConstants.updatecode,objConstants.deletecode, objConstants.recordnotfoundcode, objConstants.successresponsecode,objConstants.usernotfoundcode } = require('../../config/constants');
 
-exports.jobrole_formload = function (req, res) {
+exports.jobrole_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -66,8 +73,15 @@ exports.jobrole_formload = function (req, res) {
         logger.error("Error in Job Role Load: " + e);
     }
 }
-exports.insert_jobrole_details = function (req, res) {
+exports.insert_jobrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -164,8 +178,15 @@ exports.insert_jobrole_details = function (req, res) {
         logger.error("Error in Job Role Create: " + e);
     }
 }
-exports.update_jobrole_details = function (req, res) {
+exports.update_jobrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -531,8 +552,15 @@ exports.update_jobrole_details = function (req, res) {
         logger.error("Error in Job Role Update: " + e);
     }
 }
-exports.delete_jobrole_details = function (req, res) {
+exports.delete_jobrole_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -651,8 +679,15 @@ exports.delete_jobrole_details = function (req, res) {
         logger.error("Error in Job Role Delete: " + e);
     }
 }
-exports.jobrole_list_by_code = function (req, res) {
+exports.jobrole_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -723,8 +758,15 @@ exports.jobrole_list_by_code = function (req, res) {
         logger.error("Error in Job Role List by Code: " + e);
     }
 }
-exports.jobrole_list = function (req, res) {
+exports.jobrole_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

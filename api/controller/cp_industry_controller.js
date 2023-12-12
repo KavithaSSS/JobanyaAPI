@@ -8,8 +8,15 @@ const objConstants = require('../../config/constants');
 
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.industry_formload = function (req, res) {
+exports.industry_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -65,8 +72,15 @@ exports.industry_formload = function (req, res) {
         { logger.error("Error in Industry formload: " + e); }
     }
 }
-exports.insert_industry_details = function (req, res) {
+exports.insert_industry_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -164,8 +178,15 @@ exports.insert_industry_details = function (req, res) {
         { logger.error("Error in Industry Insert: " + e); }
     }
 }
-exports.update_industry_details = function (req, res) {
+exports.update_industry_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -407,8 +428,15 @@ exports.update_industry_details = function (req, res) {
         { logger.error("Error in Industry Update: " + e); }
     }
 }
-exports.update_industry_image_details = function (req, res) {
+exports.update_industry_image_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -519,8 +547,15 @@ exports.update_industry_image_details = function (req, res) {
         { logger.error("Error in update industry image url: " + e); }
     }
 }
-exports.delete_industry_details = function (req, res) {
+exports.delete_industry_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -630,8 +665,15 @@ exports.delete_industry_details = function (req, res) {
 
     }
 }
-exports.industry_list_by_code = function (req, res) {
+exports.industry_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -702,8 +744,15 @@ exports.industry_list_by_code = function (req, res) {
         { logger.error("Error in Industry Edit Load: " + e); }
     }
 }
-exports.industry_list = function (req, res) {
+exports.industry_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

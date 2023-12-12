@@ -64,8 +64,7 @@ exports.CheckValidMobileNoExists = function (logparams, req, callback) {
         var finalresult;
         logger.info("Log in Checking Employee Mobile Number : UserId: " + logparams.usercode + ", Originator: " + logparams.orginator + ", DeviceIP: " + logparams.ipaddress + ", Logdate: " + logparams.logdate + ", Type: " + logparams.type);
         const dbo = MongoDB.getDB();
-        // dbo.collection(MongoDB.EmployeeCollectionName).find({ "mobileno": req.query.mobileno }, { projection: { _id: 0, employeename: 1, employeecode: 1, preferredlanguagecode: { $ifNull: ['$preferredlanguagecode', varconstant.defaultlanguagecode] } } }).toArray(function (err, employeeres) //find if a value exists
-        dbo.collection(MongoDB.EmployeeCollectionName).aggregate([{$match: { "mobileno": "9965551058" }}, { $project: { _id: 0, employeename: 1, employeecode: 1, preferredlanguagecode: { $ifNull: ['$preferredlanguagecode', 2] } } }]).toArray(function (err, employeeres) //find if a value exists
+        dbo.collection(MongoDB.EmployeeCollectionName).find({ "mobileno": req.query.mobileno }, { projection: { _id: 0, employeename: 1 } }).toArray(function (err, employeeres) //find if a value exists
         {
             ////console.log(employeeres);
             return callback(employeeres);

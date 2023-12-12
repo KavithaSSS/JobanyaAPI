@@ -10,8 +10,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getRecommendedJobList = function (req, res) {
+exports.getRecommendedJobList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -116,20 +123,16 @@ exports.getRecommendedJobList = function (req, res) {
         });
         }
         else {
-          // console.log("hiiiiiiiii");
+          ////console.log("hiiiiiiiii");
           objRecommendedJobList.getAllProfileConditions(logparams, empparams, function (profileresult) {
             //listparams = {"industrycode": req.body.industrycode, "jobfunctioncode": req.body.jobfunctioncode, "skillcode":req.body.skillcode, "locationcode":req.body.locationcode, "jobtypecode":req.body.jobtypecode,"schoolqualcode":req.body.schoolqualcode, "afterschoolqualcode":req.body.afterschoolqualcode, "afterschoolspeccode":req.body.afterschoolspeccode, "experiencecode":req.body.experiencecode, "employertypecode":req.body.employertypecode, "companytypecode":req.body.companytypecode, "maritalcode":req.body.maritalcode, "gendercode":req.body.gendercode, "differentlyabled": req.body.differentlyabled, "salaryfrom": req.body.salaryfrom, "salaryto": req.body.salaryto, "agefrom": req.body.agefrom, "ageto": req.body.ageto, "anyage": req.body.anyage};
-            console.log(profileresult.jobrolecode);
+            // console.log(profileresult);
             ///// NOTE : SKILL BASED FILTER WAS REMOVED AS PER REQUIREMENT
-            var isanystate = 'true'
+            var isanystate = profileresult.isanystate != null ? profileresult.isanystate : 'false'
             var isanydistrict = profileresult.isanydistrict != null ? profileresult.isanydistrict : 'false'
-            var isanytaluk = 'true'
-            // listparams = {
-            //   "industrycode": profileresult.industrycode, "jobrolecode": [], "jobfunctioncode": profileresult.jobfunctioncode, "skillcode": [], "locationcode": isanydistrict == 'true' ? [] : profileresult.locationcode, "jobtypecode": profileresult.jobtypecode, "schoolqualcode": profileresult.schoolqualcode, "afterschoolcatecode": profileresult.afterschoolcatecode, "afterschoolqualcode": profileresult.afterschoolqualcode, "afterschoolspeccode": profileresult.afterschoolspeccode, "experiencecode": profileresult.experiencecode, "employertypecode": profileresult.employertypecode, "companytypecode": profileresult.companytypecode, "maritalcode": profileresult.maritalcode, "gendercode": profileresult.gendercode, "differentlyabled": profileresult.differentlyabled, "salaryfrom": profileresult.salaryfrom, "salaryto": profileresult.salaryto, "agefrom": profileresult.agefrom, "ageto": profileresult.ageto, "anyage": "false",
-            //   "anydegree": "true", "anyqualification": "true", "anyspec": "true"
-            // };
+            var isanytaluk = profileresult.isanytaluk != null ? profileresult.isanytaluk : 'false'
             listparams = {
-              "industrycode": [], "jobrolecode": profileresult.jobrolecode, "jobfunctioncode": profileresult.jobfunctioncode, "skillcode": [], "locationcode": [], "jobtypecode": [], "schoolqualcode": [], "afterschoolcatecode": [], "afterschoolqualcode": [], "afterschoolspeccode": [], "experiencecode": [], "employertypecode": [], "companytypecode": [], "maritalcode": [], "gendercode": profileresult.gendercode, "differentlyabled": [], "salaryfrom": 0, "salaryto": 0, "agefrom": 0, "ageto": 0, "anyage": "true",
+              "industrycode": profileresult.industrycode, "jobrolecode": [], "jobfunctioncode": profileresult.jobfunctioncode, "skillcode": [], "locationcode": isanydistrict == 'true' ? [] : profileresult.locationcode, "jobtypecode": profileresult.jobtypecode, "schoolqualcode": profileresult.schoolqualcode, "afterschoolcatecode": profileresult.afterschoolcatecode, "afterschoolqualcode": profileresult.afterschoolqualcode, "afterschoolspeccode": profileresult.afterschoolspeccode, "experiencecode": profileresult.experiencecode, "employertypecode": profileresult.employertypecode, "companytypecode": profileresult.companytypecode, "maritalcode": profileresult.maritalcode, "gendercode": profileresult.gendercode, "differentlyabled": profileresult.differentlyabled, "salaryfrom": profileresult.salaryfrom, "salaryto": profileresult.salaryto, "agefrom": profileresult.agefrom, "ageto": profileresult.ageto, "anyage": "false",
               "anydegree": "true", "anyqualification": "true", "anyspec": "true"
             };
             objJobList.getAllJobListTotal(logparams, empparams, listparams, 1, function (joblisttotal) {
@@ -139,7 +142,7 @@ exports.getRecommendedJobList = function (req, res) {
               //   "anydegree": "true", "anyqualification": "true", "anyspec": "true"
               // };
               listparams = {
-                "industrycode": [], "jobrolecode": profileresult.jobrolecode, "jobfunctioncode": profileresult.jobfunctioncode, "skillcode": [], "locationcode": isanydistrict == 'true' ? [] : profileresult.locationcode, "jobtypecode": [], "schoolqualcode": [], "afterschoolcatecode": [], "afterschoolqualcode": [], "afterschoolspeccode": [], "experiencecode": [], "employertypecode": [], "companytypecode": [], "maritalcode": [], "gendercode": profileresult.gendercode, "differentlyabled": [], "salaryfrom": 0, "salaryto": 0, "agefrom": 0, "ageto": 0, "anyage": "true",
+                "industrycode": profileresult.industrycode, "jobrolecode": [], "jobfunctioncode": profileresult.jobfunctioncode, "skillcode": [], "locationcode": [], "jobtypecode": profileresult.jobtypecode, "schoolqualcode": profileresult.schoolqualcode, "afterschoolcatecode": profileresult.afterschoolcatecode, "afterschoolqualcode": profileresult.afterschoolqualcode, "afterschoolspeccode": profileresult.afterschoolspeccode, "experiencecode": profileresult.experiencecode, "employertypecode": profileresult.employertypecode, "companytypecode": profileresult.companytypecode, "maritalcode": profileresult.maritalcode, "gendercode": profileresult.gendercode, "differentlyabled": profileresult.differentlyabled, "salaryfrom": profileresult.salaryfrom, "salaryto": profileresult.salaryto, "agefrom": profileresult.agefrom, "ageto": profileresult.ageto, "anyage": "false",
                 "anydegree": "true", "anyqualification": "true", "anyspec": "true"
               };
               //objJobList.getAllJobList(logparams, empparams, listparams, 8, function (flashjobresult) {

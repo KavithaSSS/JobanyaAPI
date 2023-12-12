@@ -10,8 +10,15 @@ var objMail = require('../process/send_email_process_controller');
 const objNotification = require('../process/employer_notification_process_controller');
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.EmployerView = function (req, res) {
+exports.EmployerView = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
 
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
@@ -94,8 +101,15 @@ exports.EmployerView = function (req, res) {
         logger.error("Error in Employer View - Employer Management " + e);
     }
 }
-exports.UpdateStatuscode = function (req, res) {
+exports.UpdateStatuscode = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 objUtilities.checkemployer(req.query.employercode, function (validemp) {
@@ -265,8 +279,15 @@ exports.UpdateStatuscode = function (req, res) {
     }
 }
 
-exports.DeleteEmployer = function (req, res) {
+exports.DeleteEmployer = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 objUtilities.checkemployer(req.body.employercode, function (validemp) {
@@ -342,8 +363,15 @@ exports.DeleteEmployer = function (req, res) {
     }
 }
 
-exports.UpdateEmailIdInEmployer = function (req, res) {
+exports.UpdateEmailIdInEmployer = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 objUtilities.checkemployer(req.body.employercode, function (validemp) {
@@ -445,8 +473,16 @@ exports.UpdateEmailIdInEmployer = function (req, res) {
     }
 }
 
-exports.DeleteNewEmailIdInEmployer = function (req, res) {
+exports.DeleteNewEmailIdInEmployer = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
+        
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 objUtilities.checkemployer(req.body.employercode, function (validemp) {
@@ -548,8 +584,15 @@ exports.DeleteNewEmailIdInEmployer = function (req, res) {
     }
 }
 
-exports.EmployerMasterList = function (req, res) {
+exports.EmployerMasterList =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -637,8 +680,15 @@ exports.EmployerMasterList = function (req, res) {
         logger.error("Error in  MasterList - Employer Management " + e);
     }
 }
-exports.EmployerList = function (req, res) {
+exports.EmployerList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (employerresponse) {
             if (employerresponse == true) {
                 var objLogdetails;
@@ -669,8 +719,7 @@ exports.EmployerList = function (req, res) {
                                             rejectedount: employercount[4],
                                             totcount: employercount[5],
                                             regviaapp: employercount[6],
-                                            regviaportal: employercount[7],
-                                            employerlangcount: employercount[8]
+                                            regviaportal: employercount[7]
                                         }
                                     });
                                 });
@@ -725,8 +774,15 @@ exports.EmployerList = function (req, res) {
         logger.error("Error in Employer List - Employer Management " + e);
     }
 }
-exports.EmailEmployerList = function (req, res) {
+exports.EmailEmployerList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (employerresponse) {
             if (employerresponse == true) {
                 var objLogdetails;
@@ -811,8 +867,15 @@ exports.EmailEmployerList = function (req, res) {
         logger.error("Error in Employer List - Employer Management " + e);
     }
 }
-exports.SendEmailEmployerList = function (req, res) {
+exports.SendEmailEmployerList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var objLogdetails;
         const logvalues = { ipaddress: req.query.ipaddress, usercode: req.query.usercode, orginator: 'Employer List', logdate: new Date(), type: 'Employee' }
         objUtilities.getLogDetails(logvalues, function (logresponse) {
@@ -859,8 +922,15 @@ exports.SendEmailEmployerList = function (req, res) {
 
 
 //Insert customer and contact details
-exports.InsertZohoCustomerContactDetails = function (req, res) {
+exports.InsertZohoCustomerContactDetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 objUtilities.checkemployer(req.query.employercode, function (validemp) {

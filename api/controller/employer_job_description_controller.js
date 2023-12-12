@@ -9,8 +9,15 @@ const objProfile = require('../process/employee_profile_view_process_controller'
 
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.JobDescriptionView = function (req, res) {
+exports.JobDescriptionView = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
       //  objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
         objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
             if (validemp == true) {
@@ -84,8 +91,15 @@ exports.JobDescriptionView = function (req, res) {
         logger.error("Error in Job description view - employer: " + e);
     }
 }
-exports.JobDescriptionEmployeeView = function (req, res) {
+exports.JobDescriptionEmployeeView = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";

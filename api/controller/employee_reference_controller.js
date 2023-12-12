@@ -10,8 +10,15 @@ const logger = new Logger('logs')
 const objGeneratePDF = require('../process/generate_employee_profile_pdf_process_controller')
 const objProfileView = require('../process/employee_profile_view_process_controller')
 //Reference
-exports.getReferenceLoad = function (req, res) {
+exports.getReferenceLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -81,8 +88,15 @@ exports.getReferenceLoad = function (req, res) {
   catch (e) { logger.error("Error in Reeference Load: " + e); }
 }
 
-exports.getReferenceEditLoad = function (req, res) {
+exports.getReferenceEditLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -188,8 +202,15 @@ exports.getReferenceEditLoad = function (req, res) {
   catch (e) { logger.error("Error in Reference Load: " + e); }
 }
 
-exports.referenceSave = function (req, res) {
+exports.referenceSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -300,8 +321,15 @@ exports.referenceSave = function (req, res) {
   catch (e) { logger.error("Error in Reference Save / Update: " + e); }
 }
 
-exports.referenceUpdate = function (req, res) {
+exports.referenceUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -428,8 +456,15 @@ exports.referenceUpdate = function (req, res) {
   catch (e) { logger.error("Error in Reference Save / Update: " + e); }
 }
 
-exports.referenceDelete = function (req, res) {
+exports.referenceDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -558,8 +593,15 @@ exports.referenceDelete = function (req, res) {
   }
   catch (e) { logger.error("Error in Reference Delete: " + e); }
 }
-exports.referenceList = function (req, res) {
+exports.referenceList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

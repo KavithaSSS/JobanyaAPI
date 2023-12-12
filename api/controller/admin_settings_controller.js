@@ -7,8 +7,15 @@ const objConstants = require('../../config/constants');
 // const {notvalidcode,createcode,listcode, existcode,updatecode,deletecode, recordnotfoundcode, successresponsecode,usernotfoundcode } = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.update_settings_details = function (req, res) {
+exports.update_settings_details =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -133,8 +140,15 @@ exports.update_settings_details = function (req, res) {
         { logger.error("Error in Update settings Details: " + e); }
     }
 }
-exports.settings_list_by_code = function (req, res) {
+exports.settings_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -205,8 +219,15 @@ exports.settings_list_by_code = function (req, res) {
         { logger.error("Error in Settings List: " + e); }
     }
 }
-exports.ChangePassword = function (req, res) {
+exports.ChangePassword = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         // //console.log("Entry")
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {

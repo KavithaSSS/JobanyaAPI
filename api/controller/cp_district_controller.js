@@ -7,8 +7,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.district_formload = function (req, res) {
+exports.district_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -66,8 +73,15 @@ exports.district_formload = function (req, res) {
         { logger.error("Error in District formload : " + e); }
     }
 }
-exports.insert_district_details = function (req, res) {
+exports.insert_district_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -165,8 +179,15 @@ exports.insert_district_details = function (req, res) {
         { logger.error("Error in District insert : " + e); }
     }
 }
-exports.update_district_details = function (req, res) {
+exports.update_district_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -551,8 +572,15 @@ exports.update_district_details = function (req, res) {
         { logger.error("Error in District update : " + e); }
     }
 }
-exports.delete_district_details = function (req, res) {
+exports.delete_district_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -670,8 +698,15 @@ exports.delete_district_details = function (req, res) {
         { logger.error("Error in District Delete : " + e); }
     }
 }
-exports.district_list_by_code = function (req, res) {
+exports.district_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -742,8 +777,15 @@ exports.district_list_by_code = function (req, res) {
         { logger.error("Error in District Edit load : " + e); }
     }
 }
-exports.district_list = function (req, res) {
+exports.district_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -762,8 +804,10 @@ exports.district_list = function (req, res) {
                     }
                     const params = { statuscode: req.query.statuscode, languagecode: languagecode };
                     objUtilities.getPortalLanguageDetails(logparams, function (langresponse) {
+                        console.log('lang==>', langresponse)
                         if (langresponse != null) {
                             get_district_details.getDistrictList(logparams, params, langresponse.length, function (response) {
+                                console.log('response==>', response)
                                 if (response != null && response.length > 0) {
                                     objUtilities.findCount(objConstants.distcount, function (respon) {
                                         // //console.log(respon);
@@ -843,12 +887,20 @@ exports.district_list = function (req, res) {
         });
     }
     catch (e) {
+        console.log('err', e)
         { logger.error("Error in District List : " + e); }
     }
 }
 
-exports.update_district_imageurl_details = function (req, res) {
+exports.update_district_imageurl_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

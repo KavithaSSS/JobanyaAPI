@@ -10,8 +10,15 @@ const logger = new Logger('logs')
 var date = new Date(); // some mock date
 var milliseconds = date.getTime();
 
-exports.getShortlistedProfileList = function (req, res) {
+exports.getShortlistedProfileList = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
       objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
         if (validemp == true) {
           var objLogdetails;

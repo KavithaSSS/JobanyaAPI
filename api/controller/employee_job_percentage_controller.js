@@ -7,8 +7,15 @@ var objemployee = require('../process/employee_job_percentage_process_controller
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
-exports.employee_job_percentage = function (req, res) {
+exports.employee_job_percentage = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.GetJobPercentage(function (jobpercentage) {
             objUtilities.GetAllActiveJobs(req, function (activejobcodelist) {
                 if (activejobcodelist && activejobcodelist.length > 0) {
@@ -69,8 +76,15 @@ exports.employee_job_percentage = function (req, res) {
 }
 
 
-exports.active_employee_job_percentage = function (req, res) {
+exports.active_employee_job_percentage = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.GetJobPercentage(function (jobpercentage) {
             objUtilities.GetAllActiveJobs(req, function (activejobcodelist) {
                 if (activejobcodelist && activejobcodelist.length > 0) {
@@ -131,8 +145,9 @@ exports.active_employee_job_percentage = function (req, res) {
 }
 
 
-exports.GetEmpDetails = function (activejobcodelist, employeelist, jobpercentage, callback) {
+exports.GetEmpDetails =  async function (activejobcodelist, employeelist, jobpercentage, callback) {
     try {
+     
         //console.log(activejobcodelist.length,"activejobcodelist")
         //console.log(employeelist.length,"employeelist")
         GetEmpDetailsJobCode(activejobcodelist, employeelist, jobpercentage, function (err, jobresult) {
@@ -171,8 +186,9 @@ function GetEmpDetailsJobCode(activejobcodelist, employeelist, jobpercentage, ca
     catch (e) { logger.error("Error in GetJobDetailsJobCode" + e); }
 }
 
-exports.GetEmpDetails_EmpCode = function (Empcodevalue, activejobcodelist, jobpercentage, callback) {
+exports.GetEmpDetails_EmpCode = async function (Empcodevalue, activejobcodelist, jobpercentage, callback) {
     try {
+       
         //console.log(Empcodevalue.employeecode,"Empcodevalue")
         objUtilities.getemployeedetails(Empcodevalue.employeecode, function (employee) {
            // console.log(employee,"employee")
@@ -190,8 +206,15 @@ exports.GetEmpDetails_EmpCode = function (Empcodevalue, activejobcodelist, jobpe
     }
 }
 
-exports.employee_active_job = function (req, res) {
+exports.employee_active_job = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.GetAllActiveJobs(req, function (activejobcodelist) {
                 if (activejobcodelist && activejobcodelist.length > 0) {
                     const msgparam = { "messagecode": objConstants.listcode };

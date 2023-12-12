@@ -11,8 +11,15 @@ const logger = new Logger('logs')
 
 //Schooling
 
-exports.getSchoolingLoad = function (req, res) {
+exports.getSchoolingLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -91,8 +98,15 @@ exports.getSchoolingLoad = function (req, res) {
   catch (e) { logger.error("Error in Schooling Load: " + e); }
 }
 
-exports.SchoolingSave = function (req, res) {
+exports.SchoolingSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -240,8 +254,15 @@ exports.SchoolingSave = function (req, res) {
   catch (e) { logger.error("Error in Schooling Save: " + e); }
 }
 
-exports.SchoolingUpdate = function (req, res) {
+exports.SchoolingUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -386,8 +407,15 @@ exports.SchoolingUpdate = function (req, res) {
   catch (e) { logger.error("Error in Schooling Update: " + e); }
 }
 
-exports.SchoolingDelete = function (req, res) {
+exports.SchoolingDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -512,8 +540,15 @@ exports.SchoolingDelete = function (req, res) {
   catch (e) { logger.error("Error in Schooling Delete: " + e); }
 }
 
-exports.getSchoolingEditLoad = function (req, res) {
+exports.getSchoolingEditLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -607,8 +642,15 @@ exports.getSchoolingEditLoad = function (req, res) {
 
 //AfterSchooling
 
-exports.getAfterSchoolingLoad = function (req, res) {
+exports.getAfterSchoolingLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -680,8 +722,15 @@ exports.getAfterSchoolingLoad = function (req, res) {
   catch (e) { logger.error("Error in After Schooling Load: " + e); }
 }
 
-exports.AfterSchoolingSave = function (req, res) {
+exports.AfterSchoolingSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -886,8 +935,15 @@ exports.AfterSchoolingSave = function (req, res) {
   catch (e) { logger.error("Error in After Schooling Save: " + e); }
 }
 
-exports.AfterSchoolingUpdate = function (req, res) {
+exports.AfterSchoolingUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1007,8 +1063,15 @@ exports.AfterSchoolingUpdate = function (req, res) {
   catch (e) { logger.error("Error in After Schooling Update: " + e); }
 }
 
-exports.AfterSchoolingDelete = function (req, res) {
+exports.AfterSchoolingDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1108,8 +1171,15 @@ exports.AfterSchoolingDelete = function (req, res) {
   catch (e) { logger.error("Error in After Schooling Delete: " + e); }
 }
 
-exports.getAfterSchoolingEditLoad = function (req, res) {
+exports.getAfterSchoolingEditLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1206,8 +1276,15 @@ exports.getAfterSchoolingEditLoad = function (req, res) {
   catch (e) { logger.error("Error in After schooling Load: " + e); }
 }
 
-exports.EducationList = function (req, res) {
+exports.EducationList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

@@ -356,7 +356,7 @@ exports.getJobFunctionList = function (logparams, params, langcount, callback) {
             { $project: { jobfunctioncode: 1, jobfunctionname: '$jobfunction.jobfunctionname', logourl: '$imageurl', languagecode: '$jobfunction.languagecode', statuscode: 1, statusname: '$status.statusname', language_count_status: "$langstatus", selected_language_count: "$selectedcount", "jobrolecount": { "$size": "$jobrole" }, _id: 0 } }
         ]).toArray(function (err, result) {
             finalresult = result;
-            // //console.log(finalresult);
+            // console.log(finalresult);
             return callback(finalresult);
         });
     }

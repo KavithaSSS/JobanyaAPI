@@ -11,10 +11,17 @@ const logger = new Logger('logs')
 const objMail = require('../process/send_email_process_controller');
 const objLogin = require('../process/employee_login_process_controller')
 const objProfile1 = require('../process/employee_profile_view_process_controller')
-exports.paymentwebhook = function(req, res){
+exports.paymentwebhook = async function(req, res){
   try{
     var params = req.body;
-    
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
+
     if (params.payload.order.entity.status != undefined && params.payload.order.entity.status != null && params.payload.order.entity.status == "paid")
     {
       
@@ -294,8 +301,15 @@ function Employeepaymentwebhook(req, callback) {
 }
 
 
-exports.getRazorPayOrderId = function (req, res) {
+exports.getRazorPayOrderId = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -398,9 +412,16 @@ exports.getRazorPayOrderId = function (req, res) {
 }
 
 
-exports.EmployeePaymentUpdate = function (req, res) {
+exports.EmployeePaymentUpdate = async function (req, res) {
   try {
     var varorderId = req.query.orderid;
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
    // logger.info ("Entry in Payment Update")
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (validemp) {
       if (validemp == true) {
@@ -673,8 +694,15 @@ exports.EmployeePaymentUpdate = function (req, res) {
 }
 
 
-exports.getSubscriptionStatusUpdate = function (req, res) {
+exports.getSubscriptionStatusUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -843,8 +871,15 @@ exports.getSubscriptionStatusUpdate = function (req, res) {
 }
 
 
-exports.AutomaticEmployeeRegistration = function (req, res) {
+exports.AutomaticEmployeeRegistration = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -953,8 +988,15 @@ exports.AutomaticEmployeeRegistration = function (req, res) {
 }
 
 
-exports.createzohobookInvoice = function (req, res) {
+exports.createzohobookInvoice = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse == true) {
@@ -1108,8 +1150,15 @@ exports.createzohobookInvoice = function (req, res) {
   catch (e) { logger.error("Error in Subscribe Save: " + e); }
 }
 
-exports.getSubscriptionList = function (req, res) {
+exports.getSubscriptionList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.Checkvalidfilteraccessuser(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1203,8 +1252,15 @@ exports.getSubscriptionList = function (req, res) {
   }
   catch (e) { logger.error("Error in Employer Subscription Package List: " + e); }
 }
-exports.getcheckoutLoad = function (req, res) {
+exports.getcheckoutLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     //objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       var validemp = true;
    // objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {

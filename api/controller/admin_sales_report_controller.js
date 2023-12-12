@@ -9,8 +9,15 @@ const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
-exports.SalesReportLoad = function (req, res) {
+exports.SalesReportLoad = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -72,8 +79,15 @@ exports.SalesReportLoad = function (req, res) {
         logger.error("Error in Sales - report " + e);
     }
 }
-exports.SalesReportList = function (req, res) {
+exports.SalesReportList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -162,8 +176,15 @@ exports.SalesReportList = function (req, res) {
         logger.error("Error in Sales List - report " + e);
     }
 }
-exports.SalesReportFilter = function (req, res) {
+exports.SalesReportFilter = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -222,8 +243,15 @@ exports.SalesReportFilter = function (req, res) {
         logger.error("Error in Sales Filter List - report " + e);
     }
 }
-exports.Sales_SubscriptionList = function (req, res) {
+exports.Sales_SubscriptionList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -281,8 +309,15 @@ exports.Sales_SubscriptionList = function (req, res) {
         logger.error("Error in Sales Edit Load By Code - report " + e);
     }
 }
-exports.LoginActivityReportList = function (req, res) {
+exports.LoginActivityReportList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -340,8 +375,15 @@ exports.LoginActivityReportList = function (req, res) {
         logger.error("Error in Sales Edit Load By Code - report " + e);
     }
 }
-exports.LoginActivityReportEditload = function (req, res) {
+exports.LoginActivityReportEditload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -400,8 +442,15 @@ exports.LoginActivityReportEditload = function (req, res) {
     }
 }
 
-exports.Employeee_SubscriptionList = function (req, res) {
+exports.Employeee_SubscriptionList = async function (req, res) {
     try { 
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;

@@ -9,8 +9,17 @@ const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
-exports.getSearchBindLoad = function (req, res) {
+exports.getSearchBindLoad = async function (req, res) {
   try {
+    if(Number(req.query.employeecode) != -1){
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true || Number(req.query.employeecode) == -1) {
         var objLogdetails;
@@ -90,8 +99,15 @@ exports.getSearchBindLoad = function (req, res) {
   catch (e) { logger.error("Error in Job Search Bind: " + e); }
 }
 
-exports.searchDelete = function (req, res) {
+exports.searchDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

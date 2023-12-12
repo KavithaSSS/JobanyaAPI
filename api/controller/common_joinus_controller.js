@@ -5,8 +5,15 @@ const objConstants = require('../../config/constants');
 const objJoinusDetails = require('../process/common_joinus_process_controller')
 const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
-exports.JoinusList = function (req, res) {
+exports.JoinusList =async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
         objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
             if (validemp == true) {
                 var objLogdetails;

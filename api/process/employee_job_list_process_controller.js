@@ -323,7 +323,7 @@ exports.getAllJobList = function (logparams, params, listparams, listcode, callb
 
             // console.log("params",JSON.stringify(params))
             // console.log("employerparams",JSON.stringify(employerparams))
-            //    console.log("matchparams",JSON.stringify(matchparams,null, " "))
+           // console.log("matchparams",JSON.stringify(matchparams,null, " "))
             // console.log("skipCondition",JSON.stringify(skipCondition))
             // console.log("limitCondition",JSON.stringify(limitCondition))
             if (matchparams != "") {
@@ -2348,7 +2348,6 @@ function GetAllJobs(matchparams, params, employerparams, skipCondition, limitCon
             { $unwind: { path: '$percentagelistinfo', preserveNullAndEmptyArrays: true } },
             { $unwind: { path: '$jobroleinfo', preserveNullAndEmptyArrays: true } },
             { $unwind: "$employerinfo" },
-            { $unwind: "$employerinfo.contactinfo" },
             { $unwind: "$jobfunctioninfo" },
             { $unwind: "$jobfunctioninfo.jobfunction" },
             {
@@ -2375,7 +2374,7 @@ function GetAllJobs(matchparams, params, employerparams, skipCondition, limitCon
                 $group: {
                     "_id": {
                         "jobid": "$jobid", "jobcode": '$jobcode', "jobrolecode": '$jobrolecode', "jobrolename": '$jobroleinfo.jobrole.jobrolename', "jobfunctionname": '$jobfunctioninfo.jobfunction.jobfunctionname',
-                        "employercode": '$employercode', "employername": '$employerinfo.registeredname', "employermobileno": '$employerinfo.contactinfo.mobileno', "profileurl": '$employerinfo.profileurl', "experience": '$experience', "salaryrange": '$salaryrange',
+                        "employercode": '$employercode', "employername": '$employerinfo.registeredname', "profileurl": '$employerinfo.profileurl', "experience": '$experience', "salaryrange": '$salaryrange',
                         "subscriptiondetails": '$subscriptiondetails', "wishliststatus": { $ifNull: ['$wishlistinfo.statuscode', 0] }, "wisheddate": { $ifNull: ['$wishlistinfo.createddate', 0] },
                         "invitedstatus": { $ifNull: ['$invitedinfo.statuscode', 0] }, "invitedshortliststatus": { $ifNull: ['$invitedinfo.shortliststatus', 0] },
                         "appliedstatus": { $ifNull: ['$appliedinfo.statuscode', 0] }, "appliedshortliststatus": { $ifNull: ['$appliedinfo.shortliststatus', 0] },
@@ -2392,13 +2391,13 @@ function GetAllJobs(matchparams, params, employerparams, skipCondition, limitCon
                             }
                         }
                     }, "location": {
-                        "$addToSet": {
+                        "$push": {
                             "locationcode": "$districtinfo.districtcode",
                             "locationname": "$districtinfo.district.districtname"
                         },
                     },
                     "joblocation": {
-                        "$addToSet": {
+                        "$push": {
                             "locationcode": "$joblocationinfo.districtcode",
                             "locationname": "$joblocationinfo.district.districtname"
                         },
@@ -2412,7 +2411,7 @@ function GetAllJobs(matchparams, params, employerparams, skipCondition, limitCon
                 "$project": {
                     _id: 0,
                     "jobid": '$_id.jobid', "jobcode": '$_id.jobcode', "jobrolecode": '$_id.jobrolecode', "jobrolename": '$_id.jobrolename', "jobfunctionname": '$_id.jobfunctionname', employercode: '$_id.employercode',
-                    employername: '$_id.employername', employermobileno: '$_id.employermobileno', profileurl: '$_id.profileurl', wishliststatus: '$_id.wishliststatus', wisheddate: '$_id.wisheddate', invitedstatus: '$_id.invitedstatus', invitedshortliststatus: '$_id.invitedshortliststatus',
+                    employername: '$_id.employername', profileurl: '$_id.profileurl', wishliststatus: '$_id.wishliststatus', wisheddate: '$_id.wisheddate', invitedstatus: '$_id.invitedstatus', invitedshortliststatus: '$_id.invitedshortliststatus',
                     appliedstatus: '$_id.appliedstatus', appliedshortliststatus: '$_id.appliedshortliststatus',
                     inviteddate: '$_id.inviteddate', applieddate: '$_id.applieddate',
                     invitedshortlistdate: '$_id.invitedshortlistdate', appliedshortlistdate: '$_id.appliedshortlistdate', matchingpercentage: '$_id.matchingpercentage',

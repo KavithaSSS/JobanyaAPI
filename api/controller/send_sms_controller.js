@@ -522,15 +522,17 @@ exports.CheckOTP = function (req, res) {
                 ////console.log(milliseconds)
                 if (validdate > milliseconds) {
                     {
-                        var employeecode = -1, employeename = "", preferredlanguagecode = varconstant.tamillangcode;
+                        var employeecode = -1, employeename = "";
                         if (Number(req.query.typecode) == 9)
                         {
-                            objsendsms.CheckValidMobileNoExists(logparams, req, function (validmobileno) {
+                            objsendsms.CheckValidMobileNoExists(logparams, req,async function (validmobileno) {
+                                
+                        var accessToken =  await objUtilities.generateAccessToken({user: req.query.mobileno});
+                         var refreshToken =  await objUtilities.generateRefreshToken({user: req.query.mobileno}); 
                                 if (validmobileno != null && validmobileno.length > 0) {
                                     employeecode = validmobileno[0].employeecode;
                                     employeename = validmobileno[0].employeename;
-                                    preferredlanguagecode = validmobileno[0].preferredlanguagecode;
-                                // }
+                                }
                                 const msgparam = { "messagecode": varconstant.validotpcode};
                                 objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
                                     return res.status(200).json({
@@ -541,11 +543,11 @@ exports.CheckOTP = function (req, res) {
                                             responsekey: msgresult[0].messagekey,
                                             employeecode: employeecode,
                                             employeename: employeename,
-                                            preferredlanguagecode: preferredlanguagecode
+                                              accessToken:accessToken,
+                                            refreshToken:refreshToken
                                         }
                                     });
                                 });
-                            }
                             });
                         }
                         else

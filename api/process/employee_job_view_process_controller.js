@@ -457,7 +457,7 @@ exports.getJobViewProcess = function (logparams, params, callback) {
               "employercode": '$employerinfo.employercode', "employername": '$employerinfo.registeredname', "aboutcompany": '$employerinfo.aboutcompany', "website": '$employerinfo.website', "profileurl": '$employerinfo.profileurl',
               "turnovercode": '$slabinfo.slabcode', "turnovername": '$slabinfo.slabs.slabname', "noofemployees": '$employerinfo.noofemployees', "gallery": '$employerinfo.gallery', "latitude": { $ifNull: ['$latitude', '$employerinfo.contactinfo.latitude'] }, "longitude": { $ifNull: ['$longitude', '$employerinfo.contactinfo.longitude'] },
               "activitytypecode": { $ifNull: ['$employerinfo.activitytypecode', 0] }, "activitytypename": { $ifNull: ['$activitytypeinfo.activitytype.activitytypename', ''] },
-              "companytypecode": { $ifNull: ['$employerinfo.companytypecode', 0] }, "companytypename": { $ifNull: ['$companytypeinfo.companytype.companytypename', ''] }, "mobileno": { $ifNull: ['$mobileno', '$employerinfo.contactinfo.mobileno'] }
+              "companytypecode": { $ifNull: ['$employerinfo.companytypecode', 0] }, "companytypename": { $ifNull: ['$companytypeinfo.companytype.companytypename', ''] }
             },
             "industrycode": '$industryinfo.industrycode', "industryname": '$industryinfo.industry.industryname',
             "jobfunctionname": '$jobfunctioninfo.jobfunction.jobfunctionname', "jobfunctioncode": '$jobfunctioncode', "jobrolecode": '$jobrolecode',

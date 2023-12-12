@@ -10,8 +10,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getWishListJobList = function (req, res) {
+exports.getWishListJobList = async function (req, res) {
     try {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
       objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
         if (validemp == true) {
           var objLogdetails;
@@ -173,8 +180,15 @@ exports.getWishListJobList = function (req, res) {
     catch (e) { logger.error("Error in Wish Listed Job List: " + e); }
 }
 
-exports.WishListSave = function (req, res) {
+exports.WishListSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

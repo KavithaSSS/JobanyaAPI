@@ -7,8 +7,15 @@ const objOTP = require('../process/send_email_process_controller')
 const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
-exports.SendOTP = function (req, res) {
+exports.SendOTP = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         var logType = "";
@@ -282,7 +289,7 @@ exports.SendOTP = function (req, res) {
                     var email = req.query.registeredname;
                     //console.log(milliseconds);
                     objUtilities.GetAdminMailId( varconstant.jobpakagemailcode ,function(mailid){
-                    objOTP.SendSMTPOTP(logparams, email, mailid, req, function (response) {
+                    objOTP.SendOTP(logparams, email, mailid, req, function (response) {
                         if (response != null && response != 0) {
                             var params = {
                                 employercode: 0,
@@ -357,8 +364,15 @@ exports.SendOTP = function (req, res) {
     }
 }
 
-exports.ResendVerificationLink = function (req, res) {
+exports.ResendVerificationLink = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var logType = "";
         var logUserCode = "";
         logUserCode = req.query.usercode;
@@ -442,8 +456,15 @@ exports.ResendVerificationLink = function (req, res) {
     }
 }
 
-exports.ResendVerificationLink_test = function (req, res) {
+exports.ResendVerificationLink_test = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var logType = "";
         var logUserCode = "";
         logUserCode = req.query.usercode;
@@ -506,8 +527,15 @@ exports.ResendVerificationLink_test = function (req, res) {
     }
 }
 
-exports.EmployeeEmailVerification = function (req, res) {
+exports.EmployeeEmailVerification = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         var logType = "";

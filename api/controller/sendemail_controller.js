@@ -4,7 +4,14 @@ const varconstant = require('../../config/constants');
 const objUtilities = require("../controller/utilities");
 const mongoose = require('mongoose')
 const MongoDB = require('../../config/database');
-exports.SendMail = function (req, callback) {
+exports.SendMail = async function (req, callback) {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     // Load the AWS SDK for Node.js
     var AWS = require('aws-sdk');
     const dbo = MongoDB.getDB();

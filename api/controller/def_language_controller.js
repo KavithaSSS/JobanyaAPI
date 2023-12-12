@@ -10,7 +10,7 @@ const MongoDB = require('../../config/database');
 const varconstant = require('../../config/constants');
 //const co= require('../../config/constants.js');
 
-exports.get_language_details = function (req, res) {
+exports.get_language_details = async function (req, res) {
   try {
 
     var objLogdetails;
@@ -40,13 +40,13 @@ exports.get_language_details = function (req, res) {
         //return res.status(200).json({
         const msgparam = { "messagecode": varconstant.listcode };
         objUtilities.getMessageDetails(msgparam, function (msgtext) {
-// console.log("Kavitha Language bind",varconstant.tamillangcode)
+
           return res.status(200).json({
             language_json_result: {
               varstatuscode: varconstant.listcode,
               responsestring: msgtext,
               response: varconstant.successresponsecode,
-              defaultlanguagecode: varconstant.tamillangcode,
+              defaultlanguagecode: varconstant.defaultlanguagecode,
               languagelist: response
             }
           });

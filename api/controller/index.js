@@ -151,7 +151,6 @@ router.post('/employee/referencelist', objEmployeeReference.referenceList);
 router.post('/employee/explist', objEmployeeExperience.ExperienceList);
 router.post('/employee/expupdatestatus', objEmployeeExperience.ExperienceUpdateStatus);
 router.post('/employee/expcreate', objEmployeeExperience.ExperienceSave);
-// router.post('/employee/bulkexpcreate', objEmployeeExperience.ExperienceSave);
 router.post('/employee/expupdate', objEmployeeExperience.ExperienceUpdate);
 router.post('/employee/expdelete', objEmployeeExperience.ExperienceDelete);
 router.post('/employee/expeditload', objEmployeeExperience.getExperienceEditLoad);
@@ -432,6 +431,7 @@ router.post('/abuse/update', objAbuse.Update_statuscode);
 router.post('/abuse/view', objAbuse.abuse_view);
 
 router.post('/employer/login', objEmployerLogin.employerlogin);
+router.post('/employer/refreshToken', objEmployerLogin.refreshToken);
 router.post('/employer/forgotpassword', objEmployerLogin.forgotpassword);
 router.post('/employer/checkotp', objEmployerLogin.CheckOTP);
 router.post('/employer/changepassword', objEmployerLogin.changepassword);
@@ -582,6 +582,7 @@ router.post('/sendsms/verifyOTP', objSendSMS.CheckOTP);
 router.post('/sendsms/sendsms', objSendSMS.SendSMS);
 
 router.post('/awsdetails', objAWSDetails.AWSDetails);
+router.post('/getLamdaDetails', objAWSDetails.getLamdaUrl);
 router.post('/firebase', objAWSDetails.FirebasePushNotification);
 // router.post('/report/subscriptionlist', objSubscriptionReport.SubscriptionList);
 router.post('/employer/getprofileurl', objEmployerProfileView.getEmployerProfileImage);

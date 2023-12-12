@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service');
 const e = require('connect-timeout');
 const logger = new Logger('logs')
 
-exports.getEmployeeProfileViewCount = function (req, res) {
+exports.getEmployeeProfileViewCount = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
       var objLogdetails;
       //console.log("Entry")
         var langparams = varconstant.defaultlanguagecode;
@@ -101,8 +108,9 @@ exports.getEmployeeProfileViewCount = function (req, res) {
 
 
 
-exports.EmployeeAutoProfileUpdation = function (logparams, skipresult, callback) {
+exports.EmployeeAutoProfileUpdation = async function (logparams, skipresult, callback) {
   try {
+  
       //console.log("EntryLevel1")
       UpdateAutoEmployeeProfile(logparams, skipresult, function (err, employeecount) {
          // console.log("EntryLevel1.1")
@@ -143,8 +151,9 @@ function UpdateAutoEmployeeProfile(logparams, skipresult, callback) {
 }
 
 
-exports.getEmployeeAutoProfileView = function (logparams, skipvalue, callback) {
+exports.getEmployeeAutoProfileView = async function (logparams, skipvalue, callback) {
   try {
+    
       var objLogdetails;
       //console.log("Entry")
         //var langparams = req.query.languagecode;
@@ -236,8 +245,15 @@ exports.getEmployeeAutoProfileView = function (logparams, skipvalue, callback) {
 }
 
 
-exports.getEmployeeProfileView = function (req, res) {
+exports.getEmployeeProfileView = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
       var objLogdetails;
       //console.log("Entry")
         var langparams = req.query.languagecode;
@@ -320,8 +336,15 @@ exports.getEmployeeProfileView = function (req, res) {
 }
 
 
-exports.getProfileView = function (req, res) {
+exports.getProfileView = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
       var objLogdetails;
         var langparams = req.query.languagecode;
         ////console.log(langparams);
@@ -511,8 +534,15 @@ exports.getPortalProfileView = function (req, res) {
 }
 
 //Insert customer and contact details
-exports.InsertZohoCustomerContactDetails = function (req, res) {
+exports.InsertZohoCustomerContactDetails = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
       objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
           if (userresponse == true) {
             objUtilities.CheckvalidEmployee_View(req, varconstant.employeeLogType, function (validemp) {

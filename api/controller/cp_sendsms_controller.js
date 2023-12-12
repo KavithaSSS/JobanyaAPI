@@ -6,8 +6,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.sendsms_formload = function (req, res) {
+exports.sendsms_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -68,8 +75,15 @@ exports.sendsms_formload = function (req, res) {
     }
     catch (e) { logger.error("Error in send sms Load: " + e); }
 }
-exports.insert_sendsms_details = function (req, res) {
+exports.insert_sendsms_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -177,8 +191,15 @@ exports.insert_sendsms_details = function (req, res) {
         { logger.error("Error in sendsms insert: " + e); }
     }
 }
-exports.sendsms_list = function (req, res) {
+exports.sendsms_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -337,8 +358,15 @@ exports.sendsms_list = function (req, res) {
         logger.error("Error in sendsms Before checking list: " + e);
     }
 }
-exports.update_sendsms_details = function (req, res) {
+exports.update_sendsms_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -457,8 +485,15 @@ exports.update_sendsms_details = function (req, res) {
         logger.error("Error in sendsms update: " + e);
     }
 }
-exports.sendsms_list_by_code = function (req, res) {
+exports.sendsms_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -529,8 +564,15 @@ exports.sendsms_list_by_code = function (req, res) {
         logger.error("Error in sendsms List by Code: " + e);
     }
 }
-exports.sendsms_totallist = function (req, res) {
+exports.sendsms_totallist = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

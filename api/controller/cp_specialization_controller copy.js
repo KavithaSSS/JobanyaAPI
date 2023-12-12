@@ -6,8 +6,15 @@ var date = new Date(); // some mock date
 var milliseconds = date.getTime();
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_specialization_details = function (req, res) {
+exports.insert_specialization_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
 
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
@@ -119,8 +126,15 @@ exports.insert_specialization_details = function (req, res) {
         { logger.error("Error in specialization insert : " + e); }
     }
 }
-exports.delete_specialization_details = function (req, res) {
+exports.delete_specialization_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -199,8 +213,15 @@ exports.delete_specialization_details = function (req, res) {
         { logger.error("Error in Specialization Delete : " + e); }
     }
 }
-exports.specialization_formload = function (req, res) {
+exports.specialization_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -258,8 +279,15 @@ exports.specialization_formload = function (req, res) {
     }
     catch (e) { logger.error("Error in Specialization Form Load: " + e); }
 }
-exports.specialization_list_by_code = function (req, res) {
+exports.specialization_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -332,8 +360,15 @@ exports.specialization_list_by_code = function (req, res) {
     }
     catch (e) { logger.error("Error in Specialization List by Code: " + e); }
 }
-exports.specialization_list = function (req, res) {
+exports.specialization_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -441,8 +476,15 @@ exports.specialization_list = function (req, res) {
         { logger.error("Error in Specialization List : " + e); }
     }
 }
-exports.update_specialization_details = function (req, res) {
+exports.update_specialization_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;

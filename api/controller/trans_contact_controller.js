@@ -11,8 +11,16 @@ const objMail = require('../process/send_email_process_controller');
 var objSendNotification = require('../process/send_notification_process_controller');
 const objProfile = require('../process/employee_profile_view_process_controller')
 
-exports.getTransContactLoad = function (req, res) {
+exports.getTransContactLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
+
     var objLogdetails;
     //var langparams = req.query.languagecode;
     ////console.log(langparams);
@@ -122,8 +130,15 @@ exports.getTransContactLoad = function (req, res) {
   catch (e) { logger.error("Error in trans Contact Info Load: " + e); }
 }
 
-exports.getTransContactSave = function (req, res) {
+exports.getTransContactSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date(); // some mock date
     var milliseconds = date.getTime();
     var objLogdetails;
@@ -310,8 +325,15 @@ exports.getTransContactSave = function (req, res) {
   }
   catch (e) { logger.error("Error in trans Contact Info save: " + e); }
 }
-exports.getTransContactList = function (req, res) {
+exports.getTransContactList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse == true) {
         var objLogdetails;

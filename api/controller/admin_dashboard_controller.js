@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service')
 const logger = new Logger('logs')
 
 
-exports.dashboard_load = function (req, res) {
+exports.dashboard_load = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -67,8 +74,15 @@ exports.dashboard_load = function (req, res) {
     }
 }
 
-exports.profile_dashboard = function (req, res) {
+exports.profile_dashboard = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -125,8 +139,15 @@ exports.profile_dashboard = function (req, res) {
     }
 }
 
-exports.dashboard_chart_load = function (req, res) {
+exports.dashboard_chart_load = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

@@ -31,7 +31,6 @@ exports.SendOTP = function (
         ", Type: " +
         logparams.type
     );
-    
     var configurationSet = "ConfigSet";
     const smtpEndpoint = process.env.SMTPENDPOINT;
     const port = process.env.SMTPPORT;

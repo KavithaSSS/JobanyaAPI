@@ -16,8 +16,17 @@ const logger = new Logger('logs')
 
 
 
-exports.getJobListCount = function (req, res) {
+exports.getJobListCount = async function (req, res) {
   try {
+    if(Number(req.query.employeecode) != -1){
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if ((validemp == true) || (Number(req.query.employeecode) == -1)) {
         var objLogdetails;
@@ -393,8 +402,15 @@ exports.getJobListCount = function (req, res) {
   }
   catch (e) { logger.error("Error in Job List Count: " + e); }
 }
-exports.getOverallJobListCount = function (req, res) {
+exports.getOverallJobListCount = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if ((validemp == true) || (Number(req.query.employeecode) == -1)) {
         var objLogdetails;

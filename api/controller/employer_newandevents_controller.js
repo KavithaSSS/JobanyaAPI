@@ -6,8 +6,15 @@ const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 
-exports.NewsBind = function (req, res) {
+exports.NewsBind = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -70,8 +77,15 @@ exports.NewsBind = function (req, res) {
     }
 }
 
-exports.NewsDetails = function (req, res) {
+exports.NewsDetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -134,8 +148,15 @@ exports.NewsDetails = function (req, res) {
     }
 }
 
-exports.EventsBind = function (req, res) {
+exports.EventsBind = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -197,8 +218,15 @@ exports.EventsBind = function (req, res) {
 
 }
 
-exports.EventsDetails = function (req, res) {
+exports.EventsDetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";

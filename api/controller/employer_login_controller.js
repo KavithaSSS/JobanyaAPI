@@ -10,15 +10,54 @@ const objPreference = require('../process/employer_preference_process_controller
 const objSendNotification = require('../process/send_notification_process_controller');
 const logger = new Logger('logs')
 
-exports.employerlogin = function (req, res) {
+module.exports.refreshToken = async (req, res) => {
     try {
+
+        const storedRefreshToken = await objUtilities.getStoredRefreshToken();
+        var getToken = req.query.token;
+        var response = {}
+        if (getToken.trim("") === '') {
+            response = { "message": "Refresh token not provided", "status": 498 };
+            return res.status(200).json({
+                tokenReult: response
+            })
+        }
+        if (!storedRefreshToken.includes(getToken)) {
+            response = { "message": "Invalid token", "status": 498 };
+            return res.status(200).json({
+                tokenReult: response
+            })
+
+        }
+        else {
+            objUtilities.refreshTokens = storedRefreshToken.filter((c) => c != getToken);
+            //remove the old refreshToken from the refreshTokens list
+            const accessToken = await objUtilities.generateAccessToken({ user: req.user });
+            const refreshToken = await objUtilities.generateRefreshToken({ user: req.user });
+            response = { "message": "Success", "status": 200, accessToken: accessToken, refreshToken: refreshToken };
+            return res.status(200).json({
+                tokenReult: response
+            })
+
+        }
+    }
+    catch (error) {
+        // await errorLogService.errorlog(constants.ErrorlogMessage.PLAT_FORM_NAME,"New password", error, "ChangePasswordJwt");
+        throw new Error(error);
+    }
+}
+
+exports.employerlogin = async function (req, res) {
+    try {
+
+
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
         else
             logType = objconstants.AppEmployerLogType;
         var objLogdetails;
-        // //console.log(req.query.employercode);
+
         const logvalues = { ipaddress: req.query.ipaddress, usercode: req.query.employercode, orginator: 'Employer Login', logdate: new Date(), type: logType }
         objUtilities.getLogDetails(logvalues, function (logresponse) {
             objLogdetails = logresponse;
@@ -26,45 +65,93 @@ exports.employerlogin = function (req, res) {
         var logparams = objLogdetails;
         if (req.query.appcode == 1 || req.query.appcode == 2) {
             var params = { "registered_email": { $regex: "^" + req.query.registered_email + "$", $options: 'i' } };
-            ////console.log(params);
+
             objLogin.checkEmployerLogin(logparams, params, req, function (empresponse) {
-                //console.log(empresponse)
+                console.log(empresponse)
                 if (empresponse.result == true) {
                     const dbo = MongoDB.getDB();
                     var empparams = { "employercode": empresponse.employercode };
+
                     objUtilities.getcurrentmilliseconds(function (currenttime) {
                         dbo.collection(MongoDB.EmployerCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
                             var loginactivityparams = { "employercode": empresponse.employercode, "employeecode": 0, "usercode": 2, "apptype": Number(req.query.appcode), "createdtime": currenttime }
                             objLogin.insertLoginActivity(logparams, loginactivityparams, function (activityres) {
                                 var prefparams = { employercode: empresponse.employercode };
-                                objPreference.GetSinglePreferenceDetails(logparams, prefparams, function (prefresult) {
+                                objPreference.GetSinglePreferenceDetails(logparams, prefparams, async function (prefresult) {
+                                    var accessToken = await objUtilities.generateAccessToken({ user: req.query.registered_email });
+                                    var refreshToken = await objUtilities.generateRefreshToken({ user: req.query.registered_email });
+
                                     var prefstatus = false;
                                     if (prefresult != null) {
                                         prefstatus = true;
                                     }
-                                    objLogin.GetAllActiveJobs(empresponse.employercode, function(jobresult){
+                                    objLogin.GetAllActiveJobs(empresponse.employercode, function (jobresult) {
                                         var jobcount = 0;
-                                        if (jobresult != null && jobresult.length > 0)
-                                        {
+                                        if (jobresult != null && jobresult.length > 0) {
                                             jobcount = jobresult.length;
                                         }
                                         const msgparam = { "messagecode": objconstants.loginsuccesscode };
-                                        objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-                                            return res.status(200).json({
-                                                login_json_result: {
-                                                    varstatuscode: objconstants.loginsuccesscode,
-                                                    responsestring: msgresult[0].messagetext,
-                                                    responsekey: msgresult[0].messagekey,
-                                                    response: objconstants.successresponsecode,
-                                                    employee_details: empresponse,
-                                                    preferencestatus: prefstatus,
-                                                    jobcount: jobcount
-                                                }
-                                            });
-    
+                                        objUtilities.getMessageDetailWithkeys(msgparam, async function (msgresult) {
+
+                                            // var dataString = From=${req.from}&&To=${req.to}&&CallerId=${result.exotelCallerID};
+                                            const axios = require("axios");
+
+                                            let Result_1 = ''
+                                            // const response1 = await axios.post('https://gu98zm4vyg.execute-api.us-east-2.amazonaws.com/S3Upload/getPreSignedURL', {
+
+                                            // }).then(async function (response1) {
+                                            //   console.log(response1,'response')})
+
+                                            fetch("https://gu98zm4vyg.execute-api.us-east-2.amazonaws.com/S3Upload/getPreSignedURL", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+
+                                                    Accept: "application/json",
+                                                    "Cache-Control": "no-cache"
+                                                },
+
+                                            })
+                                                .then(response => response.json())
+                                                .then(responseJson => {
+                                                    console.log("itemresponseJson", responseJson);
+                                                    return res.status(200).json({
+                                                        login_json_result: {
+                                                            varstatuscode: objconstants.loginsuccesscode,
+                                                            responsestring: msgresult[0].messagetext,
+                                                            responsekey: msgresult[0].messagekey,
+                                                            response: objconstants.successresponsecode,
+                                                            employee_details: empresponse,
+                                                            preferencestatus: prefstatus,
+                                                            jobcount: jobcount,
+                                                            accessToken: accessToken,
+                                                            refreshToken: refreshToken,
+                                                            urlResp: responseJson
+                                                        }
+                                                    });
+                                                });
+
+
+
+
+                                            // return res.status(200).json({
+                                            //     login_json_result: {
+                                            //         varstatuscode: objconstants.loginsuccesscode,
+                                            //         responsestring: msgresult[0].messagetext,
+                                            //         responsekey: msgresult[0].messagekey,
+                                            //         response: objconstants.successresponsecode,
+                                            //         employee_details: empresponse,
+                                            //         preferencestatus: prefstatus,
+                                            //         jobcount: jobcount,
+                                            //         accessToken:accessToken,
+                                            //         refreshToken:refreshToken,
+                                            //         urlResp:response1
+                                            //     }
+                                            // });
+
                                         });
                                     })
-                                    
+
                                 });
                             });
                         });
@@ -148,8 +235,9 @@ exports.employerlogin = function (req, res) {
         logger.error("Error in Employer login : " + e);
     }
 }
-exports.forgotpassword = function (req, res) {
+exports.forgotpassword = async function (req, res) {
     try {
+
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         var logType = "";
@@ -237,7 +325,7 @@ exports.forgotpassword = function (req, res) {
     }
 }
 
-exports.CheckOTP = function (req, res) {
+exports.CheckOTP = async function (req, res) {
     try {
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
@@ -310,8 +398,15 @@ exports.CheckOTP = function (req, res) {
         logger.error("Error in Forgot password : Employer" + e);
     }
 }
-exports.employerload = function (req, res) {
+exports.employerload = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -371,8 +466,15 @@ exports.employerload = function (req, res) {
         logger.error("Error in Employer Load : " + e);
     }
 }
-exports.registeration = function (req, res) {
+exports.registeration = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //   return res.status(200).json({
+        //     status: 401,
+        //     message: "Unauthorized",
+        //   });
+        // }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         var logType = "";
@@ -391,7 +493,7 @@ exports.registeration = function (req, res) {
         if (req.query.appcode == 1 || req.query.appcode == 2) {
             objUtilities.checkEmailIdExists(logparams, req.body.registered_email, function (validmail) {
                 if (validmail == null || validmail == 0) {
-                    objUtilities.checkGSTINExists(logparams, req.body.gstn,0, function (validgstn) {
+                    objUtilities.checkGSTINExists(logparams, req.body.gstn, 0, function (validgstn) {
                         if (validgstn == null || validgstn == 0 || insertparams.companytypecode == 3 || insertparams.companytypecode == 4) {
                             objUtilities.InsertLog(logparams, function (validlog) {
                                 if (validlog != null && validlog != "") {
@@ -415,14 +517,19 @@ exports.registeration = function (req, res) {
 
 
                                                             const msgparam = { "messagecode": objconstants.registercode };
-                                                            objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
+                                                            objUtilities.getMessageDetailWithkeys(msgparam, async function (msgresult) {
+                                                                var accessToken = await objUtilities.generateAccessToken({ user: req.query.registered_email });
+                                                                var refreshToken = await objUtilities.generateRefreshToken({ user: req.query.registered_email });
+
                                                                 return res.status(200).json({
                                                                     employer_json_result: {
                                                                         varstatuscode: objconstants.registercode,
                                                                         response: objconstants.successresponsecode,
                                                                         responsestring: msgresult[0].messagetext,
                                                                         responsekey: msgresult[0].messagekey,
-                                                                        returncode: validcode
+                                                                        returncode: validcode,
+                                                                        accessToken: accessToken,
+                                                                        refreshToken: refreshToken
                                                                     }
 
                                                                 });
@@ -497,8 +604,15 @@ exports.registeration = function (req, res) {
         logger.error("Error in Registeration form : " + e);
     }
 }
-exports.changepassword = function (req, res) {
+exports.changepassword = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -519,7 +633,9 @@ exports.changepassword = function (req, res) {
                         if (existresult.emailcount > 0) {
                             if (req.query.appcode == 1 || req.query.appcode == 2) {
                                 objLogin.CheckDecryptPassword(logparams, req, function (validdecrypt) {
+                                    console.log('encrypt', validdecrypt)
                                     if (validdecrypt == true) {
+                                        console.log('------------------->')
                                         objLogin.ChangeNewpassword(logparams, req, function (validpwd) {
                                             if (validpwd != null && validpwd > 0) {
                                                 const msgparam = { "messagecode": objconstants.passwordchangesuccesscode };
@@ -537,6 +653,7 @@ exports.changepassword = function (req, res) {
                                         })
                                     }
                                     else {
+                                        console.log('================>')
                                         const msgparam = { "messagecode": objconstants.oldpasswordincorrectcode };
                                         objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
                                             return res.status(200).json({
@@ -606,7 +723,7 @@ exports.changepassword = function (req, res) {
         logger.error("Error in Employer Change password : " + e);
     }
 }
-exports.CheckRegisterEmailname = function (req, res) {
+exports.CheckRegisterEmailname = async function (req, res) {
     try {
         var logType = "";
         if (req.query.appcode == 1)
@@ -669,8 +786,15 @@ exports.CheckRegisterEmailname = function (req, res) {
     }
     catch (e) { logger.error("Error in Check valid email id - employer: " + e); }
 }
-exports.CheckRegisterMobile = function (req, res) {
+exports.CheckRegisterMobile = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //     return res.status(200).json({
+        //         status: 401,
+        //         message: "Unauthorized",
+        //     });
+        // }
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -733,8 +857,9 @@ exports.CheckRegisterMobile = function (req, res) {
     catch (e) { logger.error("Error in Check valid email id - employer: " + e); }
 }
 
-exports.CheckGSTIN = function (req, res) {
+exports.CheckGSTIN = async function (req, res) {
     try {
+
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -747,7 +872,7 @@ exports.CheckGSTIN = function (req, res) {
         });
         var logparams = objLogdetails;
         if (req.query.appcode == 1 || req.query.appcode == 2) {
-            objUtilities.checkGSTINExists(logparams, req.query.gstn,req.query.employercode, function (validgstn) {
+            objUtilities.checkGSTINExists(logparams, req.query.gstn, req.query.employercode, function (validgstn) {
                 if (validgstn == null || validgstn == 0) {
                     const msgparam = { "messagecode": objconstants.newgstincode };
                     objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
@@ -779,8 +904,9 @@ exports.CheckGSTIN = function (req, res) {
     }
     catch (e) { logger.error("Error in Check valid gstn - employer: " + e); }
 }
-exports.CheckPAN = function (req, res) {
+exports.CheckPAN = async function (req, res) {
     try {
+
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -793,7 +919,7 @@ exports.CheckPAN = function (req, res) {
         });
         var logparams = objLogdetails;
         if (req.query.appcode == 1 || req.query.appcode == 2) {
-            objUtilities.checkPANExists(logparams, req.query.panno,req.query.employercode, function (validpan) {
+            objUtilities.checkPANExists(logparams, req.query.panno, req.query.employercode, function (validpan) {
                 if (validpan == null || validpan == 0) {
                     const msgparam = { "messagecode": objconstants.newpancode };
                     objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
@@ -825,8 +951,9 @@ exports.CheckPAN = function (req, res) {
     }
     catch (e) { logger.error("Error in Check valid gstn - employer: " + e); }
 }
-exports.CheckAadhar = function (req, res) {
+exports.CheckAadhar = async function (req, res) {
     try {
+
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -839,7 +966,7 @@ exports.CheckAadhar = function (req, res) {
         });
         var logparams = objLogdetails;
         if (req.query.appcode == 1 || req.query.appcode == 2) {
-            objUtilities.checkAadharExists(logparams, req.query.aadhaarno,req.query.employercode, function (validaadhar) {
+            objUtilities.checkAadharExists(logparams, req.query.aadhaarno, req.query.employercode, function (validaadhar) {
                 if (validaadhar == null || validaadhar == 0) {
                     const msgparam = { "messagecode": objconstants.newaadharcode };
                     objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
@@ -871,8 +998,15 @@ exports.CheckAadhar = function (req, res) {
     }
     catch (e) { logger.error("Error in Check valid gstn - employer: " + e); }
 }
-exports.EmployerLanguageList = function (req, res) {
+exports.EmployerLanguageList = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -937,8 +1071,17 @@ exports.EmployerLanguageList = function (req, res) {
         logger.error("Error in Language List - employer: " + e);
     }
 }
-exports.ProfileImageUpload = function (req, res) {
+exports.ProfileImageUpload = async function (req, res) {
     try {
+        // if (Number(req.query.typecode != 2)) {
+        //     const decoded = await objUtilities.validateToken(req);
+        //     if (!decoded) {
+        //         return res.status(200).json({
+        //             status: 401,
+        //             message: "Unauthorized",
+        //         });
+        //     }
+        // }
         objUtilities.checkemployer(req.query.employercode, function (validemp) {
             if (validemp == true) {
                 var logType = "";
@@ -1137,8 +1280,15 @@ exports.ProfileImageUpload = function (req, res) {
         logger.error("Error in Upload image - employer: " + e);
     }
 }
-exports.DeactiveEmployer = function (req, res) {
+exports.DeactiveEmployer = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -1213,8 +1363,15 @@ exports.DeactiveEmployer = function (req, res) {
         logger.error("Error in Update statuscode - employer: " + e);
     }
 }
-exports.ActiveEmployer = function (req, res) {
+exports.ActiveEmployer = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         var logType = "";
@@ -1299,8 +1456,15 @@ exports.ActiveEmployer = function (req, res) {
         logger.error("Error in Update statuscode - employer: " + e);
     }
 }
-exports.ChangeEmailId = function (req, res) {
+exports.ChangeEmailId = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
@@ -1467,7 +1631,7 @@ exports.ChangeEmailId = function (req, res) {
     }
     catch (e) { logger.error("Error in Change email id - employer: " + e); }
 }
-exports.checkValidEmployer = function (req, res) {
+exports.checkValidEmployer = async function (req, res) {
     try {
         var logType = "";
         if (req.query.appcode == 1)
@@ -1587,8 +1751,15 @@ exports.checkValidEmployer = function (req, res) {
     catch (e) { logger.error("Error in Check valid employer: " + e); }
 
 }
-exports.VerificationUpdate = function (req, res) {
+exports.VerificationUpdate = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+            return res.status(200).json({
+                status: 401,
+                message: "Unauthorized",
+            });
+        }
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;
@@ -1722,8 +1893,15 @@ exports.VerificationUpdate = function (req, res) {
     }
 }
 
-exports.CheckVersion = function (req, res) {
+exports.CheckVersion = async function (req, res) {
     try {
+        // const decoded = await objUtilities.validateToken(req);
+        // if (!decoded) {
+        //     return res.status(200).json({
+        //         status: 401,
+        //         message: "Unauthorized",
+        //     });
+        // }
         var logType = "";
         if (req.query.appcode == 1)
             logType = objconstants.portalEmployerLogType;

@@ -9,8 +9,15 @@ const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 // const {notvalidcode,createcode,listcode, existcode,updatecode,deletecode, recordnotfoundcode, successresponsecode,usernotfoundcode } = require('../../config/constants');
 
-exports.newsevents_formload = function (req, res) {
+exports.newsevents_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -68,8 +75,15 @@ exports.newsevents_formload = function (req, res) {
         { logger.error("Error in News and events formload: " + e); }
     }
 }
-exports.insert_newsevents_details = function (req, res) {
+exports.insert_newsevents_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -149,8 +163,15 @@ exports.insert_newsevents_details = function (req, res) {
         { logger.error("Error in News and Events insert: " + e); }
     }
 }
-exports.update_newsevents_details = function (req, res) {
+exports.update_newsevents_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -339,8 +360,15 @@ exports.update_newsevents_details = function (req, res) {
         { logger.error("Error in News and Events update: " + e); }
     }
 }
-exports.delete_newsevents_details = function (req, res) {
+exports.delete_newsevents_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -430,8 +458,15 @@ exports.delete_newsevents_details = function (req, res) {
         { logger.error("Error in News and Events delete: " + e); }
     }
 }
-exports.newsevents_list_by_code = function (req, res) {
+exports.newsevents_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -502,8 +537,15 @@ exports.newsevents_list_by_code = function (req, res) {
         { logger.error("Error in News and Events Edit Load: " + e); }
     }
 }
-exports.newsevents_list = function (req, res) {
+exports.newsevents_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -599,8 +641,15 @@ exports.newsevents_list = function (req, res) {
     }
 }
 
-exports.NewsBind = function (req, res) {
+exports.NewsBind = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var params = { "ipaddress": req.query.deviceip, "usercode": req.query.employeecode, "orginator": 'News Bind', "type": 'Employee' };
         objUtilities.getLogDetails(params, function (logresponse) {
             var logparams = logresponse;
@@ -655,8 +704,15 @@ exports.NewsBind = function (req, res) {
     }
 }
 
-exports.EventsBind = function (req, res) {
+exports.EventsBind = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var params = { "ipaddress": req.query.deviceip, "usercode": req.query.employeecode, "orginator": 'Events Bind ', "type": 'Employee' };
         objUtilities.getLogDetails(params, function (logresponse) {
             var logparams = logresponse;
@@ -710,8 +766,15 @@ exports.EventsBind = function (req, res) {
 
 }
 
-exports.NewsDetails = function (req, res) {
+exports.NewsDetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var params = { "ipaddress": req.query.deviceip, "usercode": req.query.employeecode, "orginator": 'News Bind', "type": 'Employee' };
         objUtilities.getLogDetails(params, function (logresponse) {
             var logparams = logresponse;
@@ -766,8 +829,15 @@ exports.NewsDetails = function (req, res) {
     }
 }
 
-exports.EventsDetails = function (req, res) {
+exports.EventsDetails = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var params = { "ipaddress": req.query.deviceip, "usercode": req.query.employeecode, "orginator": 'Events Bind ', "type": 'Employee' };
         objUtilities.getLogDetails(params, function (logresponse) {
             var logparams = logresponse;
@@ -821,8 +891,15 @@ exports.EventsDetails = function (req, res) {
 
 }
 
-exports.UpdateStatuscode = function (req, res) {
+exports.UpdateStatuscode = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -914,8 +991,15 @@ exports.UpdateStatuscode = function (req, res) {
     }
 }
 
-exports.update_imageurl = function (req, res) {
+exports.update_imageurl = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

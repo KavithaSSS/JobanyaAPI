@@ -395,6 +395,11 @@ exports.getPortalSkillsList = function (logparams, empparams,isleadtype, callbac
             //     }
             // },
             {
+                $sort: {
+                    "$_id.jobfunctioncode": 1, '$_id.jobrolecode': 1
+                }
+            },
+            {
                 $project: {
                     "_id": 0,
                     "jobfunctioncode": '$_id.jobfunctioncode', "jobfunctionname": '$_id.jobfunctionname',

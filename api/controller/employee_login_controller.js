@@ -10,9 +10,15 @@ const objNotification = require('../process/employee_notification_process_contro
 const objProfile1 = require('../process/employee_profile_view_process_controller')
 const objMail = require('../process/send_email_process_controller');
 const logger = new Logger('logs')
-exports.lead_registration = function (req, res) {
+exports.lead_registration = async function (req, res) {
   try {
-
+    // const decoded = await objUtilities.validateToken(req);
+    // if (!decoded) {
+    //   return res.status(200).json({
+    //     status: 401,
+    //     message: "Unauthorized",
+    //   });
+    // }
     var objLogdetails;
 
     var logUserCode = "";
@@ -30,7 +36,7 @@ exports.lead_registration = function (req, res) {
       objLogdetails = logresponse;
     });
     var logparams = objLogdetails;
-    objLogin.checkEmployeeUserNameExists(logparams, req, 0,function (existresult) {
+    objLogin.checkEmployeeUserNameExists(logparams, req, 0, function (existresult) {
       // //console.log(existresult.mobilenocount); 
       // //console.log(existresult);
 
@@ -119,8 +125,9 @@ exports.lead_registration = function (req, res) {
 exports.employee_registration = function (employeecode, res) {
   try {
 
+
     var objLogdetails;
-    
+
     var logUserCode = "";
     var logType = "";
     var params = { "ipaddress": req.query.deviceip, "usercode": logUserCode, "orginator": 'Employee Registration', "type": logType };
@@ -128,50 +135,50 @@ exports.employee_registration = function (employeecode, res) {
       objLogdetails = logresponse;
     });
     var logparams = objLogdetails;
-      objLogin.getMaxcode(function (response) {
-        ////console.log(response );
-        if (response != null) {
-          objLogin.getLeadRecordDetails(logparams, employeecode, function (leaddetails) {
-            if(leaddetails!=null && leaddetails.length>0){
-              leaddetails.employeecode = response;
-              objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {
-                ////console.log(saveresponse);
-                if (saveresponse != null && saveresponse > 0) {
-                  //return res.status(200).json({
-                  const msgparam = { "messagecode": objconstants.registercode };
-                  var empparams = {"employeecode": leaddetails.employeecode};
-                  objProfile1.getEmployeeProfileView(logparams, empparams, objconstants.defaultlanguagecode, req, function(empdetails){
-                    objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-                      return res.status(200).json({
-                        employee_json_result: {
-                          varstatuscode: objconstants.registercode,
-                          responsestring: msgresult[0].messagetext,
-                          responsekey: msgresult[0].messagekey,
-                          response: objconstants.successresponsecode,
-                          employeecode: response,
-                          isleadtype: 0
-                          //employee_json_fields: saveresponse 
-                        }
-                      });
-  
+    objLogin.getMaxcode(function (response) {
+      ////console.log(response );
+      if (response != null) {
+        objLogin.getLeadRecordDetails(logparams, employeecode, function (leaddetails) {
+          if (leaddetails != null && leaddetails.length > 0) {
+            leaddetails.employeecode = response;
+            objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {
+              ////console.log(saveresponse);
+              if (saveresponse != null && saveresponse > 0) {
+                //return res.status(200).json({
+                const msgparam = { "messagecode": objconstants.registercode };
+                var empparams = { "employeecode": leaddetails.employeecode };
+                objProfile1.getEmployeeProfileView(logparams, empparams, objconstants.defaultlanguagecode, req, function (empdetails) {
+                  objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
+                    return res.status(200).json({
+                      employee_json_result: {
+                        varstatuscode: objconstants.registercode,
+                        responsestring: msgresult[0].messagetext,
+                        responsekey: msgresult[0].messagekey,
+                        response: objconstants.successresponsecode,
+                        employeecode: response,
+                        isleadtype: 0
+                        //employee_json_fields: saveresponse 
+                      }
                     });
-                  })
-                  // objMail.SendMail(saveresponse, function (result) {
-                  
-                }
-              });
-            }                
-          });
+
+                  });
+                })
+                // objMail.SendMail(saveresponse, function (result) {
+
+              }
+            });
+          }
+        });
 
 
-        }
-      });
+      }
+    });
 
 
   }
   catch (e) { logger.error("Error in Employee Registration: " + e); }
 }
-exports.employee_login = function (req, res) {
+exports.employee_login = async function (req, res) {
   try {
 
     var objLogdetails;
@@ -195,27 +202,34 @@ exports.employee_login = function (req, res) {
     objLogin.checkEmployeeLogin(logparams, req, function (empresponse) {
       const dbo = MongoDB.getDB();
       ////console.log(response);
-      ////console.log(empresponse);
+      // console.log(empresponse);
       if (empresponse.result == true) {
         var empparams = { "employeecode": Number(empresponse.employeecode) };
         objUtilities.getcurrentmilliseconds(function (currenttime) {
           var empcollectionname = MongoDB.EmployeeCollectionName;
-          if ( Number(empresponse.isleadtype) == 0)
-          {
+          if (Number(empresponse.isleadtype) == 0) {
             empcollectionname = MongoDB.EmployeeCollectionName
           }
-          else
-          {
+          else {
             empcollectionname = MongoDB.LeadCollectionName
           }
           dbo.collection(empcollectionname).updateOne(empparams, { $set: { "lastlogindate": currenttime, "registervia": 2 } }, function (err, logres) {
             var prefparams = { employeecode: empresponse.employeecode };
             ////console.log(prefparams);        
-            objProfile.CheckProfileStatus(logparams, prefparams, Number(empresponse.isleadtype),function (profileinforesult) {
-              if ( Number(empresponse.isleadtype) == 0)
-              {
-                var empparams1 = {"employeecode": empresponse.employeecode};
-                objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function(empdetails){
+            objProfile.CheckProfileStatus(logparams, prefparams, Number(empresponse.isleadtype), async function (profileinforesult) {
+
+
+              var accessToken = await objUtilities.generateAccessToken({ user: req.query.registered_email });
+              var refreshToken = await objUtilities.generateRefreshToken({ user: req.query.registered_email });
+
+              // var prefstatus = false;
+              // if (prefresult != null) {
+              //     prefstatus = true;
+              // }
+
+              if (Number(empresponse.isleadtype) == 0) {
+                var empparams1 = { "employeecode": empresponse.employeecode };
+                objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function (empdetails) {
                 });
               }
               const msgparam = { "messagecode": objconstants.loginsuccesscode };
@@ -227,7 +241,9 @@ exports.employee_login = function (req, res) {
                     responsekey: msgresult[0].messagekey,
                     response: objconstants.successresponsecode,
                     employee_details: empresponse,
-                    profilestatus: profileinforesult
+                    profilestatus: profileinforesult,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
                   }
                 });
 
@@ -293,8 +309,17 @@ exports.employee_login = function (req, res) {
   catch (e) { logger.error("Error in Employee Login: " + e); }
 }
 
-exports.employee_load = function (req, res) {
+exports.employee_load = async function (req, res) {
   try {
+    if (req.query.employeecode != -1) {
+      const decoded = await objUtilities.validateToken(req);
+      if (!decoded) {
+        return res.status(200).json({
+          status: 401,
+          message: "Unauthorized",
+        });
+      }
+    }
     var logType = objconstants.employeeLogType;
     var objLogdetails;
     const logvalues = { ipaddress: req.query.ipaddress, usercode: req.query.employeecode, orginator: 'Employee load', logdate: new Date(), type: logType }
@@ -341,8 +366,15 @@ exports.employee_load = function (req, res) {
     logger.error("Error in Employer Load : " + e);
   }
 }
-exports.forgotpassword = function (req, res) {
+exports.forgotpassword = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date(); // some mock date
     var milliseconds = date.getTime();
     var logUserCode = "";
@@ -436,9 +468,15 @@ exports.forgotpassword = function (req, res) {
   }
   catch (e) { logger.error("Error in Employee Forgot Password: " + e); }
 }
-exports.empCheckUserName = function (req, res) {
+exports.empCheckUserName = async function (req, res) {
   try {
-
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     objLogin.checkUserNameExists(req, function (existresult) {
       ////console.log(existresult.usernamecount); 
@@ -480,9 +518,15 @@ exports.empCheckUserName = function (req, res) {
   }
   catch (e) { logger.error("Error in Employee Check User Name: " + e); }
 }
-exports.empCheckMobileNo = function (req, res) {
+exports.empCheckMobileNo = async function (req, res) {
   try {
-
+    // const decoded = await objUtilities.validateToken(req);
+    // if (!decoded) {
+    //   return res.status(200).json({
+    //     status: 401,
+    //     message: "Unauthorized",
+    //   });
+    // }
 
     objLogin.checkMobileNoExists(req, function (existresult) {
       ////console.log(existresult.usernamecount); 
@@ -527,8 +571,15 @@ exports.empCheckMobileNo = function (req, res) {
   }
   catch (e) { logger.error("Error in Employee Check Mobile number: " + e); }
 }
-exports.empCheckEmailId = function (req, res) {
+exports.empCheckEmailId = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
 
     objLogin.checkEmailIdExists(req, function (existresult) {
@@ -574,9 +625,15 @@ exports.empCheckEmailId = function (req, res) {
   }
   catch (e) { logger.error("Error in Employee Check Mobile number: " + e); }
 }
-exports.empCheckAadhar = function (req, res) {
+exports.empCheckAadhar = async function (req, res) {
   try {
-
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     objLogin.checkAadharNoExists(req, function (existresult) {
       ////console.log(existresult.usernamecount); 
@@ -622,8 +679,15 @@ exports.empCheckAadhar = function (req, res) {
   catch (e) { logger.error("Error in Employee Check Mobile number: " + e); }
 }
 
-exports.UpdateMobileNumber = function (req, res) {
+exports.UpdateMobileNumber = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date(); // some mock date
     var milliseconds = date.getTime();
     var logUserCode = "";
@@ -728,8 +792,15 @@ exports.UpdateMobileNumber = function (req, res) {
   }
   catch (e) { logger.error("Error in Employee Change Mobile Number: " + e); }
 }
-exports.Changepassword = function (req, res) {
+exports.Changepassword = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var logUserCode = "";
     var logType = "";
     if (req.query.usercode != null) {
@@ -798,8 +869,15 @@ exports.Changepassword = function (req, res) {
     { logger.error("Error in Employee Change Password: " + e); }
   }
 }
-exports.DeactivateEmployee = function (req, res) {
+exports.DeactivateEmployee = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var logUserCode = "";
     var logType = "";
     if (req.query.usercode != null) {
@@ -860,8 +938,15 @@ exports.DeactivateEmployee = function (req, res) {
     { logger.error("Error in Employee Invisible Mode: " + e); }
   }
 }
-exports.ActivateEmployee = function (req, res) {
+exports.ActivateEmployee = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var date = new Date(); // some mock date
     var milliseconds = date.getTime();
     var objLogdetails;
@@ -972,8 +1057,15 @@ exports.ActivateEmployee = function (req, res) {
   catch (e) { logger.error("Error in Activate Employee: " + e); }
 
 }
-exports.checkValidEmployee = function (req, res) {
+exports.checkValidEmployee = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     const dbo = MongoDB.getDB();
     logger.info("Activate Employee User name and Mobile No : UserId: " + req.query.employeecode + ", Originator: 'Check Valid Employee', DeviceIP: " + req.query.deviceip + ", Logdate: " + Date.now() + ", Type: " + objconstants.employeeLogType);
     //var password = objUtilities.decryptpassword(logparams, req.query.password, function(passworddecrypt){
@@ -1075,8 +1167,15 @@ exports.checkValidEmployee = function (req, res) {
 
 }
 
-exports.checkValidEmployeeorLead = function (req, res) {
+exports.checkValidEmployeeorLead = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     const dbo = MongoDB.getDB();
     logger.info("Activate Employee User name and Mobile No : UserId: " + req.query.employeecode + ", Originator: 'Check Valid Employee', DeviceIP: " + req.query.deviceip + ", Logdate: " + Date.now() + ", Type: " + objconstants.employeeLogType);
     //var password = objUtilities.decryptpassword(logparams, req.query.password, function(passworddecrypt){
@@ -1180,6 +1279,13 @@ exports.checkValidEmployeeorLead = function (req, res) {
 
 exports.employee_registration_portal = function (req, res) {
   try {
+    // const decoded = await objUtilities.validateToken(req);
+    // if (!decoded) {
+    //   return res.status(200).json({
+    //     status: 401,
+    //     message: "Unauthorized",
+    //   });
+    // }
 
     var objLogdetails;
     const dbo = MongoDB.getDB();
@@ -1198,7 +1304,7 @@ exports.employee_registration_portal = function (req, res) {
       objLogdetails = logresponse;
     });
     var logparams = objLogdetails;
-    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0,function (existresult) {
+    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0, function (existresult) {
       // //console.log(existresult.mobilenocount); 
       // //console.log(existresult);
 
@@ -1258,60 +1364,60 @@ exports.employee_registration_portal = function (req, res) {
                     "experienceinfo": req.body.experienceinfo,
                     "skills": req.body.skills,
 
-                  }
-                //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
-                objLogin.registration(registerparam, logparams, 0, function (saveresponse) {
-                  ////console.log(saveresponse);
-                  if (saveresponse != null && saveresponse > 0) {
-                    var empparams = { "employeecode": response };
-                    objUtilities.getcurrentmilliseconds(function (currenttime) {
+              }
+              //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
+              objLogin.registration(registerparam, logparams, 0, function (saveresponse) {
+                ////console.log(saveresponse);
+                if (saveresponse != null && saveresponse > 0) {
+                  var empparams = { "employeecode": response };
+                  objUtilities.getcurrentmilliseconds(function (currenttime) {
                     dbo.collection(MongoDB.EmployeeCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime, "registervia": 2 } }, function (err, logres) {
                       // var prefparams = { employeecode: response };
                       ////console.log(prefparams);        
-                      
-                        const msgparam = { "messagecode": objconstants.registercode };
-                        var empparams1 = {"employeecode": response};
-                        objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function(empdetails){
-                          objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-                            return res.status(200).json({
-                              employee_json_result: {
-                                varstatuscode: objconstants.registercode,
-                                responsestring: msgresult[0].messagetext,
-                                responsekey: msgresult[0].messagekey,
-                                response: objconstants.successresponsecode,
-                                employeecode: response
-                                //employee_json_fields: saveresponse 
-                              }
-                            });
-      
+
+                      const msgparam = { "messagecode": objconstants.registercode };
+                      var empparams1 = { "employeecode": response };
+                      objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function (empdetails) {
+                        objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
+                          return res.status(200).json({
+                            employee_json_result: {
+                              varstatuscode: objconstants.registercode,
+                              responsestring: msgresult[0].messagetext,
+                              responsekey: msgresult[0].messagekey,
+                              response: objconstants.successresponsecode,
+                              employeecode: response
+                              //employee_json_fields: saveresponse 
+                            }
                           });
+
                         });
-                    // objMail.SendMail(saveresponse, function (result) {
-                   
-          
-          
+                      });
+                      // objMail.SendMail(saveresponse, function (result) {
+
+
+
                       // });
                     });
                   });
-                    //return res.status(200).json({
-                   
+                  //return res.status(200).json({
 
-                    // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
-                    //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
-                    //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
-                    //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
 
-                    //       });
-                    //     });
-                    //   });
-                    // });
-                    // });
-                    ////console.log(objconstants.registercode);
-                  }
-                });
+                  // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
+                  //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+                  //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
+                  //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+                  //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
+                  //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+                  //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
+
+                  //       });
+                  //     });
+                  //   });
+                  // });
+                  // });
+                  ////console.log(objconstants.registercode);
+                }
+              });
               //});
 
 
@@ -1348,8 +1454,15 @@ exports.employee_registration_portal = function (req, res) {
   catch (e) { logger.error("Error in Employee Registration: " + e); }
 }
 
-exports.employee_update_portal = function (req, res) {
+exports.employee_update_portal = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     var objLogdetails;
     const dbo = MongoDB.getDB();
@@ -1369,7 +1482,7 @@ exports.employee_update_portal = function (req, res) {
     });
     var logparams = objLogdetails;
     let employeecode = Number(req.query.employeecode);
-    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0,function (existresult) {
+    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0, function (existresult) {
       // //console.log(existresult.mobilenocount); 
       console.log(existresult);
 
@@ -1378,83 +1491,83 @@ exports.employee_update_portal = function (req, res) {
         var usernameexistcount = existresult.usernamecount;
         var mobilenocount = existresult.mobilenocount;
         if (existresult.usernamecount > 0 || existresult.mobilenocount > 0) {
-         /// objLogin.getMaxcode(function (response) {
-            ////console.log(response );
-           // if (response != null) {
-            
-                const registerparam = req.body;
-                // { 
-                //   "employeename": req.body.employeename,  
-                //   "personalinfo": 
-                //     { 
-                //       "employeefullname": req.body.employeename,
-                //       "gender": req.body.gender,
-                //       "dateofbirth": req.body.dateofbirth
-                //     }, 
-                //   "contactinfo": 
-                //     { 
-                //       "mobileno": req.body.mobileno 
-                //     },
-                //     "fresherstatus": req.body.fresherstatus,
-                //     "preferences": req.body.preferences,
-                //   }
-                //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
-                objProfile.employee_update_portal(registerparam, employeecode, logparams,  function (saveresponse) {
-                  ////console.log(saveresponse);
-                  if (saveresponse != null && saveresponse > 0) {
-                     var empparams = { "employeecode": employeecode };
-                    objUtilities.getcurrentmilliseconds(function (currenttime) {
-                    dbo.collection(MongoDB.EmployeeCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
-                      // var prefparams = { employeecode: response };
-                      ////console.log(prefparams);        
-                      
-                        const msgparam = { "messagecode": objconstants.updatecode };
-                        var empparams1 = {"employeecode": employeecode};
-                        objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function(empdetails){
-                          objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-                            return res.status(200).json({
-                              employee_json_result: {
-                                varstatuscode: objconstants.updatecode,
-                                responsestring: msgresult[0].messagetext,
-                                responsekey: msgresult[0].messagekey,
-                                response: objconstants.successresponsecode,
-                                // employeecode: response
-                                //employee_json_fields: saveresponse 
-                              }
-                            });
-      
-                          });
-                        });
-                    // objMail.SendMail(saveresponse, function (result) {
-                   
-          
-          
-                      // });
+          /// objLogin.getMaxcode(function (response) {
+          ////console.log(response );
+          // if (response != null) {
+
+          const registerparam = req.body;
+          // { 
+          //   "employeename": req.body.employeename,  
+          //   "personalinfo": 
+          //     { 
+          //       "employeefullname": req.body.employeename,
+          //       "gender": req.body.gender,
+          //       "dateofbirth": req.body.dateofbirth
+          //     }, 
+          //   "contactinfo": 
+          //     { 
+          //       "mobileno": req.body.mobileno 
+          //     },
+          //     "fresherstatus": req.body.fresherstatus,
+          //     "preferences": req.body.preferences,
+          //   }
+          //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
+          objProfile.employee_update_portal(registerparam, employeecode, logparams, function (saveresponse) {
+            ////console.log(saveresponse);
+            if (saveresponse != null && saveresponse > 0) {
+              var empparams = { "employeecode": employeecode };
+              objUtilities.getcurrentmilliseconds(function (currenttime) {
+                dbo.collection(MongoDB.EmployeeCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
+                  // var prefparams = { employeecode: response };
+                  ////console.log(prefparams);        
+
+                  const msgparam = { "messagecode": objconstants.updatecode };
+                  var empparams1 = { "employeecode": employeecode };
+                  objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function (empdetails) {
+                    objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
+                      return res.status(200).json({
+                        employee_json_result: {
+                          varstatuscode: objconstants.updatecode,
+                          responsestring: msgresult[0].messagetext,
+                          responsekey: msgresult[0].messagekey,
+                          response: objconstants.successresponsecode,
+                          // employeecode: response
+                          //employee_json_fields: saveresponse 
+                        }
+                      });
+
                     });
                   });
-                    //return res.status(200).json({
-                   
+                  // objMail.SendMail(saveresponse, function (result) {
 
-                    // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
-                    //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
-                    //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
-                    //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
 
-                    //       });
-                    //     });
-                    //   });
-                    // });
-                    // });
-                    ////console.log(objconstants.registercode);
-                  }
+
+                  // });
                 });
-              //});
+              });
+              //return res.status(200).json({
 
 
-            //}
+              // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
+              //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
+              //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
+              //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
+
+              //       });
+              //     });
+              //   });
+              // });
+              // });
+              ////console.log(objconstants.registercode);
+            }
+          });
+          //});
+
+
+          //}
           //});
         }
         else {
@@ -1487,8 +1600,15 @@ exports.employee_update_portal = function (req, res) {
   catch (e) { logger.error("Error in Employee Registration: " + e); }
 }
 
-exports.employee_jobrole_update_portal = function (req, res) {
+exports.employee_jobrole_update_portal = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     var objLogdetails;
     const dbo = MongoDB.getDB();
@@ -1508,7 +1628,7 @@ exports.employee_jobrole_update_portal = function (req, res) {
     });
     var logparams = objLogdetails;
     let employeecode = Number(req.query.employeecode);
-    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0,function (existresult) {
+    objLogin.checkPortalEmployeeUserNameExists(logparams, req, 0, function (existresult) {
       // //console.log(existresult.mobilenocount); 
       console.log(existresult);
 
@@ -1517,83 +1637,83 @@ exports.employee_jobrole_update_portal = function (req, res) {
         var usernameexistcount = existresult.usernamecount;
         var mobilenocount = existresult.mobilenocount;
         if (existresult.usernamecount > 0 || existresult.mobilenocount > 0) {
-         /// objLogin.getMaxcode(function (response) {
-            ////console.log(response );
-           // if (response != null) {
-            
-                const registerparam = req.body;
-                // { 
-                //   "employeename": req.body.employeename,  
-                //   "personalinfo": 
-                //     { 
-                //       "employeefullname": req.body.employeename,
-                //       "gender": req.body.gender,
-                //       "dateofbirth": req.body.dateofbirth
-                //     }, 
-                //   "contactinfo": 
-                //     { 
-                //       "mobileno": req.body.mobileno 
-                //     },
-                //     "fresherstatus": req.body.fresherstatus,
-                //     "preferences": req.body.preferences,
-                //   }
-                //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
-                objProfile.employee_jobrole_update_portal(registerparam, employeecode, logparams,  function (saveresponse) {
-                  ////console.log(saveresponse);
-                  if (saveresponse != null && saveresponse > 0) {
-                     var empparams = { "employeecode": employeecode };
-                    objUtilities.getcurrentmilliseconds(function (currenttime) {
-                    dbo.collection(MongoDB.EmployeeCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
-                      // var prefparams = { employeecode: response };
-                      ////console.log(prefparams);        
-                      
-                        const msgparam = { "messagecode": objconstants.updatecode };
-                        var empparams1 = {"employeecode": employeecode};
-                        objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function(empdetails){
-                          objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
-                            return res.status(200).json({
-                              employee_json_result: {
-                                varstatuscode: objconstants.updatecode,
-                                responsestring: msgresult[0].messagetext,
-                                responsekey: msgresult[0].messagekey,
-                                response: objconstants.successresponsecode,
-                                // employeecode: response
-                                //employee_json_fields: saveresponse 
-                              }
-                            });
-      
-                          });
-                        });
-                    // objMail.SendMail(saveresponse, function (result) {
-                   
-          
-          
-                      // });
+          /// objLogin.getMaxcode(function (response) {
+          ////console.log(response );
+          // if (response != null) {
+
+          const registerparam = req.body;
+          // { 
+          //   "employeename": req.body.employeename,  
+          //   "personalinfo": 
+          //     { 
+          //       "employeefullname": req.body.employeename,
+          //       "gender": req.body.gender,
+          //       "dateofbirth": req.body.dateofbirth
+          //     }, 
+          //   "contactinfo": 
+          //     { 
+          //       "mobileno": req.body.mobileno 
+          //     },
+          //     "fresherstatus": req.body.fresherstatus,
+          //     "preferences": req.body.preferences,
+          //   }
+          //objLogin.registration(leaddetails, logparams, 0, function (saveresponse) {318
+          objProfile.employee_jobrole_update_portal(registerparam, employeecode, logparams, function (saveresponse) {
+            ////console.log(saveresponse);
+            if (saveresponse != null && saveresponse > 0) {
+              var empparams = { "employeecode": employeecode };
+              objUtilities.getcurrentmilliseconds(function (currenttime) {
+                dbo.collection(MongoDB.EmployeeCollectionName).updateOne(empparams, { $set: { "lastlogindate": currenttime } }, function (err, logres) {
+                  // var prefparams = { employeecode: response };
+                  ////console.log(prefparams);        
+
+                  const msgparam = { "messagecode": objconstants.updatecode };
+                  var empparams1 = { "employeecode": employeecode };
+                  objProfile1.getEmployeeProfileView(logparams, empparams1, objconstants.defaultlanguagecode, req, function (empdetails) {
+                    objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
+                      return res.status(200).json({
+                        employee_json_result: {
+                          varstatuscode: objconstants.updatecode,
+                          responsestring: msgresult[0].messagetext,
+                          responsekey: msgresult[0].messagekey,
+                          response: objconstants.successresponsecode,
+                          // employeecode: response
+                          //employee_json_fields: saveresponse 
+                        }
+                      });
+
                     });
                   });
-                    //return res.status(200).json({
-                   
+                  // objMail.SendMail(saveresponse, function (result) {
 
-                    // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
-                    //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
-                    //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
-                    //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
-                    //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
 
-                    //       });
-                    //     });
-                    //   });
-                    // });
-                    // });
-                    ////console.log(objconstants.registercode);
-                  }
+
+                  // });
                 });
-              //});
+              });
+              //return res.status(200).json({
 
 
-            //}
+              // objNotification.NotificationMaxcode(logparams, function (notificationresponse) {
+              //   var data = {"employeecode": response,"notificationcode": notificationresponse,"notificationtypecode": 1,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //   objNotification.NotificationSaveInEmployee(logparams, data, function (validcode) {
+              //     var data1 = {"employeecode": response,"notificationcode": notificationresponse+1,"notificationtypecode": 2,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //     objNotification.NotificationSaveInEmployee(logparams, data1, function (validcode) {
+              //       var data2 = {"employeecode": response,"notificationcode": notificationresponse+2,"notificationtypecode": 3,"notificationtypestatus": objconstants.defaultstatuscode,"statuscode": Number(objconstants.activestatus),"createddate": Date.now(),"makerid":validlog}
+              //       objNotification.NotificationSaveInEmployee(logparams, data2, function (validcode) {                            
+
+              //       });
+              //     });
+              //   });
+              // });
+              // });
+              ////console.log(objconstants.registercode);
+            }
+          });
+          //});
+
+
+          //}
           //});
         }
         else {

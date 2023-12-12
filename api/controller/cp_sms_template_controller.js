@@ -6,8 +6,15 @@ const MongoDB = require('../../config/database');
 const objConstants = require('../../config/constants');
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
-exports.insert_smstemplate_details = function (req, res) {
+exports.insert_smstemplate_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();  
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -125,8 +132,15 @@ exports.insert_smstemplate_details = function (req, res) {
         logger.error("Error in smstemplate insert: " + e);
     }
 }
-exports.update_smstemplate_details = function (req, res) {
+exports.update_smstemplate_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         var date = new Date(); // some mock date
         var milliseconds = date.getTime();
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
@@ -381,8 +395,15 @@ exports.update_smstemplate_details = function (req, res) {
         logger.error("Error in smstemplate update: " + e);
     }
 }
-exports.delete_smstemplate_details = function (req, res) {
+exports.delete_smstemplate_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse == true) {
                 var objLogdetails;
@@ -479,8 +500,15 @@ exports.delete_smstemplate_details = function (req, res) {
         logger.error("Error in smstemplate delete: " + e);
     }
 }
-exports.smstemplate_list_by_code = function (req, res) {
+exports.smstemplate_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -551,8 +579,15 @@ exports.smstemplate_list_by_code = function (req, res) {
         logger.error("Error in sms template List by Code: " + e);
     }
 }
-exports.smstemplate_formload = function (req, res) {
+exports.smstemplate_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -608,8 +643,15 @@ exports.smstemplate_formload = function (req, res) {
     }
     catch (e) { logger.error("Error in smstemplate Load: " + e); }
 }
-exports.smstemplate_list = function (req, res) {
+exports.smstemplate_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

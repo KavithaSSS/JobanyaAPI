@@ -7,8 +7,15 @@ var objemployee = require('../process/employee_job_percentage_process_controller
 const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 const objRecommended = require('../process/employer_recommended_process_controller');
-exports.employee_job_percentage = function (req, res) {
+exports.employee_job_percentage = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.GetJobPercentage(function (jobpercentage) {
             objUtilities.GetAllActiveJobs(req, function (activejobcodelist) {
                 if (activejobcodelist && activejobcodelist.length > 0) {
@@ -67,9 +74,8 @@ exports.employee_job_percentage = function (req, res) {
     }
 }
 
-exports.GetJobDetails = function (activejobcodelist, employeelist, jobpercentage, callback) {
+exports.GetJobDetails = async function (activejobcodelist, employeelist, jobpercentage, callback) {
     try {
-
         GetJobDetailsJobCode(activejobcodelist, employeelist, jobpercentage, function (err, jobresult) {
             if (err) {
                 return;
@@ -105,8 +111,9 @@ function GetJobDetailsJobCode(activejobcodelist, employeelist, jobpercentage, ca
     catch (e) { logger.error("Error in GetJobDetailsJobCode" + e); }
 }
 
-exports.GetJobDetails_JobCode = function (jobcodevalue, employeelist, jobpercentage, callback) {
+exports.GetJobDetails_JobCode = async function (jobcodevalue, employeelist, jobpercentage, callback) {
     try {
+       
         var empparams = { "jobcode": jobcodevalue.jobcode };
         objRecommended.getJobProfileConditions({}, empparams, function (jobresult) {
             if (jobresult && jobresult.length > 0) {
@@ -123,8 +130,9 @@ exports.GetJobDetails_JobCode = function (jobcodevalue, employeelist, jobpercent
     }
 }
 
-exports.employee_active_job = function (req, res) {
+exports.employee_active_job = async function (req, res) {
     try {
+      
         objUtilities.GetAllActiveJobs(req, function (activejobcodelist) {
                 if (activejobcodelist && activejobcodelist.length > 0) {
                     const msgparam = { "messagecode": objConstants.listcode };

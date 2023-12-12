@@ -13,8 +13,15 @@ const objSendSMS = require('../process/send_sms_process_controller')
 const objNotification = require('../process/employee_notification_process_controller')
 
 //Personal Info
-exports.getPersonalinfoLoad = function (req, res) {
+exports.getPersonalinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -124,8 +131,15 @@ exports.getPersonalinfoLoad = function (req, res) {
   catch (e) { logger.error("Error in Personal Info Load: " + e); }
 }
 
-exports.personalinfoupdate = function (req, res) {
+exports.personalinfoupdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -232,8 +246,15 @@ exports.personalinfoupdate = function (req, res) {
   }
   catch (e) { logger.error("Error in Personal Info Save / Update: " + e); }
 }
-exports.personalinfoEdit = function (req, res) {
+exports.personalinfoEdit = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     if (req.query.employeecode == null || req.query.employeecode == 0) {
       const msgparam = { "messagecode": varconstant.notvalidcode };
       objUtilities.getMessageDetailWithkeys(msgparam, function (msgresult) {
@@ -334,8 +355,15 @@ exports.personalinfoEdit = function (req, res) {
   catch (e) { logger.error("Error in Personal Info Save / Update: " + e); }
 }
 
-exports.getContactinfoLoad = function (req, res) {
+exports.getContactinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -426,8 +454,15 @@ exports.getContactinfoLoad = function (req, res) {
   catch (e) { logger.error("Error in Contact Info Load: " + e); }
 }
 
-exports.contactinfoupdate = function (req, res) {
+exports.contactinfoupdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -516,10 +551,17 @@ exports.contactinfoupdate = function (req, res) {
   catch (e) { logger.error("Error in Contact Info Save / Update: " + e); }
 }
 
-exports.imageurl = function (req, res) {
+exports.imageurl = async function (req, res) {
   try {
     var logUserCode = "";
     var logType = "";
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     if (req.query.usercode != null) {
       logUserCode = req.query.usercode;
       logType = varconstant.portalLogType;
@@ -584,8 +626,15 @@ exports.imageurl = function (req, res) {
   }
 }
 
-exports.resumeurl = function (req, res) {
+exports.resumeurl = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var logUserCode = "";
     var logType = "";
     if (req.query.usercode != null) {
@@ -639,8 +688,15 @@ exports.resumeurl = function (req, res) {
   }
 }
 
-exports.DeleteEmployee = function (req, res) {
+exports.DeleteEmployee = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
       objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
           if (userresponse == true) {
               objUtilities.checkemployee(req.body.employeecode, Number(req.body.isleadtype),function (validemp) {
@@ -717,8 +773,15 @@ exports.DeleteEmployee = function (req, res) {
 }
 
 
-exports.employee_list = function (req, res) {
+exports.employee_list = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse) {
         var objLogdetails;
@@ -751,7 +814,6 @@ exports.employee_list = function (req, res) {
                       pendingcount: employeecount[3],
                       rejectedcount: employeecount[4],
                       totcount: employeecount[5],
-                      employeelangcount: employeecount[8],
                       employeelist: resultlist,
                       //masterslist: response
                     }
@@ -812,8 +874,15 @@ exports.employee_list = function (req, res) {
 }
 
 
-exports.employee_excel_list = function (req, res) {
+exports.employee_excel_list = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse) {
         var objLogdetails;
@@ -900,8 +969,15 @@ exports.employee_excel_list = function (req, res) {
   }
 }
 
-exports.lead_list = function (req, res) {
+exports.lead_list = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse) {
         var objLogdetails;
@@ -993,8 +1069,15 @@ exports.lead_list = function (req, res) {
   }
 }
 
-exports.getProfileStatus = function (req, res) {
+exports.getProfileStatus = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1058,9 +1141,15 @@ exports.getProfileStatus = function (req, res) {
   }
   catch (e) { logger.error("Error in Contact Info Load: " + e); }
 }
-exports.personalinfoinsert = function (req, res) {
+exports.personalinfoinsert = async function (req, res) {
   try {
-
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     var objLogdetails;
     var logUserCode = "";
     var logType = "";
@@ -1218,8 +1307,15 @@ exports.personalinfoinsert = function (req, res) {
   }
 }
 
-exports.get_employee_list = function (req, res) {
+exports.get_employee_list = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse) {
         var objLogdetails;
@@ -1307,8 +1403,15 @@ exports.get_employee_list = function (req, res) {
   }
 }
 
-exports.get_employee_load = function (req, res) {
+exports.get_employee_load = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
       if (userresponse) {
         var objLogdetails;
@@ -1396,8 +1499,15 @@ exports.get_employee_load = function (req, res) {
   }
 }
 
-exports.getEmployeeProfileImage = function (req, res) {
+exports.getEmployeeProfileImage = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployee(req.query.employeecode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -1476,8 +1586,15 @@ exports.getEmployeeProfileImage = function (req, res) {
 
 
 
-exports.downloadResumePDF = function (req, res) {
+exports.downloadResumePDF = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.CheckValidUserOrEmployeeOrEmployer(req, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

@@ -8,8 +8,15 @@ const Logger = require('../services/logger_service');
 const { Console } = require('winston/lib/winston/transports');
 const logger = new Logger('logs')
 
-exports.getBranchinfoLoad = function (req, res) {
+exports.getBranchinfoLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -77,8 +84,15 @@ exports.getBranchinfoLoad = function (req, res) {
 
 
 
-exports.getBranchtypeLoad = function (req, res) {
+exports.getBranchtypeLoad = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -141,8 +155,15 @@ exports.getBranchtypeLoad = function (req, res) {
   catch (e) { logger.error("Error in Employer Contact Info Load: " + e); }
 }
 
-exports.BranchSave = function (req, res) {
+exports.BranchSave = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -246,8 +267,15 @@ exports.BranchSave = function (req, res) {
   catch (e) { logger.error("Error in Branch Save: " + e); }
 }
 
-exports.BranchUpdate = function (req, res) {
+exports.BranchUpdate = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -368,8 +396,15 @@ exports.BranchUpdate = function (req, res) {
   catch (e) { logger.error("Error in Branch Update: " + e); }
 }
 
-exports.BranchDelete = function (req, res) {
+exports.BranchDelete = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;
@@ -506,8 +541,15 @@ exports.BranchDelete = function (req, res) {
   catch (e) { logger.error("Error in Branch Update: " + e); }
 }
 
-exports.BranchList = function (req, res) {
+exports.BranchList = async function (req, res) {
   try {
+    const decoded = await objUtilities.validateToken(req);
+    if (!decoded) {
+      return res.status(200).json({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
     objUtilities.checkvalidemployer(req.query.employercode, function (validemp) {
       if (validemp == true) {
         var objLogdetails;

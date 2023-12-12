@@ -7,8 +7,15 @@ const Logger = require('../services/logger_service');
 const logger = new Logger('logs')
 //const {notvalidcode,objConstants.objConstants.objConstants.createcode,objConstants.objConstants.listcode, objConstants.existcode,objConstants.updatecode,deletecode, recordnotfoundcode, objConstants.successresponsecode,objConstants.usernotfoundcode } = require('../../config/constants');
 const objConstants = require('../../config/constants');
-exports.gnorg_formload = function (req, res) {
+exports.gnorg_formload = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -66,8 +73,15 @@ exports.gnorg_formload = function (req, res) {
         logger.error("Error in Gnorganisation formload: " + e);
     }
 }
-exports.insert_gnorg_details = function (req, res) {
+exports.insert_gnorg_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -165,8 +179,15 @@ exports.insert_gnorg_details = function (req, res) {
         logger.error("Error in Gnorganisation Insert: " + e);
     }
 }
-exports.update_gnorg_details = function (req, res) {
+exports.update_gnorg_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -404,8 +425,15 @@ exports.update_gnorg_details = function (req, res) {
         logger.error("Error in Gnorganisation Update: " + e);
     }
 }
-exports.delete_gnorganisation_details = function (req, res) {
+exports.delete_gnorganisation_details = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -512,8 +540,15 @@ exports.delete_gnorganisation_details = function (req, res) {
         logger.error("Error in Gnorganisation Delete: " + e);
     }
 }
-exports.gnorganisation_list_by_code = function (req, res) {
+exports.gnorganisation_list_by_code = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -584,8 +619,15 @@ exports.gnorganisation_list_by_code = function (req, res) {
         logger.error("Error in Gnorganisation Edit Load: " + e);
     }
 }
-exports.gnorganisation_list = function (req, res) {
+exports.gnorganisation_list = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;
@@ -687,8 +729,15 @@ exports.gnorganisation_list = function (req, res) {
         logger.error("Error in Gnorganisation List: " + e);
     }
 }
-exports.update_imageurl = function (req, res) {
+exports.update_imageurl = async function (req, res) {
     try {
+        const decoded = await objUtilities.validateToken(req);
+        if (!decoded) {
+          return res.status(200).json({
+            status: 401,
+            message: "Unauthorized",
+          });
+        }
         objUtilities.checkvaliduser({ usercode: parseInt(req.query.usercode) }, function (userresponse) {
             if (userresponse) {
                 var objLogdetails;

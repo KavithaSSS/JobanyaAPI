@@ -284,7 +284,7 @@ exports.getFacilityList = function (logparams, params, langcount, callback) {
             }
         ]).toArray(function (err, result) {
             finalresult = result;
-            // //console.log(finalresult);
+            // console.log(finalresult);
             return callback(finalresult);
         });
     }

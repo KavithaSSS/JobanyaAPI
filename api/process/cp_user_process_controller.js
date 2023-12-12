@@ -217,7 +217,7 @@ exports.getUserSingleRecordDetails_Edit = function (logparams, params, callback)
                 }
             }
         ]).toArray(function (err, result) {
-            // //console.log(result);
+            //console.log(result);
             if (result != null && result.length > 0) {
                 // //console.log(result);
                 objUtilities.decryptpassword(logparams, result[0].password, function (respassword) {
