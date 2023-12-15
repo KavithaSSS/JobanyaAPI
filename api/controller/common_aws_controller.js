@@ -85,14 +85,14 @@ exports.FirebasePushNotification = function (notificationObj) {
 
     var admin = require("firebase-admin");
 
-    var serviceAccount = require("../services/bestjobs-employee-c4a2c-firebase-adminsdk-9x461-6d9d77f243.json");
+    var serviceAccount = require("");
 
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: "https://bestjobs-employee-c4a2c-default-rtdb.firebaseio.com/"
     });
 
-    var registrationToken = "cmYktwMRQk2DVK6k-898Yd:APA91bHPTey7ymD1jUfBdKZs-TWX-0Me9AekV5CZEtDjtrHJbaS8PSrwkIFiTg7mUJFiIUiN1VtyBWPUCFn0N3cjTungeiaj9A7mgeIE5wguazXSTbcU0IKYUlTjXiurtA7NOFEXTpFw";
+    var registrationToken = "";
 
     var payload = {
 
